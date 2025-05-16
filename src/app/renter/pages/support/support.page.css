@@ -1,0 +1,40 @@
+.support-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.support-container h1 {
+  margin-bottom: 0.5rem;
+}
+
+.support-container p {
+  margin-bottom: 1.5rem;
+  color: #555;
+}
+
+.support-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.full-width {
+  width: 100%;
+}
+
+button[type="submit"] {
+  align-self: flex-end;
+}
+
+.quick-links {
+  margin-top: 2rem;
+}
+
+.quick-links h2 {
+  margin-bottom: 0.5rem;
+}
+
+.quick-links button {
+  margin-right: 0.5rem;
+}

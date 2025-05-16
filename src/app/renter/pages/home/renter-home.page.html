@@ -1,0 +1,64 @@
+<div class="home-content">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <h1>Rent a Bike</h1>
+      <p>Find and rent bikes near you.</p>
+      <button class="btn-find" routerLink="/renter/map">Find a Bike</button>
+    </div>
+
+    <div class="hero-right">
+      <img src="assets/img/bike.jpeg" alt="Bike" class="hero-img" />
+      <div class="user-card">
+
+        <img src="assets/img/logo4.png" alt="Avatar" class="user-avatar" />
+        <div class="user-info">
+          <span class="username">User</span>
+          <div class="rating">
+            <i class="pi pi-star-fill"></i>
+            <i class="pi pi-star-fill"></i>
+            <i class="pi pi-star-fill"></i>
+            <i class="pi pi-star-fill"></i>
+            <i class="pi pi-star-fill"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="stats-card">
+      <h2>HAS RECORRIDO</h2>
+      <div class="stats-value">{{ distanceTraveled }} M</div>
+      <div class="stats-text">desde que eres miembro</div>
+    </div>
+  </section>
+
+  <section class="rentals">
+    <h3>Rentals</h3>
+    <div class="rentals-card">
+      <table>
+        <thead>
+        <tr>
+          <th>Bike</th>
+          <th>Departure Date</th>
+          <th>Departure Station</th>
+          <th>Return Date</th>
+          <th>Return Station</th>
+          <th>Duration</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let rent of rentals">
+          <td>{{ rent.bike }}</td>
+          <td>{{ rent.departureDate }}</td>
+          <td>{{ rent.departureStation }}</td>
+          <td>{{ rent.returnDate }}</td>
+          <td>{{ rent.returnStation }}</td>
+          <td>{{ rent.duration }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>

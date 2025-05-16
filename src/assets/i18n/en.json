@@ -1,0 +1,13 @@
+{
+  "find_bike": "Find your bike",
+  "search_placeholder": "Search address or neighborhood",
+  "search": "Search",
+  "free_bikes": "Available bicycles",
+  "station": "Station",
+  "bikes_available": "Bikes available",
+  "distance": "Distance",
+  "reserve": "Reserve",
+  "add_to_favorites": "Add to favorites",
+  "not_found": "No stations found for this location.",
+  "bike_plural": "bikes"
+}

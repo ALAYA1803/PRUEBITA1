@@ -1,0 +1,51 @@
+<mat-card class="profile-card">
+  <mat-card-header>
+    <mat-icon class="icon-style">person</mat-icon>
+    <mat-card-title>{{ 'Profile.Title' | translate }}</mat-card-title>
+    <span class="spacer"></span>
+    <button mat-fab extended (click)="onEditRequested()" *ngIf="!editMode">
+      <mat-icon>edit</mat-icon>
+      Edit
+    </button>
+  </mat-card-header>
+
+  <div class="image-container">
+    <img [src]="profileData.profileImage" alt="Profile Image">
+  </div>
+
+  <mat-card-content class="static-values" *ngIf="!editMode">
+    <p><strong>{{ 'Profile.FullName' | translate }}</strong> {{ userData.name }}</p>
+    <p><strong>{{ 'Profile.Address' | translate }}</strong> {{ profileData.address }}</p>
+    <p class="rating-value">
+      <strong>{{ 'Profile.Rating' | translate }}</strong>
+      <span class="rating-stars">
+        <mat-icon *ngFor="let star of stars; let i = index">
+          {{ getStarType(i + 1) }}
+        </mat-icon>
+      </span>
+    </p>
+    <p>
+      <strong>{{ 'Profile.Payment' | translate }}</strong>
+      {{ profileData.paymentMethods.creditCard
+      ? 'Credit Card'
+      : profileData.paymentMethods.paypal
+        ? 'PayPal'
+        : 'None'
+      }}
+    </p>
+    <p>
+      <strong>{{ 'Profile.Notifications' | translate }}</strong>
+      <span [ngClass]="profileData.preferences.notifications ? 'active' : 'inactive'">
+        {{ profileData.preferences.notifications ? 'Activated' : 'Deactivated' }}
+      </span>
+    </p>
+  </mat-card-content>
+
+  <mat-card-content *ngIf="editMode">
+    <app-profile-edit
+      [profile]="profileData"
+      (profileUpdateRequested)="onProfileUpdatedRequested($event)"
+      (cancelRequested)="onCancelRequested()">
+    </app-profile-edit>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,74 @@
+<div class="map-page">
+  <h1>Encuentra tu bicicleta</h1>
+  <p>Usa este mapa para localizar bicicletas disponibles</p>
+
+  <div class="search-bar">
+    <input
+      #loc
+      type="text"
+      placeholder="Buscar dirección o barrio"
+    />
+    <button
+      class="search-button"
+      (click)="searchLocation(loc)"
+    >
+      Buscar
+    </button>
+  </div>
+
+  <div class="map-layout">
+    <div class="station-list">
+      <h3>Bicicletas libres</h3>
+      <table *ngIf="filteredStations.length > 0">
+        <thead>
+        <tr>
+          <th>Estación</th>
+          <th>Bicis</th>
+          <th>Distancia</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr
+          *ngFor="let s of filteredStations"
+          (click)="selectedStation = s"
+        >
+          <td>{{ s.name }}</td>
+          <td [class.green]="s.bikes > 2" [class.yellow]="s.bikes <= 2">
+            {{ s.bikes }}
+          </td>
+          <td>{{ s.distance }}</td>
+        </tr>
+        </tbody>
+      </table>
+      <p *ngIf="filteredStations.length === 0">
+        No se encontraron estaciones.
+      </p>
+
+      <div class="reservation-box">
+        <strong>{{ selectedStation?.name || 'Lima' }}</strong><br />
+        <span class="green">
+          {{ selectedStation ? selectedStation.bikes : totalBikes }}
+          bicis libres
+        </span><br />
+        <small>
+          {{ selectedStation ? selectedStation.docks : totalDocks }}
+          anclajes libres
+        </small><br />
+        <small *ngIf="selectedStation">
+          {{ selectedStation.distance }}
+        </small><br />
+        <ng-container *ngIf="selectedStation">
+          <button class="reserve">Reservar</button>
+          <a href="#">⭐ Favoritos</a>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="map-section">
+      <iframe
+        [src]="mapUrl | safe"
+        allowfullscreen
+      ></iframe>
+    </div>
+  </div>
+</div>

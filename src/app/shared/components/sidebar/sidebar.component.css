@@ -1,0 +1,40 @@
+.sidenav-container {
+  height: 100vh;
+}
+
+.custom-sidenav {
+  width: 250px;
+  background: #FFD38F;
+  color: black;
+}
+
+.logo-container {
+  text-align: center;
+  padding: 20px;
+}
+.logo {
+  width: 120px;
+}
+
+mat-nav-list a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+mat-nav-list a.active {
+  background: rgba(0,0,0,0.1);
+}
+
+.toolbar-fixed {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}

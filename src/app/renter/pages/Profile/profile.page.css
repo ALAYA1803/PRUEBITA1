@@ -1,0 +1,71 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+mat-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+}
+
+button {
+  background-color: var(--mat-primary);
+  color: black;
+  height: 36px;
+}
+
+mat-card-content {
+  margin: 20px 0;
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+}
+
+.image-container img {
+  max-width: 100%;
+}
+
+.profile-card {
+  width: 90%;
+  max-width: 900px;
+  margin: 20px auto 50px auto;
+}
+
+.static-values {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.static-values p {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 12px 0;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.static-values p strong {
+  flex-shrink: 0;
+  margin-right: 8px;
+  min-width: 100px;
+  text-align: right;
+  color: #444;
+}
+
+.rating-value {
+  display: flex;
+  align-items: center;
+}
+
+.rating-stars mat-icon {
+  font-size: 24px;
+  vertical-align: middle;
+}

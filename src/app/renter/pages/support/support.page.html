@@ -1,0 +1,32 @@
+<div class="support-container">
+  <h1>Ayuda y Soporte</h1>
+  <p>¿Tienes dudas? Completa el formulario y te ayudaremos.</p>
+
+  <form #supportForm="ngForm" (ngSubmit)="onSubmit(supportForm)" class="support-form">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Nombre</mat-label>
+      <input matInput name="name" [(ngModel)]="contact.name" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Correo electrónico</mat-label>
+      <input matInput type="email" name="email" [(ngModel)]="contact.email" required email />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Mensaje</mat-label>
+      <textarea matInput name="message" [(ngModel)]="contact.message" rows="5" required></textarea>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="supportForm.invalid">
+      Enviar mensaje
+    </button>
+  </form>
+
+  <div class="quick-links">
+    <h2>Enlaces rápidos</h2>
+    <button mat-button color="accent">FAQ</button>
+    <button mat-button color="accent">Términos y Condiciones</button>
+    <button mat-button color="accent">Política de Privacidad</button>
+  </div>
+</div>
