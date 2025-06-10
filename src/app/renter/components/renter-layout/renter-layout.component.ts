@@ -6,6 +6,7 @@ import { MatToolbarModule }  from '@angular/material/toolbar';
 import { MatIconModule }     from '@angular/material/icon';
 import { MatButtonModule }   from '@angular/material/button';
 import { SidebarComponent }  from '../../../shared/components/sidebar/sidebar.component';
+import { LanguageSwitcherComponent } from '../../../shared/components/language-switcher/language-switcher.component';
 
 @Component({
   selector: 'app-renter-layout',
@@ -17,7 +18,8 @@ import { SidebarComponent }  from '../../../shared/components/sidebar/sidebar.co
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
-    SidebarComponent
+    SidebarComponent,
+    LanguageSwitcherComponent
   ],
   template: `
     <mat-sidenav-container class="sidenav-container">
@@ -31,6 +33,7 @@ import { SidebarComponent }  from '../../../shared/components/sidebar/sidebar.co
           </button>
           <span>BikeShare</span>
           <span class="spacer"></span>
+          <app-language-switcher class="language-switcher"></app-language-switcher>
         </mat-toolbar>
 
         <main class="layout-main">

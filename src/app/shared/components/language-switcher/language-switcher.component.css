@@ -5,3 +5,8 @@ mat-button-toggle-group {
 mat-button-toggle {
   text-transform: uppercase;
 }
+
+:host(.language-switcher) {
+  display: inline-flex;
+  align-items: center;
+}
