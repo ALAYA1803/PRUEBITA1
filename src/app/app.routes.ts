@@ -1,15 +1,12 @@
 import { Routes } from '@angular/router';
-
 const LoginPage = () =>
   import('./public/pages/login/login.page').then(m => m.LoginPage);
 const RegisterPage = () =>
   import('./public/pages/register/register.page').then(m => m.RegisterPage);
-
 const OwnerLayoutComponent = () =>
   import('./owner/components/owner-layout/owner-layout.component').then(m => m.OwnerLayoutComponent);
 const RenterLayoutComponent = () =>
   import('./renter/components/renter-layout/renter-layout.component').then(m => m.RenterLayoutComponent);
-
 const OwnerHomePage = () =>
   import('./owner/pages/home/owner-home.page').then(m => m.OwnerHomePage);
 const RenterHomePage = () =>
@@ -20,7 +17,6 @@ const RenterProfilePage = () =>
   import('./renter/pages/profile/profile.page').then(m => m.ProfilePage);
 const RenterSupportPage = () =>
   import('./renter/pages/support/support.page').then(m => m.SupportPage);
-
 export const routes: Routes = [
   {
     path: 'owner',

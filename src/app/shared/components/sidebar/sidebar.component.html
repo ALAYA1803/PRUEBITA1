@@ -1,22 +1,42 @@
 <mat-nav-list class="custom-sidenav">
   <div class="logo-container">
     <img src="assets/img/logo5.png" alt="BikeShare Logo" class="logo">
+    <mat-divider class="logo-divider"></mat-divider>
   </div>
 
-  <a mat-list-item routerLink="/renter/home"   routerLinkActive="active">
-    <mat-icon>home</mat-icon>
-    <span>Home</span>
-  </a>
-  <a mat-list-item routerLink="/renter/map"    routerLinkActive="active">
-    <mat-icon>map</mat-icon>
-    <span>My Map</span>
-  </a>
-  <a mat-list-item routerLink="/renter/profile" routerLinkActive="active">
-    <mat-icon>person</mat-icon>
-    <span>Profile</span>
-  </a>
-  <a mat-list-item routerLink="/renter/support" routerLinkActive="active">
-    <mat-icon>headset</mat-icon>
-    <span>Support</span>
-  </a>
+  <div class="nav-items">
+    <a mat-list-item routerLink="/renter/home" routerLinkActive="active">
+      <div class="menu-item-content">
+        <mat-icon>home</mat-icon>
+        <span>Home</span>
+      </div>
+    </a>
+    <a mat-list-item routerLink="/renter/map" routerLinkActive="active">
+      <div class="menu-item-content">
+        <mat-icon>map</mat-icon>
+        <span>My map</span>
+      </div>
+    </a>
+    <a mat-list-item routerLink="/renter/profile" routerLinkActive="active">
+      <div class="menu-item-content">
+        <mat-icon>person</mat-icon>
+        <span>Profile</span>
+      </div>
+    </a>
+    <a mat-list-item routerLink="/renter/support" routerLinkActive="active">
+      <div class="menu-item-content">
+        <mat-icon>headset</mat-icon>
+        <span>Support</span>
+      </div>
+    </a>
+  </div>
+
+  <div class="logout-container">
+    <a mat-list-item (click)="onLogout()">
+      <div class="menu-item-content">
+        <mat-icon>logout</mat-icon>
+        <span>Log out</span>
+      </div>
+    </a>
+  </div>
 </mat-nav-list>
