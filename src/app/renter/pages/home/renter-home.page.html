@@ -1,64 +1,91 @@
-<div class="home-content">
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-left">
-      <h1>Rent a Bike</h1>
-      <p>Find and rent bikes near you.</p>
-      <button class="btn-find" routerLink="/renter/map">Find a Bike</button>
-    </div>
+<div class="page-container">
+  <div class="main-content">
+    <!-- Bienvenida -->
+    <header class="welcome-header">
+      <h1>¡Hola, {{ username }}!</h1>
+      <p>¿Listo para tu próxima aventura en bicicleta?</p>
+    </header>
 
-    <div class="hero-right">
-      <img src="assets/img/bike.jpeg" alt="Bike" class="hero-img" />
-      <div class="user-card">
-
-        <img src="assets/img/logo4.png" alt="Avatar" class="user-avatar" />
-        <div class="user-info">
-          <span class="username">User</span>
-          <div class="rating">
+    <!-- Estadísticas -->
+    <section class="stats-grid">
+      <div *ngFor="let s of stats" class="stat-card">
+        <span>{{ s.label }}</span>
+        <div class="stat-value">
+          <ng-container *ngIf="!s.isRating">
+            {{ s.value }} <span class="stat-suffix" *ngIf="s.suffix">{{ s.suffix }}</span>
+          </ng-container>
+          <div *ngIf="s.isRating" class="rating-display">
             <i class="pi pi-star-fill"></i>
             <i class="pi pi-star-fill"></i>
             <i class="pi pi-star-fill"></i>
             <i class="pi pi-star-fill"></i>
-            <i class="pi pi-star-fill"></i>
+            <i class="pi pi-star-half-fill"></i>
+            <span class="rating-number">{{ s.value }}</span>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="stats">
-    <div class="stats-card">
-      <h2>HAS RECORRIDO</h2>
-      <div class="stats-value">{{ distanceTraveled }} M</div>
-      <div class="stats-text">desde que eres miembro</div>
-    </div>
-  </section>
+    <!-- Próxima Reserva -->
+    <section class="next-reservation">
+      <h2>Tu próxima reserva</h2>
+      <div class="card reservation-card">
+        <div class="reservation-info">
+          <p class="bike-name">{{ upcoming.bike }}</p>
+          <p>{{ upcoming.date }} - {{ upcoming.time }}</p>
+          <p>{{ upcoming.address }}</p>
+        </div>
+        <div class="reservation-image">
+          <img [src]="upcoming.imageUrl" alt="{{ upcoming.bike }}">
+        </div>
+        <div class="reservation-actions">
+          <button class="btn btn-details" (click)="viewDetails()">Ver detalles</button>
+          <button class="btn btn-cancel" (click)="cancelReservation()">Cancelar reserva</button>
+        </div>
+      </div>
+    </section>
 
-  <section class="rentals">
-    <h3>Rentals</h3>
-    <div class="rentals-card">
-      <table>
-        <thead>
-        <tr>
-          <th>Bike</th>
-          <th>Departure Date</th>
-          <th>Departure Station</th>
-          <th>Return Date</th>
-          <th>Return Station</th>
-          <th>Duration</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let rent of rentals">
-          <td>{{ rent.bike }}</td>
-          <td>{{ rent.departureDate }}</td>
-          <td>{{ rent.departureStation }}</td>
-          <td>{{ rent.returnDate }}</td>
-          <td>{{ rent.returnStation }}</td>
-          <td>{{ rent.duration }}</td>
-        </tr>
-        </tbody>
-      </table>
+    <!-- Reservas Recientes -->
+    <section class="recent-rentals">
+      <h2>Reservas Recientes</h2>
+      <div class="card recent-rentals-card">
+        <div class="rentals-header">
+          <span>Bicicleta</span>
+          <span>Fecha</span>
+          <span>Estación inicio</span>
+          <span>Estación final</span>
+          <span>Estado</span>
+        </div>
+        <div class="rental-item" *ngFor="let r of recentRentals">
+          <span>{{ r.bike }}</span>
+          <span>{{ r.date }}</span>
+          <span>{{ r.startStation }}</span>
+          <span>{{ r.endStation }}</span>
+          <span>
+            <span class="status-badge" [ngClass]="{
+              'status-finalizado': r.status === 'Finalizado',
+              'status-cancelada': r.status === 'Cancelada'
+            }">
+              {{ r.status }}
+            </span>
+          </span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Barra lateral de Recomendaciones -->
+  <aside class="sidebar">
+    <h2>Recomendaciones</h2>
+    <div class="card recommendations-card">
+      <div class="recommendation-item" *ngFor="let rec of recommendations">
+        <img class="rec-image" [src]="rec.imageUrl" alt="{{ rec.bike }}">
+        <div class="rec-info">
+          <span class="rec-name">{{ rec.bike }}</span>
+          <span class="rec-details">$ {{ rec.pricePerHour.toFixed(2) }}/h / {{ rec.distance }}</span>
+        </div>
+        <button class="btn btn-reserve" (click)="reserveAgain(rec)">Reservar</button>
+      </div>
     </div>
-  </section>
+  </aside>
 </div>

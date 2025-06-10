@@ -30,7 +30,7 @@ const BIKES: Bike[] = [
     costPerMinute: 3.1,
     lat: -12.1050,
     lng: -77.0350,
-    imageUrl: 'https://plus.unsplash.com/premium_photo-1689568158814-3b8e9c1a9618?fm=jpg&q=60&w=3000',
+    imageUrl: 'https://cdn.skatepro.com/product/520/mankind-thunder-20-bmx-freestyle-bike-8h.webp',
   },
   {
     id: 2,
@@ -50,7 +50,7 @@ const BIKES: Bike[] = [
     costPerMinute: 3.0,
     lat: -12.1210,
     lng: -77.0300,
-    imageUrl: 'https://plus.unsplash.com/premium_photo-1689568158814-3b8e9c1a9618?fm=jpg&q=60&w=3000',
+    imageUrl: 'https://cdn.skatepro.com/product/520/mankind-thunder-20-bmx-freestyle-bike-8h.webp',
   },
   {
     id: 4,
@@ -70,7 +70,7 @@ const BIKES: Bike[] = [
     costPerMinute: 3.3,
     lat: -12.1050,
     lng: -76.9630,
-    imageUrl: 'https://plus.unsplash.com/premium_photo-1689568158814-3b8e9c1a9618?fm=jpg&q=60&w=3000',
+    imageUrl: 'https://cdn.skatepro.com/product/520/mankind-thunder-20-bmx-freestyle-bike-8h.webp',
   }
 ];
 
