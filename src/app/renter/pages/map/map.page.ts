@@ -94,14 +94,44 @@ export class MapPage implements AfterViewInit {
     });
   }
 
-  searchLocation(input: HTMLInputElement) {
+  async searchLocation(input: HTMLInputElement) {
     const q = input.value.trim();
     this.location = q || 'Lima';
     this.hasSearched = true;
     this.filteredStations = this.stations.filter(s =>
       s.name.toLowerCase().includes(this.location.toLowerCase())
     );
-    this.selectedStation = this.filteredStations[0] || null;
+
+    if (this.filteredStations.length > 0) {
+      this.selectStation(this.filteredStations[0]);
+    } else {
+      this.selectedStation = null;
+      if (this.map && q) {
+        try {
+          const resp = await fetch(
+            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}`
+          );
+          const data = await resp.json();
+          if (data.length > 0) {
+            const { lat, lon } = data[0];
+            this.map.setView([parseFloat(lat), parseFloat(lon)], 14);
+          }
+        } catch (e) {
+          console.error('Geocoding failed', e);
+        }
+      }
+    }
+  }
+
+  selectStation(station: Station) {
+    this.selectedStation = station;
+    if (this.map) {
+      this.map.setView([station.lat, station.lng], 15);
+      const marker = this.markers[station.name];
+      if (marker) {
+        marker.openPopup();
+      }
+    }
   }
 
   selectStation(station: Station) {
