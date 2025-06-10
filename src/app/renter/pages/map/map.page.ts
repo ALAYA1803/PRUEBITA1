@@ -92,6 +92,9 @@ export class MapPage implements AfterViewInit {
         );
       this.markers[station.name] = m;
     });
+
+    // Ajusta el tamaño del mapa tras renderizar
+    setTimeout(() => this.map?.invalidateSize(), 0);
   }
 
   async searchLocation(input: HTMLInputElement) {
@@ -119,17 +122,6 @@ export class MapPage implements AfterViewInit {
         } catch (e) {
           console.error('Geocoding failed', e);
         }
-      }
-    }
-  }
-
-  selectStation(station: Station) {
-    this.selectedStation = station;
-    if (this.map) {
-      this.map.setView([station.lat, station.lng], 15);
-      const marker = this.markers[station.name];
-      if (marker) {
-        marker.openPopup();
       }
     }
   }
