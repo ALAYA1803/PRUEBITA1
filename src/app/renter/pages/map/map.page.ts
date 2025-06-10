@@ -33,6 +33,7 @@ export class MapPage implements AfterViewInit {
 
   map?: L.Map;
   markers: Record<string, L.Marker> = {};
+  searchMarker?: L.Marker;
 
   location = 'Lima';
   hasSearched = false;
@@ -93,8 +94,8 @@ export class MapPage implements AfterViewInit {
       this.markers[station.name] = m;
     });
 
-    // Ajusta el tamaño del mapa tras renderizar
-    setTimeout(() => this.map?.invalidateSize(), 0);
+    // Ajusta el tamaño del mapa una vez el mapa esté listo
+    this.map.whenReady(() => this.map?.invalidateSize());
   }
 
   async searchLocation(input: HTMLInputElement) {
@@ -114,11 +115,24 @@ export class MapPage implements AfterViewInit {
           const resp = await fetch(
             `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}`
           );
-          const data = await resp.json();
-          if (data.length > 0) {
-            const { lat, lon } = data[0];
-            this.map.setView([parseFloat(lat), parseFloat(lon)], 14);
+        const data = await resp.json();
+        if (data.length > 0) {
+          const { lat, lon, display_name } = data[0];
+          const coords: [number, number] = [parseFloat(lat), parseFloat(lon)];
+          this.map.setView(coords, 14);
+
+          if (this.searchMarker) {
+            this.searchMarker
+              .setLatLng(coords)
+              .setPopupContent(display_name)
+              .openPopup();
+          } else {
+            this.searchMarker = L.marker(coords)
+              .addTo(this.map)
+              .bindPopup(display_name)
+              .openPopup();
           }
+        }
         } catch (e) {
           console.error('Geocoding failed', e);
         }
@@ -130,6 +144,10 @@ export class MapPage implements AfterViewInit {
     this.selectedStation = station;
     if (this.map) {
       this.map.setView([station.lat, station.lng], 15);
+      if (this.searchMarker) {
+        this.searchMarker.remove();
+        this.searchMarker = undefined;
+      }
       const marker = this.markers[station.name];
       if (marker) {
         marker.openPopup();
