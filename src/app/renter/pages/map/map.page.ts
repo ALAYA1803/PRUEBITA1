@@ -18,8 +18,8 @@ interface Bike {
   distance?: number;
 }
 
-const FALLBACK_OWNER = 'https://placehold.co/50x50/EFEFEF/333?text=👤';
-const FALLBACK_BIKE  = 'https://placehold.co/200x150/CCCCCC/FFFFFF?text=🚲';
+const FALLBACK_OWNER = 'https://placehold.co/50x50/EFEFEF/333?text=OW';
+const FALLBACK_BIKE  = 'https://placehold.co/200x150/CCCCCC/FFFFFF?text=BK';
 
 const BIKES: Bike[] = [
   {
