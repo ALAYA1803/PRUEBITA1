@@ -1,157 +1,225 @@
-import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy,
+  ElementRef, ViewChild, ChangeDetectorRef, NgZone }
+  from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import * as L from 'leaflet';
-import { SafePipe } from '../../../shared/pipes/safe.pipe';
+import { FormsModule }   from '@angular/forms';
+import * as L           from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
-interface Station {
-  name: string;
-  bikes: number;
-  distance: string;
-  docks: number;
+interface Bike {
+  id: number;
+  owner: string;
+  ownerPhoto: string;
+  type: string;
+  costPerMinute: number;
   lat: number;
   lng: number;
+  imageUrl: string;
+  distance?: number;
 }
 
-const STATIONS: Station[] = [
-  { name: 'Av. Arequipa', bikes: 3, distance: '200 m', docks: 13, lat: -12.105, lng: -77.035 },
-  { name: 'Plaza San Miguel', bikes: 5, distance: '460 m', docks: 10, lat: -12.079, lng: -77.087 },
-  { name: 'Parque Kennedy', bikes: 1, distance: '600 m', docks: 7, lat: -12.121, lng: -77.03 },
-  { name: 'Mercedes Gallagher de Parks', bikes: 5, distance: '120 m', docks: 9, lat: -12.096, lng: -77.044 },
-  { name: 'UPC', bikes: 2, distance: '10 m', docks: 10, lat: -12.105, lng: -76.963 }
+const FALLBACK_OWNER = 'https://placehold.co/50x50/EFEFEF/333?text=👤';
+const FALLBACK_BIKE  = 'https://placehold.co/200x150/CCCCCC/FFFFFF?text=🚲';
+
+const BIKES: Bike[] = [
+  {
+    id: 1,
+    owner: 'Luis Alaya',
+    ownerPhoto: 'https://randomuser.me/api/portraits/men/32.jpg',
+    type: 'BMX',
+    costPerMinute: 3.1,
+    lat: -12.1050,
+    lng: -77.0350,
+    imageUrl: 'https://plus.unsplash.com/premium_photo-1689568158814-3b8e9c1a9618?fm=jpg&q=60&w=3000',
+  },
+  {
+    id: 2,
+    owner: 'María Pérez',
+    ownerPhoto: 'https://randomuser.me/api/portraits/women/44.jpg',
+    type: 'Mountain',
+    costPerMinute: 2.8,
+    lat: -12.0790,
+    lng: -77.0870,
+    imageUrl: 'https://images.unsplash.com/photo-1518655048521-f130df041f66?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=60',
+  },
+  {
+    id: 3,
+    owner: 'Carlos Ruiz',
+    ownerPhoto: 'https://randomuser.me/api/portraits/men/56.jpg',
+    type: 'BMX',
+    costPerMinute: 3.0,
+    lat: -12.1210,
+    lng: -77.0300,
+    imageUrl: 'https://plus.unsplash.com/premium_photo-1689568158814-3b8e9c1a9618?fm=jpg&q=60&w=3000',
+  },
+  {
+    id: 4,
+    owner: 'Ana Gómez',
+    ownerPhoto: 'https://randomuser.me/api/portraits/women/68.jpg',
+    type: 'Road',
+    costPerMinute: 4.2,
+    lat: -12.0960,
+    lng: -77.0440,
+    imageUrl: 'https://images.unsplash.com/photo-1520975958722-472f7ec478c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=60',
+  },
+  {
+    id: 5,
+    owner: 'Juan Soto',
+    ownerPhoto: 'https://randomuser.me/api/portraits/men/72.jpg',
+    type: 'BMX',
+    costPerMinute: 3.3,
+    lat: -12.1050,
+    lng: -76.9630,
+    imageUrl: 'https://plus.unsplash.com/premium_photo-1689568158814-3b8e9c1a9618?fm=jpg&q=60&w=3000',
+  }
 ];
 
 @Component({
   selector: 'app-map-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, SafePipe],
+  imports: [CommonModule, FormsModule],
   templateUrl: './map.page.html',
   styleUrls: ['./map.page.css']
 })
-export class MapPage implements AfterViewInit {
-  @ViewChild('mapContainer') mapContainer?: ElementRef<HTMLDivElement>;
+export class MapPage implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('mapContainer', { static: false }) private mapContainer!: ElementRef<HTMLDivElement>;
+  private map!: L.Map;
+  private markersLayer = L.layerGroup();
 
-  map?: L.Map;
-  markers: Record<string, L.Marker> = {};
-  searchMarker?: L.Marker;
+  bikes = BIKES;
+  bikeTypes: string[] = [];
+  priceRanges = [
+    { label: 'Todos',    min: 0,    max: Infinity },
+    { label: '≤ S/ 3',   min: 0,    max: 3 },
+    { label: 'S/ 3 – 4', min: 3,    max: 4 },
+    { label: '> S/ 4',   min: 4,    max: Infinity }
+  ];
+  priceLabels = ['Buscar por precio', 'Todos', '≤ S/ 3', 'S/ 3 – 4', '> S/ 4'];
 
-  location = 'Lima';
+  filteredBikes: Bike[] = [];
   hasSearched = false;
+  selectedType = '';
+  selectedPriceLabel = 'Buscar por precio';
+  selectedBike: Bike | null = null;
+  typeCounts: { type: string; count: number }[] = [];
 
-  stations: Station[] = STATIONS;
-  filteredStations: Station[] = [...STATIONS];
-  selectedStation: Station | null = null;
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone
+  ) {}
 
-  get totalBikes(): number {
-    return this.stations.reduce((sum, s) => sum + s.bikes, 0);
-  }
-
-  get totalDocks(): number {
-    return this.stations.reduce((sum, s) => sum + s.docks, 0);
+  ngOnInit(): void {
+    this.bikeTypes = Array.from(new Set(this.bikes.map(b => b.type)));
+    this.typeCounts = this.bikeTypes.map(t => ({
+      type: t,
+      count: this.bikes.filter(b => b.type === t).length
+    }));
   }
 
   ngAfterViewInit(): void {
-    if (!this.mapContainer) return;
-
-    this.map = L.map(this.mapContainer.nativeElement).setView(
-      [STATIONS[0].lat, STATIONS[0].lng],
-      13
-    );
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
-    }).addTo(this.map);
-
-    const greenIcon = L.icon({
-      iconUrl:
-        'https://cdn.jsdelivr.net/npm/leaflet-color-markers@1.1.1/img/marker-icon-green.png',
-      shadowUrl:
-        'https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/images/marker-shadow.png',
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowSize: [41, 41]
-    });
-
-    const yellowIcon = L.icon({
-      iconUrl:
-        'https://cdn.jsdelivr.net/npm/leaflet-color-markers@1.1.1/img/marker-icon-yellow.png',
-      shadowUrl:
-        'https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/images/marker-shadow.png',
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowSize: [41, 41]
-    });
-
-    STATIONS.forEach((station) => {
-      const icon = station.bikes > 2 ? greenIcon : yellowIcon;
-      const m = L.marker([station.lat, station.lng], { icon })
-        .addTo(this.map!)
-        .bindPopup(
-          `<strong>${station.name}</strong><br>${station.bikes} bicis libres`
-        );
-      this.markers[station.name] = m;
-    });
-
-    // Ajusta el tamaño del mapa una vez el mapa esté listo
-    this.map.whenReady(() => this.map?.invalidateSize());
+    this.initMap();
+    this.filteredBikes = [...this.bikes];
+    this.updateMarkers();
+    setTimeout(() => this.map.invalidateSize(), 200);
   }
 
-  async searchLocation(input: HTMLInputElement) {
-    const q = input.value.trim();
-    this.location = q || 'Lima';
+  ngOnDestroy(): void {
+    if (this.map) this.map.remove();
+  }
+
+  onOwnerImageError(event: Event) {
+    (event.target as HTMLImageElement).src = FALLBACK_OWNER;
+  }
+
+  onBikeImageError(event: Event) {
+    (event.target as HTMLImageElement).src = FALLBACK_BIKE;
+  }
+
+  private initMap(): void {
+    this.map = L.map(this.mapContainer.nativeElement, {
+      center: [-12.10, -77.04],
+      zoom: 12
+    });
+    L.tileLayer(
+      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }
+    ).addTo(this.map);
+    this.markersLayer.addTo(this.map);
+  }
+
+  applyFilters(district: string, type: string, priceLabel: string) {
     this.hasSearched = true;
-    this.filteredStations = this.stations.filter(s =>
-      s.name.toLowerCase().includes(this.location.toLowerCase())
-    );
+    this.selectedType = type;
+    this.selectedPriceLabel = priceLabel === 'Buscar por precio' ? 'Todos' : priceLabel;
+    this.selectedBike = null;
 
-    if (this.filteredStations.length > 0) {
-      this.selectStation(this.filteredStations[0]);
-    } else {
-      this.selectedStation = null;
-      if (this.map && q) {
-        try {
-          const resp = await fetch(
-            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}`
-          );
-        const data = await resp.json();
-        if (data.length > 0) {
-          const { lat, lon, display_name } = data[0];
-          const coords: [number, number] = [parseFloat(lat), parseFloat(lon)];
-          this.map.setView(coords, 14);
-
-          if (this.searchMarker) {
-            this.searchMarker
-              .setLatLng(coords)
-              .setPopupContent(display_name)
-              .openPopup();
-          } else {
-            this.searchMarker = L.marker(coords)
-              .addTo(this.map)
-              .bindPopup(display_name)
-              .openPopup();
-          }
-        }
-        } catch (e) {
-          console.error('Geocoding failed', e);
-        }
-      }
+    if (district.trim()) {
+      this.searchDistrict(district.trim());
     }
+
+    const ctr = this.map.getCenter();
+    const center: [number, number] = [ctr.lat, ctr.lng];
+
+    let list = [...this.bikes];
+    if (this.selectedType && this.selectedType !== 'Buscar por modelo') {
+      list = list.filter(b => b.type === this.selectedType);
+    }
+    const pr = this.priceRanges.find(p => p.label === this.selectedPriceLabel)!;
+    list = list.filter(b => b.costPerMinute >= pr.min && b.costPerMinute <= pr.max);
+
+    this.filteredBikes = list
+      .map(b => ({ ...b, distance: this.haversine(center, [b.lat, b.lng]) }))
+      .sort((a, b) => (a.distance! - b.distance!));
+
+    this.updateMarkers();
   }
 
-  selectStation(station: Station) {
-    this.selectedStation = station;
-    if (this.map) {
-      this.map.setView([station.lat, station.lng], 15);
-      if (this.searchMarker) {
-        this.searchMarker.remove();
-        this.searchMarker = undefined;
-      }
-      const marker = this.markers[station.name];
-      if (marker) {
-        marker.openPopup();
-      }
-    }
+  private updateMarkers() {
+    this.markersLayer.clearLayers();
+    this.filteredBikes.forEach(b => {
+      const icon = L.icon({
+        iconUrl: 'assets/img/map-marker-green.svg',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32]
+      });
+      const marker = L.marker([b.lat, b.lng], { icon }).addTo(this.markersLayer)
+        .bindPopup(`<b>${b.owner}</b><br>${b.type}`);
+      marker.on('click', () => {
+        this.ngZone.run(() => {
+          this.selectBike(b);
+          this.cdr.detectChanges();
+        });
+      });
+    });
+  }
+
+  selectBike(b: Bike) {
+    this.selectedBike = b;
+    this.map.setView([b.lat, b.lng], 15);
+  }
+
+  private searchDistrict(query: string) {
+    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query + ', Lima, Peru')}`)
+      .then(r => r.json())
+      .then((res: any[]) => {
+        if (res.length) {
+          const lat = parseFloat(res[0].lat),
+            lng = parseFloat(res[0].lon);
+          this.map.setView([lat, lng], 13);
+        }
+      })
+      .catch(console.error);
+  }
+
+  private haversine([lat1, lon1]: number[], [lat2, lon2]: number[]): number {
+    const toRad = (x: number) => x * Math.PI / 180;
+    const R = 6371;
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    const a = Math.sin(dLat/2)**2 +
+      Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c * 1000;
   }
 }
