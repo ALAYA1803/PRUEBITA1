@@ -178,7 +178,7 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
     this.markersLayer.clearLayers();
     this.filteredBikes.forEach(b => {
       const icon = L.icon({
-        iconUrl: 'assets/img/map-marker-green.svg',
+        iconUrl: 'assets/img/map-marker.svg',
         iconSize: [32, 32],
         iconAnchor: [16, 32],
         popupAnchor: [0, -32]
