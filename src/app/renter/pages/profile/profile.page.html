@@ -1,51 +1,114 @@
-<mat-card class="profile-card">
-  <mat-card-header>
-    <mat-icon class="icon-style">person</mat-icon>
-    <mat-card-title>{{ 'Profile.Title' | translate }}</mat-card-title>
-    <span class="spacer"></span>
-    <button mat-fab extended (click)="onEditRequested()" *ngIf="!editMode">
-      <mat-icon>edit</mat-icon>
-      Edit
-    </button>
-  </mat-card-header>
+<div class="profile-container">
 
-  <div class="image-container">
-    <img [src]="profileData.profileImage" alt="Profile Image">
+  <div class="profile-section-card">
+    <div class="section-header">
+      <h2>Información Personal</h2>
+      <button mat-flat-button color="primary" (click)="toggleEditPersonalInfo()">
+        <mat-icon>{{ personalInfoEditMode ? 'save' : 'edit' }}</mat-icon>
+        {{ personalInfoEditMode ? 'Guardar' : 'Editar' }}
+      </button>
+    </div>
+
+    <form [formGroup]="personalInfoForm" class="personal-info-content">
+      <div class="profile-picture-container"
+           (click)="onProfilePictureClick()"
+           [class.editable]="personalInfoEditMode">
+        <img [src]="personalInfoForm.get('profileImage')?.value" alt="Foto de Perfil">
+        <span>Foto de Perfil</span>
+      </div>
+
+      <div class="personal-details">
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="name">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Correo</mat-label>
+          <input matInput type="email" formControlName="email">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Teléfono</mat-label>
+          <input matInput formControlName="phone">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Dirección</mat-label>
+          <input matInput formControlName="address">
+        </mat-form-field>
+
+        <button *ngIf="personalInfoEditMode"
+                mat-stroked-button
+                (click)="cancelEditPersonalInfo()"
+                class="cancel-button">Cancelar</button>
+      </div>
+    </form>
   </div>
 
-  <mat-card-content class="static-values" *ngIf="!editMode">
-    <p><strong>{{ 'Profile.FullName' | translate }}</strong> {{ userData.name }}</p>
-    <p><strong>{{ 'Profile.Address' | translate }}</strong> {{ profileData.address }}</p>
-    <p class="rating-value">
-      <strong>{{ 'Profile.Rating' | translate }}</strong>
-      <span class="rating-stars">
-        <mat-icon *ngFor="let star of stars; let i = index">
-          {{ getStarType(i + 1) }}
-        </mat-icon>
-      </span>
-    </p>
-    <p>
-      <strong>{{ 'Profile.Payment' | translate }}</strong>
-      {{ profileData.paymentMethods.creditCard
-      ? 'Credit Card'
-      : profileData.paymentMethods.paypal
-        ? 'PayPal'
-        : 'None'
-      }}
-    </p>
-    <p>
-      <strong>{{ 'Profile.Notifications' | translate }}</strong>
-      <span [ngClass]="profileData.preferences.notifications ? 'active' : 'inactive'">
-        {{ profileData.preferences.notifications ? 'Activated' : 'Deactivated' }}
-      </span>
-    </p>
-  </mat-card-content>
+  <div class="profile-section-card">
+    <h2>Preferencias y seguridad</h2>
+    <div class="preferences-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Métodos de pago</mat-label>
+        <mat-select [(ngModel)]="profileData.paymentMethod"
+                    (selectionChange)="onPreferenceChanged('paymentMethod', $event.value)">
+          <mat-option *ngFor="let method of paymentMethods" [value]="method">{{ method }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-  <mat-card-content *ngIf="editMode">
-    <app-profile-edit
-      [profile]="profileData"
-      (profileUpdateRequested)="onProfileUpdatedRequested($event)"
-      (cancelRequested)="onCancelRequested()">
-    </app-profile-edit>
-  </mat-card-content>
-</mat-card>
+      <mat-form-field appearance="outline">
+        <mat-label>Contraseña Actual</mat-label>
+        <input matInput [type]="passwordVisible ? 'text' : 'password'" [value]="currentPassword" readonly>
+        <button mat-icon-button matSuffix (click)="passwordVisible = !passwordVisible" type="button">
+          <mat-icon>{{ passwordVisible ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Tipo de bicicleta preferida</mat-label>
+        <mat-select [(ngModel)]="profileData.preferredBikeType"
+                    (selectionChange)="onPreferenceChanged('preferredBikeType', $event.value)">
+          <mat-option *ngFor="let type of bikeTypes" [value]="type">{{ type }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-flat-button color="primary" class="change-password-button">
+        Cambiar Contraseña
+      </button>
+
+      <div class="notifications-toggle">
+        <label>Notificaciones</label>
+        <mat-slide-toggle
+          [(ngModel)]="profileData.notifications"
+          (change)="onPreferenceChanged('notifications', $event.checked)">
+        </mat-slide-toggle>
+      </div>
+    </div>
+  </div>
+  <div class="profile-section-card">
+    <h2>Mis últimas Reseñas</h2>
+    <div class="reviews-container">
+      <mat-card class="review-card" *ngFor="let item of [1, 2, 3]">
+        <mat-card-header>
+          <div mat-card-avatar class="review-avatar"></div>
+          <mat-card-title>Martin</mat-card-title>
+          <mat-card-subtitle>BMK - San Miguel</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p class="review-date">28 de junio 2025</p>
+          <p>"El usuario entregó la bicicleta en buen estado"</p>
+        </mat-card-content>
+        <mat-card-actions class="review-rating">
+          <div class="rating-stars">
+            <strong>4.8</strong>
+            <mat-icon *ngFor="let star of stars; let i = index">{{ getStarType(4.8, i + 1) }}</mat-icon>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    <div class="view-more-container">
+      <button mat-flat-button color="primary">Ver más</button>
+    </div>
+  </div>
+</div>

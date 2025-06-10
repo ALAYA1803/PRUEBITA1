@@ -1,32 +1,69 @@
-<div class="support-container">
-  <h1>Ayuda y Soporte</h1>
-  <p>¿Tienes dudas? Completa el formulario y te ayudaremos.</p>
+<div class="support-page-container">
 
-  <form #supportForm="ngForm" (ngSubmit)="onSubmit(supportForm)" class="support-form">
-    <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Nombre</mat-label>
-      <input matInput name="name" [(ngModel)]="contact.name" required />
-    </mat-form-field>
+  <div class="support-card">
+    <h2>Mis últimas solicitudes</h2>
+    <div class="requests-list">
+      <div class="request-item request-header">
+        <span class="asunto">Asunto</span>
+        <span class="fecha">Fecha</span>
+        <span class="estado">Estado</span>
+        <span class="accion"></span>
+      </div>
 
-    <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Correo electrónico</mat-label>
-      <input matInput type="email" name="email" [(ngModel)]="contact.email" required email />
-    </mat-form-field>
-
-    <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Mensaje</mat-label>
-      <textarea matInput name="message" [(ngModel)]="contact.message" rows="5" required></textarea>
-    </mat-form-field>
-
-    <button mat-raised-button color="primary" type="submit" [disabled]="supportForm.invalid">
-      Enviar mensaje
-    </button>
-  </form>
-
-  <div class="quick-links">
-    <h2>Enlaces rápidos</h2>
-    <button mat-button color="accent">FAQ</button>
-    <button mat-button color="accent">Términos y Condiciones</button>
-    <button mat-button color="accent">Política de Privacidad</button>
+      <div *ngFor="let ticket of supportTickets" class="request-item">
+        <span class="asunto">{{ ticket.asunto }}</span>
+        <span class="fecha">{{ ticket.fecha }}</span>
+        <span class="estado">
+          <span class="status-chip" [ngClass]="getStatusClass(ticket.estado)">
+            {{ ticket.estado }}
+          </span>
+        </span>
+        <span class="accion">
+          <button mat-flat-button color="primary" (click)="viewDetails(ticket.id)">Ver detalles</button>
+        </span>
+      </div>
+    </div>
   </div>
+
+  <div class="support-card">
+    <h2>Nueva solicitud de soporte</h2>
+    <form class="new-request-form" [formGroup]="newRequestForm" (ngSubmit)="onSubmit()">
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Asunto*</mat-label>
+        <input matInput formControlName="asunto" placeholder="Ej: Problema al pagar mi reserva">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Categoría*</mat-label>
+        <mat-select formControlName="categoria">
+          <mat-option *ngFor="let category of categories" [value]="category">
+            {{ category }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Mensaje*</mat-label>
+        <textarea matInput formControlName="mensaje" rows="5" placeholder="Describe tu problema con el mayor detalle posible..."></textarea>
+      </mat-form-field>
+
+      <div class="file-upload-container">
+        <input type="file" #fileInput hidden (change)="onFileSelected($event)">
+
+        <div class="file-upload-area" (click)="fileInput.click()">
+          <mat-icon>upload_file</mat-icon>
+          <span *ngIf="!selectedFileName">Adjuntar Archivos</span>
+          <span *ngIf="selectedFileName" class="file-name">{{ selectedFileName }}</span>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button mat-flat-button color="primary" type="submit" [disabled]="newRequestForm.invalid">
+          Enviar solicitud
+        </button>
+      </div>
+    </form>
+  </div>
+
 </div>

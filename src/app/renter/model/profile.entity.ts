@@ -1,32 +1,21 @@
 export class Profile {
   id: number;
   userId: number;
-  profileImage: string;
   address: string;
-  rating: number;
-  preferences: {
-    notifications: boolean,
-  };
-  paymentMethods: {
-    creditCard: boolean,
-    paypal: boolean
-  };
+  profileImage: string;
+  phone: string;
+  paymentMethod: string;
+  preferredBikeType: string;
+  notifications: boolean;
 
-  constructor(profile: {
-    id?: number;
-    userId?: number,
-    profileImage?: string,
-    address?: string,
-    rating?: number,
-    preferences?: { notifications: boolean };
-    paymentMethods?: { creditCard: boolean; paypal: boolean };
-  }) {
-    this.id = profile.id || 0;
-    this.userId = profile.userId || 0;
-    this.profileImage = profile.profileImage || " ";
-    this.address = profile.address || "";
-    this.rating = profile.rating || 1;
-    this.preferences = profile.preferences || { notifications: true };
-    this.paymentMethods = profile.paymentMethods || { creditCard: true, paypal: false };
+  constructor(data: any = {}) {
+    this.id = data.id || 0;
+    this.userId = data.userId || 0;
+    this.address = data.address || '';
+    this.profileImage = data.profileImage || '';
+    this.phone = data.phone || '';
+    this.paymentMethod = data.paymentMethod || '';
+    this.preferredBikeType = data.preferredBikeType || '';
+    this.notifications = data.notifications || false;
   }
 }

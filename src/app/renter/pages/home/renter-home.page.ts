@@ -34,10 +34,9 @@ interface Recommendation {
 export class RenterHomePage implements OnInit {
   username = 'Rodrigo';
 
-  // Valores para estadísticas
-  distanceTraveled = 54;    // en km
+  distanceTraveled = 54;
   rentalsCount     = 8;
-  drivingTime      = 17;    // en horas
+  drivingTime      = 17;
   rating           = 4.8;
 
   upcoming!: UpcomingReservation;
@@ -45,7 +44,6 @@ export class RenterHomePage implements OnInit {
   recommendations: Recommendation[] = [];
 
   ngOnInit(): void {
-    // Próxima reserva de ejemplo
     this.upcoming = {
       bike: 'Bike BMX',
       date: '8 de junio',
@@ -53,15 +51,11 @@ export class RenterHomePage implements OnInit {
       address: 'Av. Javier Prado 123',
       imageUrl: 'https://cdn.skatepro.com/product/520/mankind-thunder-20-bmx-freestyle-bike-8h.webp'
     };
-
-    // Reservas recientes de ejemplo
     this.recentRentals = [
       { bike: 'Vintage',  date: '5 junio',  startStation: 'Plaza San Miguel', endStation: 'LarcoMar', status: 'Finalizado' },
       { bike: 'Mountain', date: '31 mayo',  startStation: 'UPC - San Miguel',   endStation: 'Rambla',   status: 'Finalizado' },
       { bike: 'BMX',      date: '25 mayo',  startStation: 'Metro - La Marina',   endStation: 'LarcoMar', status: 'Cancelada' },
     ];
-
-    // Recomendaciones de ejemplo
     this.recommendations = [
       { bike: 'Vintage verde', pricePerHour: 3.5, distance: '400 m',
         imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdDydP4N9WKFYaT6cZoxxGCw5kL2BVGseLww&s' },

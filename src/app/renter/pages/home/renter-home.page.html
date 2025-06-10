@@ -1,13 +1,11 @@
 <div class="page-container">
   <div class="main-content">
 
-    <!-- Bienvenida -->
     <header class="welcome-header">
       <h1>¡Hola, {{ username }}!</h1>
       <p>¿Listo para tu próxima aventura en bicicleta?</p>
     </header>
 
-    <!-- Estadísticas fijas -->
     <section class="stats-grid">
       <div class="stat-card">
         <div class="stats-label">Has recorrido</div>
@@ -30,7 +28,6 @@
       </div>
     </section>
 
-    <!-- Próxima reserva -->
     <section class="next-reservation">
       <h2>Tu próxima reserva</h2>
       <div class="card reservation-card">
@@ -49,7 +46,6 @@
       </div>
     </section>
 
-    <!-- Reservas recientes -->
     <section class="recent-rentals">
       <h2>Reservas Recientes</h2>
       <div class="card recent-rentals-card">
@@ -80,14 +76,13 @@
 
   </div>
 
-  <!-- Barra lateral de Recomendaciones -->
   <aside class="sidebar">
     <h2>Recomendaciones</h2>
     <div class="card recommendations-card">
       <div class="recommendation-item" *ngFor="let rec of recommendations">
         <img class="rec-image" [src]="rec.imageUrl" alt="{{ rec.bike }}">
         <div class="rec-info">
-          <span class="rec-name">{{ rec.bike }}</span>
+          <span class="rec-name">{{ rec.bike }}</span><br>
           <span class="rec-details">S/ {{ rec.pricePerHour.toFixed(2) }}/h – {{ rec.distance }}</span>
         </div>
         <button class="btn btn-reserve" (click)="reserveAgain(rec)">Reservar</button>

@@ -1,6 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
-/* --- Variables de Diseño --- */
 :host {
   --font-family: 'Inter', sans-serif;
   --bg-page: #F8FAFC;
@@ -8,9 +6,9 @@
   --border-color: #E2E8F0;
   --text-primary: #1E293B;
   --text-secondary: #64748B;
-  --primary-button-bg: #4F46E5;      /* Azul para "Reservar" y "Cancelar reserva" */
+  --primary-button-bg: #4F46E5;
   --primary-button-text: #FFFFFF;
-  --secondary-button-bg: #FDE68A;    /* Amarillo para "Ver detalles" */
+  --secondary-button-bg: #FFD38F;
   --secondary-button-text: #1E293B;
   --success-bg: #D1FAE5;
   --success-text: #065F46;
@@ -20,7 +18,6 @@
   --card-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
   --card-radius: 0.75rem;
 
-  /* Establecer el host como bloque para que tome todo el espacio */
   display: block;
   font-family: var(--font-family);
   background-color: var(--bg-page);
@@ -28,12 +25,10 @@
   min-height: 100vh;
 }
 
-/* --- Reset y Global --- */
 * {
   box-sizing: border-box;
 }
 
-/* --- Layout Principal --- */
 .page-container {
   display: grid;
   grid-template-columns: 2.5fr 1fr;
@@ -49,7 +44,6 @@
   gap: 2rem;
 }
 
-/* --- Bienvenida --- */
 .welcome-header h1 {
   font-size: 2rem;
   font-weight: 700;
@@ -61,7 +55,6 @@
   color: var(--text-secondary);
 }
 
-/* --- Estadísticas --- */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -106,7 +99,6 @@
   margin-left: 0.5rem;
 }
 
-/* --- Próxima Reserva --- */
 .next-reservation h2 {
   font-size: 1.25rem;
   font-weight: 600;
@@ -149,7 +141,6 @@
   justify-content: flex-end;
 }
 
-/* --- Reservas Recientes --- */
 .recent-rentals h2 {
   font-size: 1.25rem;
   font-weight: 600;
@@ -209,7 +200,6 @@
   color: var(--danger-text);
 }
 
-/* --- Barra Lateral de Recomendaciones --- */
 .sidebar h2 {
   font-size: 1.25rem;
   font-weight: 600;
@@ -257,7 +247,6 @@
   color: var(--text-secondary);
 }
 
-/* --- Botones --- */
 .btn {
   padding: 0.6rem 1rem;
   border-radius: 0.5rem;
@@ -289,7 +278,6 @@
   padding: 0.5rem 1.25rem;
 }
 
-/* --- Responsive --- */
 @media (max-width: 1200px) {
   .page-container {
     grid-template-columns: 1fr;
