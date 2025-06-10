@@ -1,10 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #sidenav mode="side" opened class="custom-sidenav">
+    <app-sidebar></app-sidebar>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" class="toolbar-fixed">
+      <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>BikeShare</span>
+      <span class="spacer"></span>
 
-</body>
-</html>
+      <app-language-switcher></app-language-switcher>
+
+      <button mat-icon-button aria-label="Notificaciones">
+        <mat-icon>notifications</mat-icon>
+      </button>
+      <button mat-icon-button aria-label="Perfil de usuario">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+
+    </mat-toolbar>
+
+    <main class="layout-main">
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

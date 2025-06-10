@@ -1,12 +1,3 @@
-mat-button-toggle-group {
-  display: inline-flex;
-}
-
-mat-button-toggle {
-  text-transform: uppercase;
-}
-
-:host(.language-switcher) {
-  display: inline-flex;
-  align-items: center;
+button[mat-menu-item] mat-icon {
+  margin-right: 8px;
 }

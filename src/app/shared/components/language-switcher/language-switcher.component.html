@@ -1,15 +1,14 @@
-<mat-button-toggle-group
-  [value]="currentLang"
-  appearance="standard"
-  aria-label="Preferred Language"
-  name="language"
->
-  <mat-button-toggle
+<button mat-icon-button [matMenuTriggerFor]="langMenu" aria-label="Cambiar idioma">
+  <mat-icon>language</mat-icon>
+</button>
+
+<mat-menu #langMenu="matMenu">
+  <button
+    mat-menu-item
     *ngFor="let lang of languages"
     (click)="useLanguage(lang)"
-    [value]="lang"
-    [aria-label]="lang"
   >
-    {{ lang.toUpperCase() }}
-  </mat-button-toggle>
-</mat-button-toggle-group>
+    <mat-icon *ngIf="currentLang === lang">check</mat-icon>
+    <span>{{ lang.toUpperCase() }}</span>
+  </button>
+</mat-menu>
