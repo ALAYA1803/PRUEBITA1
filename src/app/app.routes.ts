@@ -17,7 +17,7 @@ const RenterHomePage = () =>
 const RenterMapPage = () =>
   import('./renter/pages/map/map.page').then(m => m.MapPage);
 const RenterProfilePage = () =>
-  import('./renter/pages/Profile/profile.page').then(m => m.ProfilePage);
+  import('./renter/pages/profile/profile.page').then(m => m.ProfilePage);
 const RenterSupportPage = () =>
   import('./renter/pages/support/support.page').then(m => m.SupportPage);
 
