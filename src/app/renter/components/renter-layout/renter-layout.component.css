@@ -1,0 +1,24 @@
+.sidenav-container {
+  height: 100vh;
+}
+
+.custom-sidenav {
+  width: 280px;
+  background: #FFD38F;
+}
+
+.toolbar-fixed {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.layout-main {
+  padding: 1rem;
+  height: calc(100vh - 64px);
+  overflow-y: auto;
+}

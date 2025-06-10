@@ -1,0 +1,69 @@
+<div class="support-page-container">
+
+  <div class="support-card">
+    <h2>Mis últimas solicitudes</h2>
+    <div class="requests-list">
+      <div class="request-item request-header">
+        <span class="asunto">Asunto</span>
+        <span class="fecha">Fecha</span>
+        <span class="estado">Estado</span>
+        <span class="accion"></span>
+      </div>
+
+      <div *ngFor="let ticket of supportTickets" class="request-item">
+        <span class="asunto">{{ ticket.asunto }}</span>
+        <span class="fecha">{{ ticket.fecha }}</span>
+        <span class="estado">
+          <span class="status-chip" [ngClass]="getStatusClass(ticket.estado)">
+            {{ ticket.estado }}
+          </span>
+        </span>
+        <span class="accion">
+          <button mat-flat-button color="primary" (click)="viewDetails(ticket.id)">Ver detalles</button>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="support-card">
+    <h2>Nueva solicitud de soporte</h2>
+    <form class="new-request-form" [formGroup]="newRequestForm" (ngSubmit)="onSubmit()">
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Asunto*</mat-label>
+        <input matInput formControlName="asunto" placeholder="Ej: Problema al pagar mi reserva">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Categoría*</mat-label>
+        <mat-select formControlName="categoria">
+          <mat-option *ngFor="let category of categories" [value]="category">
+            {{ category }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Mensaje*</mat-label>
+        <textarea matInput formControlName="mensaje" rows="5" placeholder="Describe tu problema con el mayor detalle posible..."></textarea>
+      </mat-form-field>
+
+      <div class="file-upload-container">
+        <input type="file" #fileInput hidden (change)="onFileSelected($event)">
+
+        <div class="file-upload-area" (click)="fileInput.click()">
+          <mat-icon>upload_file</mat-icon>
+          <span *ngIf="!selectedFileName">Adjuntar Archivos</span>
+          <span *ngIf="selectedFileName" class="file-name">{{ selectedFileName }}</span>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button mat-flat-button color="primary" type="submit" [disabled]="newRequestForm.invalid">
+          Enviar solicitud
+        </button>
+      </div>
+    </form>
+  </div>
+
+</div>

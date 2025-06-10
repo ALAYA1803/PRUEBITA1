@@ -1,0 +1,150 @@
+.register-wrapper {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.register-left {
+  background-color: #fdd187;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  height: 100%;
+}
+
+.register-left img {
+  width: 300px;
+  margin-bottom: 20px;
+}
+
+.register-left h2 {
+  color: #555;
+  font-size: 1.8rem;
+}
+
+.register-left span {
+  color: #5f8ce0;
+}
+
+.register-left p {
+  font-size: 1rem;
+  color: #333;
+}
+
+.register-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+form {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  padding: 10px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.btn-register {
+  background-color: #5f8ce0;
+  color: white;
+  padding: 10px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.terms {
+  margin-bottom: 15px;
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.terms a {
+  color: #5f8ce0;
+  text-decoration: none;
+}
+
+.social-register p {
+  text-align: center;
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+  color: #777;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.social-icons button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background-size: 22px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+button.google {
+  background-image: url('https://cdn-icons-png.flaticon.com/512/281/281764.png');
+}
+
+button.apple {
+  background-image: url('https://cdn-icons-png.flaticon.com/512/831/831276.png');
+}
+
+button.facebook {
+  background-image: url('https://cdn-icons-png.flaticon.com/512/733/733547.png');
+}
+
+.login-text {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #333;
+}
+
+.login-text a {
+  text-decoration: none;
+  color: #5f8ce0;
+  font-weight: 600;
+}
+.link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: 4px;
+  color: #5f8ce0;
+  text-decoration: underline;
+  font-size: 0.85rem;
+  cursor: pointer;
+}

@@ -1,0 +1,97 @@
+<div class="map-page-container">
+  <div class="map-page">
+    <div class="header">
+      <h1>Encuentra tu bicicleta</h1>
+      <p>Usa este mapa para localizar bicicletas disponibles</p>
+    </div>
+
+    <div class="search-bar">
+      <div class="input-wrapper">
+        <input #districtInput type="text" placeholder="Buscar dirección o distrito" />
+      </div>
+      <div class="input-wrapper">
+        <select #typeSelect>
+          <option>Buscar por modelo</option>
+          <option *ngFor="let t of bikeTypes">{{ t }}</option>
+        </select>
+      </div>
+      <div class="input-wrapper">
+        <select #priceSelect>
+          <option *ngFor="let label of priceLabels">{{ label }}</option>
+        </select>
+      </div>
+      <button class="search-button"
+              (click)="applyFilters(districtInput.value, typeSelect.value, priceSelect.value)">
+        Buscar
+      </button>
+    </div>
+
+    <div class="map-layout">
+      <div class="list-panel">
+        <h2 class="list-title">Bicicletas libres</h2>
+
+        <div *ngIf="hasSearched; else initial" class="stations-list">
+          <div class="station-headers">
+            <span>Owner</span>
+            <span>Tipo</span>
+            <span>Precio</span>
+            <span>Distancia</span>
+          </div>
+          <div *ngFor="let b of filteredBikes"
+               class="station-item"
+               (click)="selectBike(b)"
+               [class.selected-row]="selectedBike?.id === b.id">
+            <span class="item-owner">{{ b.owner }}</span>
+            <span class="item-type">{{ b.type }}</span>
+            <span class="item-price">S/{{ b.costPerMinute.toFixed(1) }} x min</span>
+            <span class="item-distance">{{ b.distance! | number:'1.0-0' }} m</span>
+          </div>
+        </div>
+
+        <ng-template #initial>
+          <div class="initial-summary">
+            Busca un distrito, modelo o precio para ver resultados.
+          </div>
+        </ng-template>
+
+        <div *ngIf="selectedBike" class="reservation-box">
+          <div class="rb-header">
+            <div class="owner-photo">
+              <img
+                [src]="selectedBike.ownerPhoto"
+                alt="Foto de {{selectedBike.owner}}"
+                (error)="onOwnerImageError($event)"
+              />
+            </div>
+            <div class="info">
+              <strong>{{ selectedBike.owner }}</strong>
+              <p>{{ selectedBike.type }} – {{ selectedBike.distance! | number:'1.0-0' }} m</p>
+            </div>
+          </div>
+          <div class="rb-body">
+            <div class="bike-image">
+              <img
+                [src]="selectedBike.imageUrl"
+                alt="Bici {{selectedBike.type}}"
+                (error)="onBikeImageError($event)"
+              />
+            </div>
+          </div>
+          <div class="rb-footer">
+            <div class="actions">
+              <a href="#" class="favorite">⭐ Agregar a favoritos</a><br>
+              <span>Costo:
+                <strong>S/ {{ selectedBike.costPerMinute.toFixed(1) }} x min</strong>
+              </span>
+            </div>
+            <button class="reserve">Reservar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="map-section">
+        <div #mapContainer id="map"></div>
+      </div>
+    </div>
+  </div>
+</div>

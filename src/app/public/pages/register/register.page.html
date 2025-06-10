@@ -1,0 +1,53 @@
+<div class="register-wrapper">
+  <div class="register-left">
+    <img src="assets/img/logo5.png" alt="BikeShare Logo" />
+    <h2>Welcome to <span>BikeShare</span></h2>
+    <p>Your city, your ride.</p>
+  </div>
+
+  <div class="register-right">
+    <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+      <h3>Create your account</h3>
+      <p>It’s free and easy</p>
+
+      <label>Are you registering as:</label>
+      <select name="isOwner" [(ngModel)]="isOwner" required>
+        <option [ngValue]="false">Renter</option>
+        <option [ngValue]="true">Owner</option>
+      </select>
+
+
+      <label>Full name</label>
+      <input type="text" name="fullName" [(ngModel)]="fullName" placeholder="Enter your name" required />
+
+      <label>E-mail or phone number</label>
+      <input type="email" name="email" [(ngModel)]="email" placeholder="Type your e-mail or phone number" required />
+
+      <label>Password</label>
+      <input type="password" name="password" [(ngModel)]="password" placeholder="Type your password" required />
+
+      <div class="terms">
+        <input type="checkbox" required />
+        <small>
+          By creating an account you agree to the <a href="#">Terms and Conditions</a>
+          and our <a href="#">Privacy Policy</a>
+        </small>
+      </div>
+
+      <button type="submit" class="btn-register">Create Account</button>
+
+      <div class="social-register">
+        <p>or do it via other accounts</p>
+        <div class="social-icons">
+          <button class="google" type="button"></button>
+          <button class="apple" type="button"></button>
+          <button class="facebook" type="button"></button>
+        </div>
+      </div>
+      <div class="login-text">
+        Already have an account?
+        <button type="button" routerLink="/login" class="link-button">Sign In</button>
+      </div>
+    </form>
+  </div>
+</div>

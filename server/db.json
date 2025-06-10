@@ -1,0 +1,48 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "John Doe",
+      "email": "john@example.com",
+      "password": "1234598",
+      "role": "renter"
+    },
+    {
+      "id": "2",
+      "name": "Jane Smith",
+      "email": "jane@example.com",
+      "password": "1234",
+      "role": "tenant"
+    }
+  ],
+  "profiles": [
+    {
+      "id": "1",
+      "userId": 1,
+      "profileImage": "https://media.istockphoto.com/id/1386479313/es/foto/feliz-mujer-de-negocios-afroamericana-millennial-posando-aislada-en-blanco.jpg?s=612x612&w=0&k=20&c=JP0NBxlxG2-bdpTRPlTXBbX13zkNj0mR5g1KoOdbtO4=",
+      "address": "124 Main Street",
+      "rating": 4.5,
+      "preferences": {
+        "notifications": true
+      },
+      "paymentMethods": {
+        "creditCard": true,
+        "paypal": false
+      }
+    },
+    {
+      "id": "2",
+      "userId": 2,
+      "profileImage": "https://example.com/jane-profile.jpg",
+      "address": "456 Another Street",
+      "rating": 4.8,
+      "preferences": {
+        "notifications": false
+      },
+      "paymentMethods": {
+        "creditCard": false,
+        "paypal": true
+      }
+    }
+  ]
+}
