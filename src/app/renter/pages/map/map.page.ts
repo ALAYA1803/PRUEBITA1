@@ -93,6 +93,7 @@ export class MapPage implements AfterViewInit {
       this.markers[station.name] = m;
     });
 
+    // Ajusta el tamaño del mapa tras renderizar
     setTimeout(() => this.map?.invalidateSize(), 0);
   }
 
