@@ -30,7 +30,8 @@
         <tbody>
         <tr
           *ngFor="let s of filteredStations"
-          (click)="selectedStation = s"
+          [class.selected]="selectedStation?.name === s.name"
+          (click)="selectStation(s)"
         >
           <td>{{ s.name }}</td>
           <td [class.green]="s.bikes > 2" [class.yellow]="s.bikes <= 2">
@@ -65,10 +66,7 @@
     </div>
 
     <div class="map-section">
-      <iframe
-        [src]="mapUrl | safe"
-        allowfullscreen
-      ></iframe>
+      <div #mapContainer id="map"></div>
     </div>
   </div>
 </div>
