@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-login-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, HttpClientModule],
+  imports: [CommonModule, FormsModule, RouterLink, HttpClientModule, TranslateModule],
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.css']
 })

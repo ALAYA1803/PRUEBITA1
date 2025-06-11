@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-register-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, HttpClientModule],
+  imports: [CommonModule, FormsModule, RouterLink, HttpClientModule, TranslateModule],
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.css']
 })
