@@ -11,14 +11,14 @@
       </div>
       <div class="input-wrapper">
         <select #typeSelect>
-          <option>{{ 'Map.SearchModel' | translate }}</option>
-          <option *ngFor="let t of bikeTypes">{{ t }}</option>
+          <option value="">{{ 'Map.SearchModel' | translate }}</option>
+          <option *ngFor="let t of bikeTypes" [value]="t">{{ t }}</option>
         </select>
       </div>
       <div class="input-wrapper">
         <select #priceSelect>
-          <option>{{ 'Map.SearchPrice' | translate }}</option>
-          <option *ngFor="let label of priceLabels">{{ label }}</option>
+          <option value="">{{ 'Map.SearchPrice' | translate }}</option>
+          <option *ngFor="let label of priceLabels" [value]="label">{{ label }}</option>
         </select>
       </div>
       <button class="search-button"

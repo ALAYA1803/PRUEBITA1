@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-support-page',
@@ -99,6 +100,12 @@ export class SupportPage implements OnInit {
     console.log('Viendo detalles del ticket ID:', ticketId);
     // Aquí podrías navegar a una página de detalle o mostrar un modal
     this.snackBar.open(`Cargando detalles para el ticket ${ticketId}...`, 'OK', { duration: 2000 });
+  }
+
+  translateStatus(estado: string): string {
+    if (estado === 'Resuelto') return this.translate.instant('Support.StatusResolved');
+    if (estado === 'En Proceso') return this.translate.instant('Support.StatusInProgress');
+    return estado;
   }
 
   // --- Helper para los estilos del estado ---
