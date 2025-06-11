@@ -15,7 +15,7 @@
         <span class="fecha">{{ ticket.fecha }}</span>
         <span class="estado">
           <span class="status-chip" [ngClass]="getStatusClass(ticket.estado)">
-            {{ ticket.estado }}
+            {{ translateStatus(ticket.estado) }}
           </span>
         </span>
         <span class="accion">
