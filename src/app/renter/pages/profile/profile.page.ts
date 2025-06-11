@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Profile } from '../../model/profile.entity';
 import { User } from '../../model/user.entity';
 import { ProfileService } from '../../services/profile.service';
@@ -30,6 +30,7 @@ import { UserService } from '../../services/user.service';
     MatSelectModule,
     MatSlideToggleModule,
     MatSnackBarModule,
+    TranslateModule,
   ],
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.css']

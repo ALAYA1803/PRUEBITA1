@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule }      from '@angular/common';
+import { TranslateModule }   from '@ngx-translate/core';
 
 interface UpcomingReservation {
   bike: string;
@@ -27,7 +28,7 @@ interface Recommendation {
 @Component({
   selector: 'app-renter-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './renter-home.page.html',
   styleUrls: ['./renter-home.page.css']
 })

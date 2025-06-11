@@ -12,7 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-support-page',
@@ -25,7 +25,8 @@ import { TranslateService } from '@ngx-translate/core';
     MatFormFieldModule, // <-- AÑADIDO
     MatSelectModule,    // <-- AÑADIDO
     MatIconModule,      // <-- AÑADIDO
-    MatSnackBarModule   // <-- AÑADIDO
+    MatSnackBarModule,  // <-- AÑADIDO
+    TranslateModule
   ],
   templateUrl: './support.page.html',
   styleUrls: ['./support.page.css']

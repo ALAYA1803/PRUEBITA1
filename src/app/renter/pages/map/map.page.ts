@@ -3,6 +3,7 @@ import { Component, OnInit, AfterViewInit, OnDestroy,
   from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule }   from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 import * as L           from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -77,7 +78,7 @@ const BIKES: Bike[] = [
 @Component({
   selector: 'app-map-page',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './map.page.html',
   styleUrls: ['./map.page.css']
 })

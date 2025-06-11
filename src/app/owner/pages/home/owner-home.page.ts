@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-owner-home',
   standalone: true,
+  imports: [CommonModule, TranslateModule],
   template: `
     <div class="home-wrapper">
       <h1>{{ 'OwnerHome.Title' | translate }}</h1>
