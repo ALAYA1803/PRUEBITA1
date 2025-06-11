@@ -2,25 +2,25 @@
   <div class="main-content">
 
     <header class="welcome-header">
-      <h1>¡Hola, {{ username }}!</h1>
-      <p>¿Listo para tu próxima aventura en bicicleta?</p>
+      <h1>{{ 'RenterHome.Greeting' | translate:{ username: username } }}</h1>
+      <p>{{ 'RenterHome.Subtitle' | translate }}</p>
     </header>
 
     <section class="stats-grid">
       <div class="stat-card">
-        <div class="stats-label">Has recorrido</div>
+        <div class="stats-label">{{ 'RenterHome.HasTraveled' | translate }}</div>
         <div class="stat-value">{{ distanceTraveled }} km</div>
       </div>
       <div class="stat-card">
-        <div class="stats-label">Alquileres realizados</div>
+        <div class="stats-label">{{ 'RenterHome.RentalsCount' | translate }}</div>
         <div class="stat-value">{{ rentalsCount }}</div>
       </div>
       <div class="stat-card">
-        <div class="stats-label">Tiempo de manejo</div>
+        <div class="stats-label">{{ 'RenterHome.DrivingTime' | translate }}</div>
         <div class="stat-value">{{ drivingTime }} h</div>
       </div>
       <div class="stat-card">
-        <div class="stats-label">Tu rating como arrendatario</div>
+        <div class="stats-label">{{ 'RenterHome.Rating' | translate }}</div>
         <div class="stat-value rating-display">
           &#9733;&#9733;&#9733;&#9733;&#9733;
           <span class="rating-number">{{ rating }}</span>
@@ -29,7 +29,7 @@
     </section>
 
     <section class="next-reservation">
-      <h2>Tu próxima reserva</h2>
+      <h2>{{ 'RenterHome.NextReservation' | translate }}</h2>
       <div class="card reservation-card">
         <div class="reservation-info">
           <p class="bike-name">{{ upcoming.bike }}</p>
@@ -40,21 +40,21 @@
           <img [src]="upcoming.imageUrl" alt="{{ upcoming.bike }}">
         </div>
         <div class="reservation-actions">
-          <button class="btn btn-details" (click)="viewDetails()">Ver detalles</button>
-          <button class="btn btn-cancel"  (click)="cancelReservation()">Cancelar reserva</button>
+          <button class="btn btn-details" (click)="viewDetails()">{{ 'RenterHome.ViewDetails' | translate }}</button>
+          <button class="btn btn-cancel"  (click)="cancelReservation()">{{ 'RenterHome.Cancel' | translate }}</button>
         </div>
       </div>
     </section>
 
     <section class="recent-rentals">
-      <h2>Reservas Recientes</h2>
+      <h2>{{ 'RenterHome.RecentRentals' | translate }}</h2>
       <div class="card recent-rentals-card">
         <div class="rentals-header">
-          <span>Bicicleta</span>
-          <span>Fecha</span>
-          <span>Estación inicio</span>
-          <span>Estación final</span>
-          <span>Estado</span>
+          <span>{{ 'RenterHome.Bike' | translate }}</span>
+          <span>{{ 'RenterHome.Date' | translate }}</span>
+          <span>{{ 'RenterHome.StartStation' | translate }}</span>
+          <span>{{ 'RenterHome.EndStation' | translate }}</span>
+          <span>{{ 'RenterHome.Status' | translate }}</span>
         </div>
         <div class="rental-item" *ngFor="let r of recentRentals">
           <span>{{ r.bike }}</span>
@@ -77,7 +77,7 @@
   </div>
 
   <aside class="sidebar">
-    <h2>Recomendaciones</h2>
+    <h2>{{ 'RenterHome.Recommendations' | translate }}</h2>
     <div class="card recommendations-card">
       <div class="recommendation-item" *ngFor="let rec of recommendations">
         <img class="rec-image" [src]="rec.imageUrl" alt="{{ rec.bike }}">
@@ -85,7 +85,7 @@
           <span class="rec-name">{{ rec.bike }}</span><br>
           <span class="rec-details">S/ {{ rec.pricePerHour.toFixed(2) }}/h – {{ rec.distance }}</span>
         </div>
-        <button class="btn btn-reserve" (click)="reserveAgain(rec)">Reservar</button>
+        <button class="btn btn-reserve" (click)="reserveAgain(rec)">{{ 'RenterHome.Reserve' | translate }}</button>
       </div>
     </div>
   </aside>
