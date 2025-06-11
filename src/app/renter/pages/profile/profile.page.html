@@ -2,10 +2,10 @@
 
   <div class="profile-section-card">
     <div class="section-header">
-      <h2>Información Personal</h2>
+      <h2>{{ 'Profile.PersonalInfo' | translate }}</h2>
       <button mat-flat-button color="primary" (click)="toggleEditPersonalInfo()">
         <mat-icon>{{ personalInfoEditMode ? 'save' : 'edit' }}</mat-icon>
-        {{ personalInfoEditMode ? 'Guardar' : 'Editar' }}
+        {{ personalInfoEditMode ? ( 'Profile.Save' | translate ) : ( 'Profile.Edit' | translate ) }}
       </button>
     </div>
 
@@ -14,43 +14,43 @@
            (click)="onProfilePictureClick()"
            [class.editable]="personalInfoEditMode">
         <img [src]="personalInfoForm.get('profileImage')?.value" alt="Foto de Perfil">
-        <span>Foto de Perfil</span>
+        <span>{{ 'Profile.Photo' | translate }}</span>
       </div>
 
       <div class="personal-details">
         <mat-form-field appearance="outline">
-          <mat-label>Nombre</mat-label>
+          <mat-label>{{ 'Profile.Name' | translate }}</mat-label>
           <input matInput formControlName="name">
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Correo</mat-label>
+          <mat-label>{{ 'Profile.Email' | translate }}</mat-label>
           <input matInput type="email" formControlName="email">
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Teléfono</mat-label>
+          <mat-label>{{ 'Profile.Phone' | translate }}</mat-label>
           <input matInput formControlName="phone">
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Dirección</mat-label>
+          <mat-label>{{ 'Profile.Address' | translate }}</mat-label>
           <input matInput formControlName="address">
         </mat-form-field>
 
         <button *ngIf="personalInfoEditMode"
                 mat-stroked-button
                 (click)="cancelEditPersonalInfo()"
-                class="cancel-button">Cancelar</button>
+                class="cancel-button">{{ 'Profile.Cancel' | translate }}</button>
       </div>
     </form>
   </div>
 
   <div class="profile-section-card">
-    <h2>Preferencias y seguridad</h2>
+    <h2>{{ 'Profile.Preferences' | translate }}</h2>
     <div class="preferences-grid">
       <mat-form-field appearance="outline">
-        <mat-label>Métodos de pago</mat-label>
+        <mat-label>{{ 'Profile.PaymentMethods' | translate }}</mat-label>
         <mat-select [(ngModel)]="profileData.paymentMethod"
                     (selectionChange)="onPreferenceChanged('paymentMethod', $event.value)">
           <mat-option *ngFor="let method of paymentMethods" [value]="method">{{ method }}</mat-option>
@@ -58,7 +58,7 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Contraseña Actual</mat-label>
+        <mat-label>{{ 'Profile.CurrentPassword' | translate }}</mat-label>
         <input matInput [type]="passwordVisible ? 'text' : 'password'" [value]="currentPassword" readonly>
         <button mat-icon-button matSuffix (click)="passwordVisible = !passwordVisible" type="button">
           <mat-icon>{{ passwordVisible ? 'visibility_off' : 'visibility' }}</mat-icon>
@@ -66,7 +66,7 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Tipo de bicicleta preferida</mat-label>
+        <mat-label>{{ 'Profile.PreferredBike' | translate }}</mat-label>
         <mat-select [(ngModel)]="profileData.preferredBikeType"
                     (selectionChange)="onPreferenceChanged('preferredBikeType', $event.value)">
           <mat-option *ngFor="let type of bikeTypes" [value]="type">{{ type }}</mat-option>
@@ -74,11 +74,11 @@
       </mat-form-field>
 
       <button mat-flat-button color="primary" class="change-password-button">
-        Cambiar Contraseña
+        {{ 'Profile.ChangePassword' | translate }}
       </button>
 
       <div class="notifications-toggle">
-        <label>Notificaciones</label>
+        <label>{{ 'Profile.Notifications' | translate }}</label>
         <mat-slide-toggle
           [(ngModel)]="profileData.notifications"
           (change)="onPreferenceChanged('notifications', $event.checked)">
@@ -87,7 +87,7 @@
     </div>
   </div>
   <div class="profile-section-card">
-    <h2>Mis últimas Reseñas</h2>
+    <h2>{{ 'Profile.MyReviews' | translate }}</h2>
     <div class="reviews-container">
       <mat-card class="review-card" *ngFor="let item of [1, 2, 3]">
         <mat-card-header>
@@ -108,7 +108,7 @@
       </mat-card>
     </div>
     <div class="view-more-container">
-      <button mat-flat-button color="primary">Ver más</button>
+      <button mat-flat-button color="primary">{{ 'Profile.ViewMore' | translate }}</button>
     </div>
   </div>
 </div>

@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Profile } from '../../model/profile.entity';
 import { User } from '../../model/user.entity';
 import { ProfileService } from '../../services/profile.service';
@@ -29,6 +30,7 @@ import { UserService } from '../../services/user.service';
     MatSelectModule,
     MatSlideToggleModule,
     MatSnackBarModule,
+    TranslateModule,
   ],
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.css']
@@ -38,6 +40,7 @@ export class ProfilePage implements OnInit {
   private userService = inject(UserService);
   private fb = inject(FormBuilder);
   private snackBar = inject(MatSnackBar);
+  private translate = inject(TranslateService);
   profileData: Profile = new Profile({});
   userData: User = new User({});
   personalInfoForm: FormGroup;
@@ -109,7 +112,7 @@ export class ProfilePage implements OnInit {
 
   private savePersonalInfo() {
     if (this.personalInfoForm.invalid) {
-      this.snackBar.open('Por favor, corrige los errores en el formulario.', 'Cerrar', { duration: 3000 });
+      this.snackBar.open(this.translate.instant('Profile.ErrorForm'), this.translate.instant('Profile.Cancel'), { duration: 3000 });
       return;
     }
     const formValues = this.personalInfoForm.value;
@@ -121,7 +124,7 @@ export class ProfilePage implements OnInit {
 
     console.log('Guardando Usuario:', this.userData);
     console.log('Guardando Perfil:', this.profileData);
-    this.snackBar.open('Información guardada con éxito.', 'OK', { duration: 2000 });
+    this.snackBar.open(this.translate.instant('Profile.Saved'), 'OK', { duration: 2000 });
 
     this.personalInfoForm.disable();
     this.personalInfoEditMode = false;
@@ -137,7 +140,7 @@ export class ProfilePage implements OnInit {
   onPreferenceChanged(field: keyof Profile, value: any) {
     (this.profileData as any)[field] = value;
     console.log(`Preferencia '${field}' actualizada a '${value}' y guardada.`);
-    this.snackBar.open(`Preferencia '${field}' actualizada.`, 'OK', { duration: 2000 });
+    this.snackBar.open(this.translate.instant('Profile.PreferenceUpdated', { field }), 'OK', { duration: 2000 });
   }
 
   getStarType(rating: number, index: number) {

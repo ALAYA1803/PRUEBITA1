@@ -1,41 +1,42 @@
 <div class="map-page-container">
   <div class="map-page">
     <div class="header">
-      <h1>Encuentra tu bicicleta</h1>
-      <p>Usa este mapa para localizar bicicletas disponibles</p>
+      <h1>{{ 'find_bike' | translate }}</h1>
+      <p>{{ 'free_bikes' | translate }}</p>
     </div>
 
     <div class="search-bar">
       <div class="input-wrapper">
-        <input #districtInput type="text" placeholder="Buscar dirección o distrito" />
+        <input #districtInput type="text" [placeholder]="'search_placeholder' | translate" />
       </div>
       <div class="input-wrapper">
         <select #typeSelect>
-          <option>Buscar por modelo</option>
+          <option>{{ 'Map.SearchModel' | translate }}</option>
           <option *ngFor="let t of bikeTypes">{{ t }}</option>
         </select>
       </div>
       <div class="input-wrapper">
         <select #priceSelect>
+          <option>{{ 'Map.SearchPrice' | translate }}</option>
           <option *ngFor="let label of priceLabels">{{ label }}</option>
         </select>
       </div>
       <button class="search-button"
               (click)="applyFilters(districtInput.value, typeSelect.value, priceSelect.value)">
-        Buscar
+        {{ 'search' | translate }}
       </button>
     </div>
 
     <div class="map-layout">
       <div class="list-panel">
-        <h2 class="list-title">Bicicletas libres</h2>
+        <h2 class="list-title">{{ 'free_bikes' | translate }}</h2>
 
         <div *ngIf="hasSearched; else initial" class="stations-list">
           <div class="station-headers">
-            <span>Owner</span>
-            <span>Tipo</span>
-            <span>Precio</span>
-            <span>Distancia</span>
+            <span>{{ 'Map.Owner' | translate }}</span>
+            <span>{{ 'Map.Type' | translate }}</span>
+            <span>{{ 'Map.Price' | translate }}</span>
+            <span>{{ 'Map.Distance' | translate }}</span>
           </div>
           <div *ngFor="let b of filteredBikes"
                class="station-item"
@@ -50,7 +51,7 @@
 
         <ng-template #initial>
           <div class="initial-summary">
-            Busca un distrito, modelo o precio para ver resultados.
+            {{ 'Map.SearchSummary' | translate }}
           </div>
         </ng-template>
 
@@ -79,12 +80,12 @@
           </div>
           <div class="rb-footer">
             <div class="actions">
-              <a href="#" class="favorite">⭐ Agregar a favoritos</a><br>
-              <span>Costo:
+              <a href="#" class="favorite">⭐ {{ 'Map.AddToFavorites' | translate }}</a><br>
+              <span>{{ 'Map.Cost' | translate }}:
                 <strong>S/ {{ selectedBike.costPerMinute.toFixed(1) }} x min</strong>
               </span>
             </div>
-            <button class="reserve">Reservar</button>
+            <button class="reserve">{{ 'Map.Reserve' | translate }}</button>
           </div>
         </div>
       </div>

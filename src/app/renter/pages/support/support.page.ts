@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-support-page',
@@ -24,7 +25,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     MatFormFieldModule, // <-- AÑADIDO
     MatSelectModule,    // <-- AÑADIDO
     MatIconModule,      // <-- AÑADIDO
-    MatSnackBarModule   // <-- AÑADIDO
+    MatSnackBarModule,  // <-- AÑADIDO
+    TranslateModule
   ],
   templateUrl: './support.page.html',
   styleUrls: ['./support.page.css']
@@ -32,6 +34,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 export class SupportPage implements OnInit {
   private fb = inject(FormBuilder);
   private snackBar = inject(MatSnackBar);
+  private translate = inject(TranslateService);
 
   // --- Datos para la lista "Mis últimas solicitudes" (Ejemplo) ---
   // En un futuro, estos datos vendrían de un servicio
@@ -66,7 +69,7 @@ export class SupportPage implements OnInit {
 
       // Aquí iría la lógica para enviar los datos al backend
 
-      this.snackBar.open('Solicitud enviada con éxito.', 'OK', { duration: 3000 });
+      this.snackBar.open(this.translate.instant('Support.Success'), 'OK', { duration: 3000 });
       this.newRequestForm.reset();
       this.selectedFileName = null; // Limpiar el nombre del archivo
       // Esto es necesario para que los validadores se limpien visualmente
@@ -77,7 +80,7 @@ export class SupportPage implements OnInit {
       });
 
     } else {
-      this.snackBar.open('Por favor, completa todos los campos requeridos.', 'Cerrar', { duration: 3000 });
+      this.snackBar.open(this.translate.instant('Support.ErrorRequired'), this.translate.instant('Profile.Cancel'), { duration: 3000 });
     }
   }
 

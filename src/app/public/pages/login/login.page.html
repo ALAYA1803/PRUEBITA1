@@ -1,28 +1,28 @@
 <div class="login-wrapper">
   <div class="login-left">
     <img src="assets/img/logo5.png" alt="BikeShare Logo" />
-    <h2>Welcome to <span>BikeShare</span></h2>
-    <p >Tu nueva forma de moverte por la ciudad</p>
+    <h2>{{ 'Login.WelcomeTitle' | translate }} <span>BikeShare</span></h2>
+    <p>{{ 'Login.Tagline' | translate }}</p>
   </div>
 
 
   <div class="login-right">
 
     <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
-      <h3>Sign in</h3>
-      <label for="email">E-mail or phone number</label>
-      <input type="email" id="email" name="email" placeholder="Type your e-mail or phone number" [(ngModel)]="email" required />
+      <h3>{{ 'Login.SignIn' | translate }}</h3>
+      <label for="email">{{ 'Login.EmailLabel' | translate }}</label>
+      <input type="email" id="email" name="email" [placeholder]="'Login.EmailPlaceholder' | translate" [(ngModel)]="email" required />
 
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" placeholder="Type your password" [(ngModel)]="password" required />
+      <label for="password">{{ 'Login.PasswordLabel' | translate }}</label>
+      <input type="password" id="password" name="password" [placeholder]="'Login.PasswordPlaceholder' | translate" [(ngModel)]="password" required />
 
       <div class="forgot-password">
-        <a href="#">Forgot Password?</a>
+        <a href="#">{{ 'Login.ForgotPassword' | translate }}</a>
       </div>
 
-      <button type="submit" class="btn-signin">Sign In</button>
+      <button type="submit" class="btn-signin">{{ 'Login.SignInBtn' | translate }}</button>
 
-      <div class="or-divider">or do it via other accounts</div>
+      <div class="or-divider">{{ 'Login.OrVia' | translate }}</div>
 
       <div class="social-buttons">
         <button type="button" class="google"></button>
@@ -31,13 +31,12 @@
       </div>
 
       <div class="signup-text">
-        Don't have an account?
-        <button type="button" routerLink="/register" class="link-button">Sign Up</button>
+        {{ 'Login.NoAccount' | translate }}
+        <button type="button" routerLink="/register" class="link-button">{{ 'Login.SignUp' | translate }}</button>
       </div>
 
       <button type="button" class="repair-btn">
-        RepairLink technician?<br />
-        <strong>Sign in or Apply here</strong>
+        {{ 'Login.RepairBtn' | translate }}
       </button>
     </form>
   </div>
