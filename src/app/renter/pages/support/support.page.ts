@@ -102,6 +102,12 @@ export class SupportPage implements OnInit {
     this.snackBar.open(`Cargando detalles para el ticket ${ticketId}...`, 'OK', { duration: 2000 });
   }
 
+  translateStatus(estado: string): string {
+    if (estado === 'Resuelto') return this.translate.instant('Support.StatusResolved');
+    if (estado === 'En Proceso') return this.translate.instant('Support.StatusInProgress');
+    return estado;
+  }
+
   // --- Helper para los estilos del estado ---
   getStatusClass(estado: string): string {
     if (estado === 'Resuelto') return 'status-resolved';

@@ -67,7 +67,7 @@
                     'status-finalizado': r.status==='Finalizado',
                     'status-cancelada': r.status==='Cancelada'
                   }">
-              {{ r.status }}
+              {{ translateStatus(r.status) }}
             </span>
           </span>
         </div>
