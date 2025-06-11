@@ -3,6 +3,7 @@ import { Component, OnInit, AfterViewInit, OnDestroy,
   from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule }   from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 import * as L           from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -77,7 +78,7 @@ const BIKES: Bike[] = [
 @Component({
   selector: 'app-map-page',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './map.page.html',
   styleUrls: ['./map.page.css']
 })
@@ -94,12 +95,12 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
     { label: 'S/ 3 – 4', min: 3,    max: 4 },
     { label: '> S/ 4',   min: 4,    max: Infinity }
   ];
-  priceLabels = ['Buscar por precio', 'Todos', '≤ S/ 3', 'S/ 3 – 4', '> S/ 4'];
+  priceLabels = ['Todos', '≤ S/ 3', 'S/ 3 – 4', '> S/ 4'];
 
   filteredBikes: Bike[] = [];
   hasSearched = false;
   selectedType = '';
-  selectedPriceLabel = 'Buscar por precio';
+  selectedPriceLabel = '';
   selectedBike: Bike | null = null;
   typeCounts: { type: string; count: number }[] = [];
 
@@ -150,7 +151,7 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
   applyFilters(district: string, type: string, priceLabel: string) {
     this.hasSearched = true;
     this.selectedType = type;
-    this.selectedPriceLabel = priceLabel === 'Buscar por precio' ? 'Todos' : priceLabel;
+    this.selectedPriceLabel = priceLabel || 'Todos';
     this.selectedBike = null;
 
     if (district.trim()) {
@@ -161,7 +162,7 @@ export class MapPage implements OnInit, AfterViewInit, OnDestroy {
     const center: [number, number] = [ctr.lat, ctr.lng];
 
     let list = [...this.bikes];
-    if (this.selectedType && this.selectedType !== 'Buscar por modelo') {
+    if (this.selectedType) {
       list = list.filter(b => b.type === this.selectedType);
     }
     const pr = this.priceRanges.find(p => p.label === this.selectedPriceLabel)!;

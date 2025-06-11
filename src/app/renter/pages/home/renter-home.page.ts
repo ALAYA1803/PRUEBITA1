@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule }      from '@angular/common';
+import { TranslateModule, TranslateService }   from '@ngx-translate/core';
 
 interface UpcomingReservation {
   bike: string;
@@ -27,12 +28,14 @@ interface Recommendation {
 @Component({
   selector: 'app-renter-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './renter-home.page.html',
   styleUrls: ['./renter-home.page.css']
 })
 export class RenterHomePage implements OnInit {
   username = 'Rodrigo';
+
+  private translate = inject(TranslateService);
 
   distanceTraveled = 54;
   rentalsCount     = 8;
@@ -78,5 +81,12 @@ export class RenterHomePage implements OnInit {
 
   reserveAgain(rec: Recommendation) {
     console.log('Reservar de nuevo', rec.bike);
+  }
+
+  translateStatus(status: string): string {
+    if (status === 'Finalizado') return this.translate.instant('RenterHome.StatusFinalizado');
+    if (status === 'Cancelada') return this.translate.instant('RenterHome.StatusCancelada');
+    if (status === 'Activa') return this.translate.instant('RenterHome.StatusActiva');
+    return status;
   }
 }

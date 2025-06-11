@@ -8,25 +8,25 @@
     <a mat-list-item routerLink="/renter/home" routerLinkActive="active">
       <div class="menu-item-content">
         <mat-icon>home</mat-icon>
-        <span>Home</span>
+        <span>{{ 'Sidebar.Home' | translate }}</span>
       </div>
     </a>
     <a mat-list-item routerLink="/renter/map" routerLinkActive="active">
       <div class="menu-item-content">
         <mat-icon>map</mat-icon>
-        <span>My map</span>
+        <span>{{ 'Sidebar.Map' | translate }}</span>
       </div>
     </a>
     <a mat-list-item routerLink="/renter/profile" routerLinkActive="active">
       <div class="menu-item-content">
         <mat-icon>person</mat-icon>
-        <span>Profile</span>
+        <span>{{ 'Sidebar.Profile' | translate }}</span>
       </div>
     </a>
     <a mat-list-item routerLink="/renter/support" routerLinkActive="active">
       <div class="menu-item-content">
         <mat-icon>headset</mat-icon>
-        <span>Support</span>
+        <span>{{ 'Sidebar.Support' | translate }}</span>
       </div>
     </a>
   </div>
@@ -35,7 +35,7 @@
     <a mat-list-item (click)="onLogout()">
       <div class="menu-item-content">
         <mat-icon>logout</mat-icon>
-        <span>Log out</span>
+        <span>{{ 'Sidebar.Logout' | translate }}</span>
       </div>
     </a>
   </div>
