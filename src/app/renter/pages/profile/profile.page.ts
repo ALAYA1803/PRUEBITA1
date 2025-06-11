@@ -13,6 +13,7 @@ import { Profile } from '../../model/profile.entity';
 import { User } from '../../model/user.entity';
 import { ProfileService } from '../../services/profile.service';
 import { UserService } from '../../services/user.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-profile-page',
