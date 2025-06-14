@@ -5,28 +5,13 @@
   </div>
 
   <div class="nav-items">
-    <a mat-list-item routerLink="/renter/home" routerLinkActive="active">
+    <a *ngFor="let item of menuItems"
+       mat-list-item
+       [routerLink]="item.link"
+       routerLinkActive="active">
       <div class="menu-item-content">
-        <mat-icon>home</mat-icon>
-        <span>{{ 'Sidebar.Home' | translate }}</span>
-      </div>
-    </a>
-    <a mat-list-item routerLink="/renter/map" routerLinkActive="active">
-      <div class="menu-item-content">
-        <mat-icon>map</mat-icon>
-        <span>{{ 'Sidebar.Map' | translate }}</span>
-      </div>
-    </a>
-    <a mat-list-item routerLink="/renter/profile" routerLinkActive="active">
-      <div class="menu-item-content">
-        <mat-icon>person</mat-icon>
-        <span>{{ 'Sidebar.Profile' | translate }}</span>
-      </div>
-    </a>
-    <a mat-list-item routerLink="/renter/support" routerLinkActive="active">
-      <div class="menu-item-content">
-        <mat-icon>headset</mat-icon>
-        <span>{{ 'Sidebar.Support' | translate }}</span>
+        <mat-icon>{{ item.icon }}</mat-icon>
+        <span>{{ item.label | translate }}</span>
       </div>
     </a>
   </div>

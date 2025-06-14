@@ -1,0 +1,237 @@
+:host {
+  --font-family: 'Inter', sans-serif;
+  --bg-page: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --border-color: #E2E8F0;
+  --text-primary: #1E293B;
+  --text-secondary: #64748B;
+  --primary-button-bg: #4F46E5;
+  --primary-button-text: #FFFFFF;
+  --success-bg: #D1FAE5;
+  --success-text: #065F46;
+  --danger-bg: #FEE2E2;
+  --danger-text: #991B1B;
+  --star-color: #FBBF24;
+
+  --card-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+  --card-radius: 0.75rem;
+
+  display: block;
+  font-family: var(--font-family);
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.page-container {
+  display: grid;
+  grid-template-columns: 2.5fr 1fr;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.main-content, .sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+}
+
+.welcome-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.welcome-header p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+.empty-state {
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-secondary);
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.25rem;
+}
+
+.stat-card .stats-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.stat-card .stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stat-value mat-icon {
+  font-size: 2rem;
+  width: 2rem;
+  height: 2rem;
+  color: var(--star-color);
+}
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section-header h2, .sidebar h2, .top-bikes h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.btn-view-all {
+  font-weight: 600;
+  color: var(--primary-button-bg);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.btn-view-all:hover {
+  text-decoration: underline;
+}
+
+.recent-rentals-card {
+  padding: 1.5rem;
+}
+
+.rentals-header {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1.5fr;
+  gap: 1rem;
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.reservation-item {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1.5fr;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+.reservation-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.renter-info strong { font-weight: 600; display: block; }
+.renter-info small { font-size: 0.875rem; color: var(--text-secondary); }
+
+.reservation-actions { display: flex; justify-content: flex-end; gap: 0.5rem; }
+
+.btn-accept, .btn-decline {
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+.btn-accept:hover, .btn-decline:hover { opacity: 0.85; }
+.btn-accept { background-color: var(--success-bg); color: var(--success-text); }
+.btn-decline { background-color: var(--danger-bg); color: var(--danger-text); }
+.bikes-scroller {
+  display: flex;
+  overflow-x: auto;
+  gap: 1.5rem;
+  padding: 0.25rem;
+  margin: 0 -0.25rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.bikes-scroller::-webkit-scrollbar { display: none; }
+
+.bike-card {
+  flex: 0 0 220px;
+  overflow: hidden;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.bike-card:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
+.bike-card-image { width: 100%; height: 140px; object-fit: cover; display: block; }
+.bike-card-info { padding: 1rem; }
+.bike-card-info h4 { font-size: 1rem; font-weight: 600; margin: 0 0 0.25rem 0; color: var(--text-primary); }
+.bike-card-info p { font-size: 0.875rem; color: var(--text-secondary); margin: 0; }
+.btn-add-bike {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: var(--primary-button-bg);
+  color: var(--primary-button-text);
+  border: none;
+  border-radius: var(--card-radius);
+  cursor: pointer;
+}
+
+.recommendations-card { padding: 1rem; }
+.activity-item { display: flex; align-items: flex-start; gap: 1rem; padding: 0.75rem; }
+.activity-icon { margin-top: 4px; color: var(--text-secondary); }
+.activity-text { margin: 0; line-height: 1.4; font-size: 0.9rem; }
+.activity-text strong { font-weight: 600; }
+.rec-details { font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem; display: block; }
+.view-all-link { text-align: center; display: block; padding: 0.75rem; margin: 0.5rem; font-weight: 600; color: var(--primary-button-bg); text-decoration: none; border-radius: var(--card-radius); }
+.view-all-link:hover { background-color: var(--bg-page); }
+@media (max-width: 1200px) {
+  .page-container { grid-template-columns: 1fr; }
+  .sidebar { order: -1; }
+}
+
+@media (max-width: 768px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .rentals-header { display: none; }
+  .reservation-item { display: flex; flex-direction: column; align-items: flex-start; border: 1px solid var(--border-color); border-radius: var(--card-radius); padding: 1rem; }
+  .reservation-item:not(:last-child) { margin-bottom: 1rem; }
+}
+
+@media (max-width: 500px) {
+  .stats-grid { grid-template-columns: 1fr; }
+}

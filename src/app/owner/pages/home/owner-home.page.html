@@ -1,0 +1,100 @@
+<div class="page-container" *ngIf="stats">
+  <div class="main-content">
+
+    <header class="welcome-header">
+      <h1>{{ 'OwnerHome.Greeting' | translate:{ username: ownerName } }}</h1>
+      <p>{{ 'OwnerHome.Subtitle' | translate }}</p>
+    </header>
+
+    <section class="stats-grid">
+      <div class="stat-card">
+        <div class="stats-label">{{ 'OwnerHome.MonthlyIncome' | translate }}</div>
+        <div class="stat-value">{{ stats.monthlyIncome | currency:'S/ ' }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stats-label">{{ 'OwnerHome.PendingReservations' | translate }}</div>
+        <div class="stat-value">{{ stats.pendingReservationsCount }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stats-label">{{ 'OwnerHome.ActiveBikes' | translate }}</div>
+        <div class="stat-value">{{ stats.activeBikesCount }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stats-label">{{ 'OwnerHome.OwnerRating' | translate }}</div>
+        <div class="stat-value rating-display">
+          {{ stats.ownerRating }} <mat-icon>star</mat-icon>
+        </div>
+      </div>
+    </section>
+
+    <section class="pending-reservations">
+      <div class="section-header">
+        <h2>{{ 'OwnerHome.PendingReservationsTitle' | translate }}</h2>
+        <a [routerLink]="['/owner/reservations']" class="btn-view-all">{{ 'OwnerHome.ViewAllReservations' | translate }}</a>
+      </div>
+      <div class="card recent-rentals-card">
+        <div class="rentals-header">
+          <span>{{ 'OwnerHome.Renter' | translate }}</span>
+          <span>{{ 'OwnerHome.Date' | translate }}</span>
+          <span>{{ 'OwnerHome.Actions' | translate }}</span>
+        </div>
+        <div class="rental-item reservation-item" *ngFor="let r of pendingReservations.slice(0, 3)">
+          <span class="renter-info">
+            <strong>{{ r.renterName }}</strong>
+            <small>{{ r.bikeName }}</small>
+          </span>
+          <span>{{ r.date | date:'dd MMM, h:mm a' }}</span>
+          <span class="reservation-actions">
+            <button class="btn btn-accept" (click)="acceptReservation(r.id)">{{ 'OwnerHome.Accept' | translate }}</button>
+            <button class="btn btn-decline" (click)="declineReservation(r.id)">{{ 'OwnerHome.Decline' | translate }}</button>
+          </span>
+        </div>
+        <div *ngIf="pendingReservations.length === 0" class="empty-state">
+          {{ 'OwnerHome.NoPendingReservations' | translate }}
+        </div>
+      </div>
+    </section>
+
+    <section class="top-bikes">
+      <h2>{{ 'OwnerHome.TopBikesSectionTitle' | translate }}</h2>
+      <div class="bikes-scroller">
+        <div class="bike-card" *ngFor="let bike of topBikes">
+          <img [src]="bike.imageUrl" [alt]="bike.model" class="bike-card-image">
+          <div class="bike-card-info">
+            <h4>{{ bike.model }}</h4>
+            <p>{{ 'OwnerHome.CardRentals' | translate: {count: bike.rentalsThisMonth} }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <aside class="sidebar">
+    <button class="btn-add-bike" (click)="navigateToAddBike()">
+      <mat-icon>add_circle_outline</mat-icon>
+      <span>{{ 'OwnerHome.AddNewBike' | translate }}</span>
+    </button>
+    <h2>{{ 'OwnerHome.RecentActivityTitle' | translate }}</h2>
+    <div class="card recommendations-card">
+      <div class="recommendation-item activity-item" *ngFor="let activity of recentActivities">
+        <div class="activity-icon">
+          <mat-icon *ngIf="activity.type === 'reservation'">event_available</mat-icon>
+          <mat-icon *ngIf="activity.type === 'review'">star</mat-icon>
+          <mat-icon *ngIf="activity.type === 'cancellation'">cancel</mat-icon>
+        </div>
+        <div class="rec-info">
+          <p class="activity-text">
+            <strong>{{ activity.person }}</strong>
+            <span *ngIf="activity.type === 'reservation'"> {{ 'OwnerHome.ActivityReserved' | translate }} </span>
+            <span *ngIf="activity.type === 'review'"> {{ 'OwnerHome.ActivityReviewed' | translate }} </span>
+            <span *ngIf="activity.type === 'cancellation'"> {{ 'OwnerHome.ActivityCancelled' | translate }} </span>
+            "{{ activity.bikeName }}".
+          </p>
+          <span class="rec-details">{{ activity.timestamp | date:'shortTime' }}</span>
+        </div>
+      </div>
+      <a routerLink="/owner/activity" class="view-all-link">{{ 'OwnerHome.ViewAllActivity' | translate }}</a>
+    </div>
+  </aside>
+</div>

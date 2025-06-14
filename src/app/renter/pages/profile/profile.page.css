@@ -27,7 +27,6 @@
   color: #333;
 }
 
-/* --- Sección 1: Información Personal --- */
 .personal-info-content {
   display: flex;
   align-items: flex-start;
@@ -58,7 +57,7 @@
 }
 
 .profile-picture-container.editable:hover img {
-  border-color: #5e43f3; /* Color primario */
+  border-color: #5e43f3;
 }
 
 .profile-picture-container span {
@@ -104,7 +103,7 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  grid-column: span 2; /* Ocupa todo el ancho */
+  grid-column: span 2;
 }
 
 .notifications-toggle label {
@@ -164,7 +163,7 @@ button[mat-flat-button] {
 }
 
 .profile-picture-container.editable:hover img {
-  border-color: #5e43f3; /* Color primario */
+  border-color: #5e43f3;
 }
 
 .personal-details .cancel-button {

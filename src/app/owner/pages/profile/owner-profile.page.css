@@ -1,0 +1,139 @@
+/* Usamos las mismas variables que en las otras páginas para consistencia */
+:host {
+  --bg-page: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --border-color: #E2E8F0;
+  --text-primary: #1E293B;
+  --text-secondary: #64748B;
+  --primary-button-bg: #4F46E5;
+  --star-color: #FBBF24;
+  --card-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+  --card-radius: 0.75rem;
+}
+
+.profile-container {
+  padding: 2rem;
+  background-color: var(--bg-page);
+  font-family: 'Inter', sans-serif;
+  max-width: 900px;
+  margin: auto;
+}
+
+.profile-section-card {
+  background-color: var(--bg-card);
+  border-radius: var(--card-radius);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--card-shadow);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.section-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.section-header button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.personal-info-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.profile-picture-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+  width: 150px;
+}
+
+.profile-picture-container img {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--border-color);
+}
+
+.verified-chip {
+  background-color: var(--primary-button-bg) !important;
+  color: white !important;
+}
+
+.personal-details {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.preferences-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.cancel-button {
+  align-self: flex-start;
+  margin-top: 0.5rem;
+}
+
+.reviews-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.review-card {
+  border: 1px solid var(--border-color);
+  box-shadow: none;
+}
+.review-date {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+.review-rating {
+  padding: 0 1rem 0.5rem !important;
+}
+
+.rating-stars {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.rating-stars strong {
+  color: var(--text-primary);
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+.rating-stars mat-icon {
+  color: var(--star-color);
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.view-more-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}

@@ -1,10 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #sidenav mode="side" opened class="custom-sidenav">
+    <app-sidebar [menuItems]="ownerMenuItems"></app-sidebar>
+  </mat-sidenav>
 
-</body>
-</html>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" class="toolbar-fixed">
+      <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+
+      <span>{{ pageTitle }}</span>
+
+      <span class="spacer"></span>
+
+      <app-language-switcher></app-language-switcher>
+
+      <button mat-icon-button aria-label="Notificaciones">
+        <mat-icon>notifications</mat-icon>
+      </button>
+      <button mat-icon-button aria-label="Perfil de usuario">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+
+    </mat-toolbar>
+    <main class="layout-main">
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

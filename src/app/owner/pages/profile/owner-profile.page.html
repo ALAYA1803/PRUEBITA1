@@ -1,0 +1,80 @@
+<div class="profile-container">
+
+  <div class="profile-section-card">
+    <div class="section-header">
+      <h2>{{ 'Profile.PersonalInfo' | translate }}</h2>
+      <button mat-flat-button color="primary" (click)="toggleEdit(personalInfoForm, 'personal')">
+        <mat-icon>{{ personalInfoEditMode ? 'save' : 'edit' }}</mat-icon>
+        <span>{{ (personalInfoEditMode ? 'Profile.Save' : 'Profile.Edit') | translate }}</span>
+      </button>
+    </div>
+    <form [formGroup]="personalInfoForm" class="personal-info-content">
+      <div class="profile-picture-container">
+        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Foto de Perfil">
+        <mat-chip-listbox>
+          <mat-chip-option *ngIf="ownerProfileData.isVerified" selected color="primary" class="verified-chip">
+            <mat-icon>verified</mat-icon> {{ 'OwnerProfile.Verified' | translate }}
+          </mat-chip-option>
+        </mat-chip-listbox>
+      </div>
+      <div class="personal-details">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'Profile.Name' | translate }}</mat-label>
+          <input matInput formControlName="name">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'Profile.Phone' | translate }}</mat-label>
+          <input matInput formControlName="phone">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'OwnerProfile.PublicBio' | translate }}</mat-label>
+          <textarea matInput formControlName="publicBio" rows="3"></textarea>
+        </mat-form-field>
+        <button *ngIf="personalInfoEditMode" mat-stroked-button (click)="cancelEdit(personalInfoForm, 'personal')" class="cancel-button">{{ 'Profile.Cancel' | translate }}</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="profile-section-card">
+    <div class="section-header">
+      <h2>{{ 'OwnerProfile.PayoutAndSecurity' | translate }}</h2>
+      <button mat-flat-button color="primary" (click)="toggleEdit(payoutInfoForm, 'payout')">
+        <mat-icon>{{ payoutInfoEditMode ? 'save' : 'edit' }}</mat-icon>
+        <span>{{ (payoutInfoEditMode ? 'Profile.Save' : 'Profile.Edit') | translate }}</span>
+      </button>
+    </div>
+    <form [formGroup]="payoutInfoForm" class="preferences-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'OwnerProfile.PayoutEmail' | translate }}</mat-label>
+        <input matInput type="email" formControlName="payoutEmail" placeholder="ej. tu.correo@paypal.com">
+      </mat-form-field>
+      <button mat-stroked-button *ngIf="payoutInfoEditMode" (click)="cancelEdit(payoutInfoForm, 'payout')" class="cancel-button">{{ 'Profile.Cancel' | translate }}</button>
+    </form>
+  </div>
+
+  <div class="profile-section-card">
+    <h2>{{ 'OwnerProfile.ReceivedReviews' | translate }}</h2>
+    <div class="reviews-container">
+      <mat-card class="review-card" *ngFor="let review of reviewsReceived">
+        <mat-card-header>
+          <div mat-card-avatar class="review-avatar"></div>
+          <mat-card-title>{{ review.renterName }}</mat-card-title>
+          <mat-card-subtitle>{{ review.date }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>"{{ review.comment }}"</p>
+        </mat-card-content>
+        <mat-card-actions class="review-rating">
+          <div class="rating-stars">
+            <strong>{{ review.rating.toFixed(1) }}</strong>
+            <mat-icon *ngFor="let star of stars; let i = index">{{ getStarType(review.rating, i + 1) }}</mat-icon>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    <div class="view-more-container">
+      <button mat-flat-button color="primary">{{ 'Profile.ViewMore' | translate }}</button>
+    </div>
+  </div>
+
+</div>

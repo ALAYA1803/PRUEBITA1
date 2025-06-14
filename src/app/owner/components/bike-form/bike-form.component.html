@@ -1,0 +1,47 @@
+<div class="form-container">
+  <header class="form-header">
+    <h2>{{ (bikeToEdit ? 'MyBikes.EditBikeTitle' : 'MyBikes.NewBikeTitle') | translate }}</h2>
+    <button mat-icon-button (click)="onCancel()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </header>
+
+  <form [formGroup]="bikeForm" (ngSubmit)="onSubmit()" class="form-grid">
+    <div class="form-fields">
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'MyBikes.Form.Model' | translate }}</mat-label>
+        <input matInput formControlName="model" required>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'MyBikes.Form.Type' | translate }}</mat-label>
+        <mat-select formControlName="type" required>
+          <mat-option *ngFor="let type of bikeTypes" [value]="type">{{ type }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'MyBikes.Form.Price' | translate }}</mat-label>
+        <input matInput type="number" formControlName="costPerMinute" placeholder="0.50" required>
+        <span matTextPrefix>S/&nbsp;</span>
+        <span matTextSuffix>/min</span>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'MyBikes.Form.ImageUrl' | translate }}</mat-label>
+        <input matInput formControlName="imageUrl" required>
+      </mat-form-field>
+    </div>
+
+    <div class="map-field">
+      <label class="map-label">{{ 'MyBikes.Form.Location' | translate }}</label>
+      <div #formMapContainer class="form-map"></div>
+      <div class="coords-display">
+        <span>Lat: {{ bikeForm.get('lat')?.value?.toFixed(4) || 'N/A' }}</span>
+        <span>Lng: {{ bikeForm.get('lng')?.value?.toFixed(4) || 'N/A' }}</span>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button mat-stroked-button type="button" (click)="onCancel()">{{ 'MyBikes.Form.Cancel' | translate }}</button>
+      <button mat-flat-button color="primary" type="submit" [disabled]="bikeForm.invalid">{{ 'MyBikes.Form.Save' | translate }}</button>
+    </div>
+  </form>
+</div>

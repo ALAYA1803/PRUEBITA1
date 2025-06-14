@@ -1,6 +1,6 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #sidenav mode="side" opened class="custom-sidenav">
-    <app-sidebar></app-sidebar>
+    <app-sidebar [menuItems]="renterMenuItems"></app-sidebar>
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary" class="toolbar-fixed">

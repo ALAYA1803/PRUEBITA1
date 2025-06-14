@@ -1,0 +1,186 @@
+:host {
+  --font-family: 'Inter', sans-serif;
+  --bg-page: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --border-color: #E2E8F0;
+  --text-primary: #1E293B;
+  --text-secondary: #64748B;
+  --primary-button-bg: #4F46E5;
+  --success-bg: #D1FAE5;
+  --success-text: #065F46;
+  --danger-bg: #FEE2E2;
+  --danger-text: #991B1B;
+  --warning-bg: #FEF3C7;
+  --warning-text: #92400E;
+  --info-bg: #DBEAFE;
+  --info-text: #1E40AF;
+  --neutral-bg: #F1F5F9;
+  --neutral-text: #475569;
+
+  --card-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+  --card-radius: 0.75rem;
+
+  display: block;
+  background-color: var(--bg-page);
+  padding: 2rem;
+}
+
+
+.page-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem 0;
+  color: var(--text-primary);
+}
+
+.page-header p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.tab-content {
+  padding: 2rem 0.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.reservation-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  background-color: var(--bg-card);
+  padding: 1.5rem;
+  border-radius: var(--card-radius);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--card-shadow);
+}
+
+.card-main {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-grow: 1;
+}
+
+.renter-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border-color);
+}
+
+.reservation-details h4 {
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.reservation-details p {
+  margin: 0.25rem 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+.reservation-details p strong {
+  color: var(--text-primary);
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.price {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.btn-accept, .btn-decline {
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+
+.btn-accept:hover, .btn-decline:hover {
+  opacity: 0.85;
+}
+
+.btn-accept {
+  background-color: var(--success-bg);
+  color: var(--success-text);
+}
+
+.btn-decline {
+  background-color: var(--danger-bg);
+  color: var(--danger-text);
+}
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+.status-badge mat-icon {
+  font-size: 1.2rem;
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.status-pending  { background-color: var(--warning-bg); color: var(--warning-text); }
+.status-accepted { background-color: var(--info-bg); color: var(--info-text); }
+.status-completed{ background-color: var(--neutral-bg); color: var(--neutral-text); }
+.status-cancelled,
+.status-declined { background-color: var(--danger-bg); color: var(--danger-text); }
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  background-color: var(--neutral-bg);
+  border-radius: var(--card-radius);
+}
+
+:host::ng-deep .mat-mdc-tab-body-content {
+  overflow: hidden;
+}
+
+:host::ng-deep .mat-mdc-tab-label {
+  height: 56px !important;
+  font-weight: 600;
+}
+.btn-main-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--primary-button-bg);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-main-action mat-icon {
+  font-size: 1.2rem;
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.btn-main-action:hover {
+  opacity: 0.9;
+}

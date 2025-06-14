@@ -1,0 +1,133 @@
+<div class="page-container">
+  <header class="page-header">
+    <h1>{{ 'Reservations.Title' | translate }}</h1>
+    <p>{{ 'Reservations.Subtitle' | translate }}</p>
+  </header>
+
+  <mat-tab-group animationDuration="0ms" mat-stretch-tabs="false" mat-align-tabs="start">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon>hourglass_top</mat-icon>
+        {{ 'Reservations.TabPending' | translate }}
+      </ng-template>
+      <div class="tab-content">
+        <ng-container *ngIf="pendingReservations.length > 0; else emptyState">
+          <div class="reservation-card" *ngFor="let res of pendingReservations">
+            <div class="card-main">
+              <img [src]="res.renterImage" alt="Foto de {{ res.renterName }}" class="renter-image">
+              <div class="reservation-details">
+                <h4>{{ res.renterName }}</h4>
+                <p><strong>{{ 'Reservations.Bike' | translate }}:</strong> {{ res.bikeName }}</p>
+                <p><strong>{{ 'Reservations.Date' | translate }}:</strong> {{ res.date | date:'fullDate' }}</p>
+              </div>
+            </div>
+            <div class="card-actions">
+              <div class="price">{{ res.totalPrice | currency:'S/ ' }}</div>
+
+              <button class="btn-main-action" (click)="contactRenter(res)">
+                <mat-icon>chat</mat-icon>
+                <span>{{ 'Reservations.Contact' | translate }}</span>
+              </button>
+
+              <button class="btn-decline" (click)="decline(res.id)">{{ 'Reservations.Decline' | translate }}</button>
+              <button class="btn-accept" (click)="accept(res.id)">{{ 'Reservations.Accept' | translate }}</button>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon>event_available</mat-icon>
+        {{ 'Reservations.TabUpcoming' | translate }}
+      </ng-template>
+      <div class="tab-content">
+        <div class="reservation-card" *ngFor="let res of upcomingReservations">
+          <div class="card-main">
+            <img [src]="res.renterImage" alt="Foto de {{ res.renterName }}" class="renter-image">
+            <div class="reservation-details">
+              <h4>{{ res.renterName }}</h4>
+              <p><strong>{{ 'Reservations.Bike' | translate }}:</strong> {{ res.bikeName }}</p>
+              <p><strong>{{ 'Reservations.Date' | translate }}:</strong> {{ res.date | date:'fullDate' }}</p>
+            </div>
+          </div>
+          <div class="card-actions">
+            <div class="status-badge" [ngClass]="getStatusInfo(res.status).class">
+              <mat-icon>{{ getStatusInfo(res.status).icon }}</mat-icon>
+              <span>{{ getStatusInfo(res.status).textKey | translate }}</span>
+            </div>
+            <button class="btn-main-action" (click)="contactRenter(res)">
+              <mat-icon>chat</mat-icon>
+              <span>{{ 'Reservations.Contact' | translate }}</span>
+            </button>
+          </div>
+        </div>
+        <ng-container *ngIf="upcomingReservations.length === 0">
+          <div class="empty-state">{{ 'Reservations.Empty' | translate }}</div>
+        </ng-container>
+      </div>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon>check_circle</mat-icon>
+        {{ 'Reservations.TabCompleted' | translate }}
+      </ng-template>
+      <div class="tab-content">
+        <div class="reservation-card" *ngFor="let res of completedReservations">
+          <div class="card-main">
+            <img [src]="res.renterImage" alt="Foto de {{ res.renterName }}" class="renter-image">
+            <div class="reservation-details">
+              <h4>{{ res.renterName }}</h4>
+              <p><strong>{{ 'Reservations.Bike' | translate }}:</strong> {{ res.bikeName }}</p>
+              <p><strong>{{ 'Reservations.Date' | translate }}:</strong> {{ res.date | date:'dd/MM/yy' }} - {{ res.endDate | date:'dd/MM/yy' }}</p>
+            </div>
+          </div>
+          <div class="card-actions">
+            <div class="price">{{ res.totalPrice | currency:'S/ ' }}</div>
+            <div class="status-badge" [ngClass]="getStatusInfo(res.status).class">
+              <mat-icon>{{ getStatusInfo(res.status).icon }}</mat-icon>
+              <span>{{ getStatusInfo(res.status).textKey | translate }}</span>
+            </div>
+          </div>
+        </div>
+        <ng-container *ngIf="completedReservations.length === 0">
+          <div class="empty-state">{{ 'Reservations.Empty' | translate }}</div>
+        </ng-container>
+      </div>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon>history</mat-icon>
+        {{ 'Reservations.TabHistory' | translate }}
+      </ng-template>
+      <div class="tab-content">
+        <div class="reservation-card" *ngFor="let res of historyReservations">
+          <div class="card-main">
+            <img [src]="res.renterImage" alt="Foto de {{ res.renterName }}" class="renter-image">
+            <div class="reservation-details">
+              <h4>{{ res.renterName }}</h4>
+              <p><strong>{{ 'Reservations.Bike' | translate }}:</strong> {{ res.bikeName }}</p>
+            </div>
+          </div>
+          <div class="card-actions">
+            <div class="status-badge" [ngClass]="getStatusInfo(res.status).class">
+              <mat-icon>{{ getStatusInfo(res.status).icon }}</mat-icon>
+              <span>{{ getStatusInfo(res.status).textKey | translate }}</span>
+            </div>
+          </div>
+        </div>
+        <ng-container *ngIf="historyReservations.length === 0">
+          <div class="empty-state">{{ 'Reservations.Empty' | translate }}</div>
+        </ng-container>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+
+  <ng-template #emptyState>
+    <div class="empty-state">{{ 'Reservations.Empty' | translate }}</div>
+  </ng-template>
+
+</div>

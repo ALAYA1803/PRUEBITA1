@@ -1,0 +1,42 @@
+<div class="page-container">
+
+  <ng-container *ngIf="!isEditing; else formView">
+    <div class="page-layout">
+      <div class="list-panel">
+        <header class="list-header">
+          <h1>{{ 'MyBikes.Title' | translate }}</h1>
+          <button mat-fab extended color="primary" (click)="showAddForm()">
+            <mat-icon>add</mat-icon>
+            {{ 'MyBikes.AddNewBike' | translate }}
+          </button>
+        </header>
+
+        <div class="bike-list">
+          <div class="bike-list-item" *ngFor="let bike of myBikes" (click)="selectBike(bike)" [class.selected]="bike.id === selectedBike?.id">
+            <img [src]="bike.imageUrl" [alt]="bike.model" class="bike-list-image">
+            <div class="bike-list-info">
+              <h4>{{ bike.model }}</h4>
+              <p>{{ bike.type }} - S/ {{ bike.costPerMinute }}/min</p>
+            </div>
+            <button mat-icon-button class="edit-button" (click)="showEditForm(bike); $event.stopPropagation()">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="map-panel">
+        <div #mapContainer class="map-container"></div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #formView>
+    <app-bike-form
+      [bikeToEdit]="selectedBike"
+      (formSubmitted)="handleFormSubmit($event)"
+      (formCancelled)="handleFormCancel()">
+    </app-bike-form>
+  </ng-template>
+
+</div>
