@@ -56,9 +56,11 @@
   </div>
   <ng-container *ngIf="(notifications$ | async) as notifications">
     <div *ngIf="notifications.length > 0; else noNotifications">
-      <button mat-menu-item *ngFor="let activity of notifications">
-        <mat-icon class="activity-icon-menu">info</mat-icon>
-        <span class="notification-text">Notificación de ejemplo.</span>
+      <button mat-menu-item *ngFor="let notification of notifications">
+        <mat-icon class="activity-icon-menu" color="primary">check_circle_outline</mat-icon>
+        <span class="notification-text" *ngIf="notification.type === 'reservation_accepted'">
+          {{ 'Notifications.ReservationAccepted' | translate: { bikeName: notification.bikeName } }}
+        </span>
       </button>
     </div>
   </ng-container>

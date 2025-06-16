@@ -60,6 +60,7 @@ export class OwnerLayoutComponent implements OnInit {
   }
 
   onLogout(): void {
+    this.notificationService.clearNotifications();
     localStorage.removeItem('userId');
     this.router.navigateByUrl('/login');
   }

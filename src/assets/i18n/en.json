@@ -250,5 +250,6 @@
   "Support.Category.Payment": "Payment Inquiries",
   "Support.Category.Technical": "Report a Technical Problem",
   "Support.Category.Suggestions": "Suggestions",
-  "Support.Category.Other": "Other"
+  "Support.Category.Other": "Other",
+  "Notifications.ReservationAccepted": "Good news! Your reservation for the '{{bikeName}}' bike has been accepted by the owner."
 }

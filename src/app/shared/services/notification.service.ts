@@ -16,7 +16,11 @@ export class NotificationService {
   setNotifications(notifications: any[]): void {
     this.notificationsSource.next(notifications);
   }
+
   markAllAsRead(): void {
+    this.notificationsSource.next([]);
+  }
+  clearNotifications(): void {
     this.notificationsSource.next([]);
   }
 }
