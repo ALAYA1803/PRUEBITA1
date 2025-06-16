@@ -31,12 +31,15 @@
       <div class="list-panel">
         <h2 class="list-title">{{ 'free_bikes' | translate }}</h2>
 
-        <div *ngIf="hasSearched; else initial" class="stations-list">
+        <div class="stations-list">
           <div class="station-headers">
             <span>{{ 'Map.Owner' | translate }}</span>
             <span>{{ 'Map.Type' | translate }}</span>
             <span>{{ 'Map.Price' | translate }}</span>
             <span>{{ 'Map.Distance' | translate }}</span>
+          </div>
+          <div *ngIf="filteredBikes.length === 0" class="initial-summary">
+            No se encontraron bicicletas con esos filtros.
           </div>
           <div *ngFor="let b of filteredBikes"
                class="station-item"
@@ -44,25 +47,15 @@
                [class.selected-row]="selectedBike?.id === b.id">
             <span class="item-owner">{{ b.owner }}</span>
             <span class="item-type">{{ b.type }}</span>
-            <span class="item-price">S/{{ b.costPerMinute.toFixed(1) }} x min</span>
+            <span class="item-price">{{ b.costPerMinute | currency:'S/':'symbol':'1.1-2' }} x min</span>
             <span class="item-distance">{{ b.distance! | number:'1.0-0' }} m</span>
           </div>
         </div>
 
-        <ng-template #initial>
-          <div class="initial-summary">
-            {{ 'Map.SearchSummary' | translate }}
-          </div>
-        </ng-template>
-
         <div *ngIf="selectedBike" class="reservation-box">
           <div class="rb-header">
             <div class="owner-photo">
-              <img
-                [src]="selectedBike.ownerPhoto"
-                alt="Foto de {{selectedBike.owner}}"
-                (error)="onOwnerImageError($event)"
-              />
+              <img [src]="selectedBike.ownerPhoto" alt="Foto de {{selectedBike.owner}}" (error)="onOwnerImageError($event)"/>
             </div>
             <div class="info">
               <strong>{{ selectedBike.owner }}</strong>
@@ -71,21 +64,17 @@
           </div>
           <div class="rb-body">
             <div class="bike-image">
-              <img
-                [src]="selectedBike.imageUrl"
-                alt="Bici {{selectedBike.type}}"
-                (error)="onBikeImageError($event)"
-              />
+              <img [src]="selectedBike.imageUrl" alt="Bici {{selectedBike.type}}" (error)="onBikeImageError($event)"/>
             </div>
           </div>
           <div class="rb-footer">
             <div class="actions">
               <a href="#" class="favorite">⭐ {{ 'Map.AddToFavorites' | translate }}</a><br>
               <span>{{ 'Map.Cost' | translate }}:
-                <strong>S/ {{ selectedBike.costPerMinute.toFixed(1) }} x min</strong>
+                <strong>{{ selectedBike.costPerMinute | currency:'S/':'symbol':'1.1-2' }} x min</strong>
               </span>
             </div>
-            <button class="reserve">{{ 'Map.Reserve' | translate }}</button>
+            <button class="reserve" (click)="openReservationDialog()">{{ 'Map.Reserve' | translate }}</button>
           </div>
         </div>
       </div>

@@ -1,47 +1,40 @@
-/* Estilos base para asegurar que el layout ocupe toda la pantalla */
+
 .sidenav-container {
   height: 100vh;
 }
 
-/* Estilo del sidebar lateral */
 .custom-sidenav {
   width: 280px;
   background: #FFD38F;
 }
 
-/* Estilo para que el toolbar se mantenga fijo arriba */
 .toolbar-fixed {
   position: sticky;
   top: 0;
   z-index: 10;
 }
 
-/* Elemento clave que empuja los íconos a la derecha */
 .spacer {
   flex: 1 1 auto;
 }
 
-/* Contenedor principal del contenido de la página */
 .layout-main {
   padding: 1rem;
   height: calc(100vh - 64px);
   overflow-y: auto;
-  background-color: #f4f6f9; /* Color de fondo añadido para consistencia */
+  background-color: #f4f6f9;
 }
-
-
-/* --- Estilos para la funcionalidad del toolbar --- */
 
 .user-menu-content {
   display: flex;
-  align-items: center; /* Centra verticalmente la foto y el texto */
-  gap: 8px;          /* Espacio entre la foto y el texto */
+  align-items: center;
+  gap: 8px;
 }
 
 .toolbar-avatar {
   width: 36px;
   height: 36px;
-  border-radius: 50%; /* 50% para un círculo perfecto */
+  border-radius: 50%;
   object-fit: cover;
   background-color: #fff;
 }

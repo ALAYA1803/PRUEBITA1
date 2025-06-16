@@ -3,17 +3,11 @@ import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatIconModule } from "@angular/material/icon";
-
-// <-- MEJORA: Importamos los servicios que ya creamos para centralizar la lógica
 import { NotificationService } from '../../../shared/services/notification.service';
 import { CurrentUserService } from '../../../shared/services/current-user.service';
-
-// Imports de los modelos de datos
 import { DashboardStats } from '../../model/dashboard-stats.entity';
 import { Reservation } from '../../model/reservation.entity';
 import { Bike } from '../../model/bike.entity';
-
-// La interfaz para la actividad reciente se queda aquí, lo cual está bien
 export interface RecentActivity {
   type: 'reservation' | 'review' | 'cancellation';
   person: string;
@@ -43,7 +37,7 @@ export class OwnerHomePage implements OnInit {
   topBikes: Bike[] = [];
   private router = inject(Router);
   private notificationService = inject(NotificationService);
-  private currentUserService = inject(CurrentUserService); // <-- MEJORA: Usamos el servicio de usuario
+  private currentUserService = inject(CurrentUserService);
 
   ngOnInit(): void {
     this.fetchOwnerName();

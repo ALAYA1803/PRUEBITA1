@@ -5,6 +5,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { MatIconModule } from '@angular/material/icon';
+
 import { CurrentUserService } from '../../../shared/services/current-user.service';
 import { ReservationDialogComponent, ReservationDialogData } from '../../../shared/components/reservation-dialog/reservation-dialog.component';
 import { ReservationDetailsDialogComponent } from '../../../shared/components/reservation-details-dialog/reservation-details-dialog.component';
@@ -40,7 +42,15 @@ interface Recommendation {
 @Component({
   selector: 'app-renter-home',
   standalone: true,
-  imports: [CommonModule, TranslateModule, MatDialogModule, MatSnackBarModule, CurrencyPipe, DatePipe],
+  imports: [
+    CommonModule,
+    TranslateModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    CurrencyPipe,
+    DatePipe,
+    MatIconModule
+  ],
   templateUrl: './renter-home.page.html',
   styleUrls: ['./renter-home.page.css']
 })
@@ -54,7 +64,6 @@ export class RenterHomePage implements OnInit {
   upcomingReservation: UpcomingReservation | null = null;
   recentRentals: RentalHistory[] = [];
   recommendations: Recommendation[] = [];
-
   private mockUpcomingReservations: UpcomingReservation[] = [
     { id: 'res-001', bikeName: 'Bicicleta de Montaña Specialized', date: '2025-06-18T17:00:00.000Z', address: 'Parque Kennedy, Miraflores', bikeImage: 'https://www.monark.com.pe/static/monark-pe/uploads/products/images/bicicleta-monark-highlander-xt-aro-29-rojo-negro-01.jpg', ownerName: 'Ana' }
   ];
@@ -83,24 +92,26 @@ export class RenterHomePage implements OnInit {
       ];
     });
   }
+
   viewDetails(reservation: UpcomingReservation): void {
     this.dialog.open(ReservationDetailsDialogComponent, {
       width: '500px',
       data: reservation
     });
   }
+
   cancelReservation(reservation: UpcomingReservation): void {
     const dialogRef = this.dialog.open(CancelConfirmationDialogComponent, { width: '450px' });
 
     dialogRef.afterClosed().subscribe(confirmed => {
       if (confirmed) {
-        console.log('Cancelando reserva ID:', reservation.id);
         this.mockUpcomingReservations = this.mockUpcomingReservations.filter(r => r.id !== reservation.id);
         this.upcomingReservation = null;
         this.snackBar.open('Reserva cancelada exitosamente', 'Cerrar', { duration: 3000 });
       }
     });
   }
+
   reserveBike(rec: Recommendation): void {
     const dialogData: ReservationDialogData = {
       bikeName: rec.bikeName,

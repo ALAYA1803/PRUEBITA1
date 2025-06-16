@@ -22,8 +22,7 @@
       <div class="stat-card">
         <div class="stats-label">{{ 'RenterHome.Rating' | translate }}</div>
         <div class="stat-value rating-display">
-          &#9733;&#9733;&#9733;&#9733;&#9733;
-          <span class="rating-number">{{ stats.rating.toFixed(1) }}</span>
+          {{ stats.rating.toFixed(1) }} <mat-icon>star</mat-icon>
         </div>
       </div>
     </section>

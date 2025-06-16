@@ -245,5 +245,10 @@
   "ReservationDialog.Minutes": "minutes",
   "ReservationDialog.TotalCostLabel": "Estimated Total Cost",
   "ReservationDialog.CancelButton": "Cancel",
-  "ReservationDialog.ConfirmButton": "Confirm Reservation"
+  "ReservationDialog.ConfirmButton": "Confirm Reservation",
+  "Support.Category.Booking": "Booking Issues",
+  "Support.Category.Payment": "Payment Inquiries",
+  "Support.Category.Technical": "Report a Technical Problem",
+  "Support.Category.Suggestions": "Suggestions",
+  "Support.Category.Other": "Other"
 }
