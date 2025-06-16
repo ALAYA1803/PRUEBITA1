@@ -1,21 +1,25 @@
 <div class="register-wrapper">
   <div class="register-left">
-    <img src="assets/img/logo5.png" alt="BikeShare Logo" />
+    <img src="../../../../assets/img/principal-logo.png" alt="BikeShare Logo" />
     <h2>{{ 'Register.Welcome' | translate }} <span>BikeShare</span></h2>
     <p>{{ 'Register.Tagline' | translate }}</p>
   </div>
 
   <div class="register-right">
+    <div class="language-switcher">
+      <button (click)="switchLanguage('es')" [class.active]="translate.currentLang === 'es'">ES</button>
+      <button (click)="switchLanguage('en')" [class.active]="translate.currentLang === 'en'">EN</button>
+    </div>
+
     <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
       <h3>{{ 'Register.CreateAccount' | translate }}</h3>
-      <p>{{ 'Register.ItsFree' | translate }}</p>
+      <p>{{ 'Register.ItsFree' | translate }}</p><br>
 
       <label>{{ 'Register.RegisterAs' | translate }}</label>
       <select name="isOwner" [(ngModel)]="isOwner" required>
         <option [ngValue]="false">{{ 'Register.OptionRenter' | translate }}</option>
         <option [ngValue]="true">{{ 'Register.OptionOwner' | translate }}</option>
-      </select>
-
+      </select><br>
 
       <label>{{ 'Register.FullName' | translate }}</label>
       <input type="text" name="fullName" [(ngModel)]="fullName" [placeholder]="'Register.FullNamePlaceholder' | translate" required />
@@ -35,14 +39,6 @@
 
       <button type="submit" class="btn-register">{{ 'Register.CreateAccountBtn' | translate }}</button>
 
-      <div class="social-register">
-        <p>{{ 'Register.OrVia' | translate }}</p>
-        <div class="social-icons">
-          <button class="google" type="button"></button>
-          <button class="apple" type="button"></button>
-          <button class="facebook" type="button"></button>
-        </div>
-      </div>
       <div class="login-text">
         {{ 'Register.AlreadyHaveAccount' | translate }}
         <button type="button" routerLink="/login" class="link-button">{{ 'Register.SignIn' | translate }}</button>

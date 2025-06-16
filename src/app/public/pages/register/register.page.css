@@ -16,6 +16,39 @@
   padding: 2rem;
   height: 100%;
 }
+.register-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+}
+
+
+.language-switcher {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.language-switcher button {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #555;
+}
+
+.language-switcher button.active {
+  background-color: #5f8ce0;
+  color: white;
+  border-color: #5f8ce0;
+}
 
 .register-left img {
   width: 300px;

@@ -16,7 +16,15 @@ export class LoginPage {
   email = '';
   password = '';
 
-  constructor(private http: HttpClient, private router: Router, private translate: TranslateService) {}
+  constructor(private http: HttpClient, private router: Router, public translate: TranslateService) {}
+  switchLanguage(language: string) {
+    this.translate.use(language);
+  }
+  onForgotPassword() {
+
+    this.router.navigate(['/forgot-password']);
+
+  }
 
   onSubmit() {
     if (!this.email || !this.password) {
@@ -35,7 +43,7 @@ export class LoginPage {
           alert(this.translate.instant('Login.WrongPassword'));
           return;
         }
-        localStorage.setItem('userId',   user.id);
+        localStorage.setItem('userId',    user.id);
         localStorage.setItem('userRole', user.isOwner ? 'owner' : 'renter');
         this.router.navigate([ user.isOwner ? '/owner/home' : '/renter/home' ]);
       },
