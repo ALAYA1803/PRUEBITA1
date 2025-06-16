@@ -1,25 +1,83 @@
+/* Estilos base para asegurar que el layout ocupe toda la pantalla */
 .sidenav-container {
   height: 100vh;
 }
+
+/* Estilo del sidebar lateral */
 .custom-sidenav {
   width: 280px;
   background: #FFD38F;
 }
 
+/* Estilo para que el toolbar se mantenga fijo arriba */
 .toolbar-fixed {
   position: sticky;
   top: 0;
   z-index: 10;
-  background-color: #3F51B5;
 }
 
+/* Elemento clave que empuja los íconos a la derecha */
 .spacer {
   flex: 1 1 auto;
 }
 
+/* Contenedor principal del contenido de la página */
 .layout-main {
-  padding: 1.5rem;
+  padding: 1rem;
   height: calc(100vh - 64px);
   overflow-y: auto;
   background-color: #f4f6f9;
+}
+
+
+/* --- Estilos para la funcionalidad del toolbar --- */
+
+/* --- CORRECCIÓN DEFINITIVA PARA LA ALINEACIÓN --- */
+/* Ahora, el contenedor de la foto y el nombre es un div, no el botón */
+.user-menu-content {
+  display: flex;
+  align-items: center; /* Esto centrará verticalmente la foto y el texto */
+  gap: 8px;          /* Espacio entre la foto y el texto */
+}
+
+.toolbar-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%; /* 50% para un círculo perfecto */
+  object-fit: cover;
+  background-color: #fff;
+}
+
+/* El resto de los estilos están bien, los mantenemos */
+.notifications-panel {
+  max-width: 350px !important;
+}
+
+.notifications-header {
+  padding: 8px 16px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.notifications-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.notification-text {
+  white-space: normal;
+  line-height: 1.3;
+  font-size: 0.9rem;
+  padding-left: 8px;
+}
+
+.activity-icon-menu {
+  color: #64748B;
+}
+
+.no-notifications {
+  padding: 16px;
+  color: #888;
+  font-style: italic;
+  text-align: center;
 }

@@ -1,5 +1,4 @@
 <div class="profile-container">
-
   <div class="profile-section-card">
     <div class="section-header">
       <h2>{{ 'Profile.PersonalInfo' | translate }}</h2>
@@ -9,13 +8,11 @@
       </button>
     </div>
     <form [formGroup]="personalInfoForm" class="personal-info-content">
-      <div class="profile-picture-container">
-        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Foto de Perfil">
-        <mat-chip-listbox>
-          <mat-chip-option *ngIf="ownerProfileData.isVerified" selected color="primary" class="verified-chip">
-            <mat-icon>verified</mat-icon> {{ 'OwnerProfile.Verified' | translate }}
-          </mat-chip-option>
-        </mat-chip-listbox>
+      <div class="profile-picture-container" [class.editable]="personalInfoEditMode" (click)="onChangeProfilePicture()">
+        <img [src]="personalInfoForm.get('avatar')?.value" alt="Foto de Perfil">
+        <mat-chip *ngIf="ownerProfileData.isVerified" color="primary" selected class="verified-chip">
+          <mat-icon>verified</mat-icon> <span>{{ 'OwnerProfile.Verified' | translate }}</span>
+        </mat-chip>
       </div>
       <div class="personal-details">
         <mat-form-field appearance="outline">
@@ -37,33 +34,54 @@
 
   <div class="profile-section-card">
     <div class="section-header">
-      <h2>{{ 'OwnerProfile.PayoutAndSecurity' | translate }}</h2>
+      <h2>{{ 'OwnerProfile.PayoutInfo' | translate }}</h2>
       <button mat-flat-button color="primary" (click)="toggleEdit(payoutInfoForm, 'payout')">
         <mat-icon>{{ payoutInfoEditMode ? 'save' : 'edit' }}</mat-icon>
         <span>{{ (payoutInfoEditMode ? 'Profile.Save' : 'Profile.Edit') | translate }}</span>
       </button>
     </div>
-    <form [formGroup]="payoutInfoForm" class="preferences-grid">
-      <mat-form-field appearance="outline">
-        <mat-label>{{ 'OwnerProfile.PayoutEmail' | translate }}</mat-label>
-        <input matInput type="email" formControlName="payoutEmail" placeholder="ej. tu.correo@paypal.com">
-      </mat-form-field>
-      <button mat-stroked-button *ngIf="payoutInfoEditMode" (click)="cancelEdit(payoutInfoForm, 'payout')" class="cancel-button">{{ 'Profile.Cancel' | translate }}</button>
+    <form [formGroup]="payoutInfoForm">
+      <mat-tab-group animationDuration="0ms">
+        <mat-tab [label]="'OwnerProfile.PayPal' | translate">
+          <div class="tab-content"><mat-form-field appearance="outline" class="payout-field"><mat-label>{{ 'OwnerProfile.PayoutEmail' | translate }}</mat-label><input matInput type="email" formControlName="paypalEmail"></mat-form-field></div>
+        </mat-tab>
+        <mat-tab [label]="'OwnerProfile.Bank' | translate">
+          <div class="tab-content"><mat-form-field appearance="outline" class="payout-field"><mat-label>{{ 'OwnerProfile.BankAccount' | translate }}</mat-label><input matInput formControlName="bankAccountNumber"></mat-form-field></div>
+        </mat-tab>
+        <mat-tab [label]="'OwnerProfile.Yape' | translate">
+          <div class="tab-content"><mat-form-field appearance="outline" class="payout-field"><mat-label>{{ 'OwnerProfile.YapeNumber' | translate }}</mat-label><input matInput formControlName="yapePhoneNumber"></mat-form-field></div>
+        </mat-tab>
+      </mat-tab-group>
+      <button *ngIf="payoutInfoEditMode" mat-stroked-button (click)="cancelEdit(payoutInfoForm, 'payout')" class="cancel-button payout-cancel-btn">{{ 'Profile.Cancel' | translate }}</button>
     </form>
   </div>
 
   <div class="profile-section-card">
-    <h2>{{ 'OwnerProfile.ReceivedReviews' | translate }}</h2>
+    <h2>{{ 'OwnerProfile.Security' | translate }}</h2><br>
+    <div class="security-content">
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'Profile.CurrentPassword' | translate }}</mat-label>
+        <input matInput [type]="currentPasswordVisible ? 'text' : 'password'" [value]="currentPasswordMock" readonly>
+        <button mat-icon-button matSuffix (click)="currentPasswordVisible = !currentPasswordVisible" type="button">
+          <mat-icon>{{ currentPasswordVisible ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+      </mat-form-field>
+      <button mat-flat-button color="primary" (click)="openChangePasswordDialog()">
+        {{ 'OwnerProfile.ChangePassword' | translate }}
+      </button>
+    </div>
+  </div>
+
+  <div class="profile-section-card">
+    <h2>{{ 'OwnerProfile.ReceivedReviews' | translate }}</h2><br>
     <div class="reviews-container">
-      <mat-card class="review-card" *ngFor="let review of reviewsReceived">
+      <mat-card class="review-card" *ngFor="let review of reviewsReceived.slice(0, 2)">
         <mat-card-header>
-          <div mat-card-avatar class="review-avatar"></div>
+          <img mat-card-avatar [src]="review.renterImage" [alt]="review.renterName">
           <mat-card-title>{{ review.renterName }}</mat-card-title>
           <mat-card-subtitle>{{ review.date }}</mat-card-subtitle>
         </mat-card-header>
-        <mat-card-content>
-          <p>"{{ review.comment }}"</p>
-        </mat-card-content>
+        <mat-card-content><p>"{{ review.comment }}"</p></mat-card-content>
         <mat-card-actions class="review-rating">
           <div class="rating-stars">
             <strong>{{ review.rating.toFixed(1) }}</strong>
@@ -72,8 +90,8 @@
         </mat-card-actions>
       </mat-card>
     </div>
-    <div class="view-more-container">
-      <button mat-flat-button color="primary">{{ 'Profile.ViewMore' | translate }}</button>
+    <div class="view-more-container" *ngIf="reviewsReceived.length > 2">
+      <button mat-flat-button color="primary" (click)="openReviewsDialog()">{{ 'Profile.ViewMore' | translate }}</button>
     </div>
   </div>
 

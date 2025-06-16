@@ -1,0 +1,68 @@
+<div class="support-page-container">
+
+  <div class="support-card">
+    <h2>{{ 'Support.LastRequests' | translate }}</h2>
+    <div class="requests-list">
+      <div class="request-item request-header">
+        <span class="asunto">{{ 'Support.Subject' | translate }}</span>
+        <span class="fecha">{{ 'Support.Date' | translate }}</span>
+        <span class="estado">{{ 'Support.Status' | translate }}</span>
+        <span class="accion"></span>
+      </div>
+
+      <div *ngFor="let ticket of supportTickets" class="request-item">
+        <span class="asunto">{{ ticket.asunto }}</span>
+        <span class="fecha">{{ ticket.fecha }}</span>
+        <span class="estado">
+          <span class="status-chip" [ngClass]="getStatusClass(ticket.estado)">
+            {{ translateStatus(ticket.estado) }}
+          </span>
+        </span>
+        <span class="accion">
+          <button mat-flat-button color="primary" (click)="viewDetails(ticket.id)">{{ 'Support.ViewDetails' | translate }}</button>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="support-card">
+    <h2>{{ 'Support.NewRequest' | translate }}</h2>
+    <form class="new-request-form" [formGroup]="newRequestForm" (ngSubmit)="onSubmit()">
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'Support.SubjectLabel' | translate }}</mat-label>
+        <input matInput formControlName="asunto" [placeholder]="'Support.SubjectPlaceholder' | translate">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'Support.CategoryLabel' | translate }}</mat-label>
+        <mat-select formControlName="categoria">
+          <mat-option *ngFor="let category of categories" [value]="category">
+            {{ category | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'Support.MessageLabel' | translate }}</mat-label>
+        <textarea matInput formControlName="mensaje" rows="5" [placeholder]="'Support.MessagePlaceholder' | translate"></textarea>
+      </mat-form-field>
+
+      <div class="file-upload-container">
+        <input type="file" #fileInput hidden (change)="onFileSelected($event)">
+        <div class="file-upload-area" (click)="fileInput.click()">
+          <mat-icon>upload_file</mat-icon>
+          <span *ngIf="!selectedFileName">{{ 'Support.Attach' | translate }}</span>
+          <span *ngIf="selectedFileName" class="file-name">{{ selectedFileName }}</span>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button mat-flat-button color="primary" type="submit" [disabled]="newRequestForm.invalid">
+          {{ 'Support.SendRequest' | translate }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+</div>

@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>{{ 'OwnerProfile.AllReviews' | translate }}</h2>
+<mat-dialog-content class="dialog-content">
+  <div class="rating-summary">
+    <h3>{{ 'OwnerProfile.AverageRating' | translate }}: {{ data.averageRating.toFixed(1) }}</h3>
+    <div class="rating-stars">
+      <mat-icon *ngFor="let star of stars; let i = index">{{ getStarType(data.averageRating, i + 1) }}</mat-icon>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="reviews-list">
+    <mat-card class="review-card" *ngFor="let review of data.reviews">
+      <mat-card-header>
+        <img mat-card-avatar [src]="review.renterImage" [alt]="review.renterName">
+        <mat-card-title>{{ review.renterName }}</mat-card-title>
+        <mat-card-subtitle>{{ review.date }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>"{{ review.comment }}"</p>
+      </mat-card-content>
+      <mat-card-actions class="review-rating">
+        <div class="rating-stars">
+          <strong>{{ review.rating.toFixed(1) }}</strong>
+          <mat-icon *ngFor="let star of stars; let i = index">{{ getStarType(review.rating, i + 1) }}</mat-icon>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-flat-button color="primary" mat-dialog-close>{{ 'Profile.Cancel' | translate }}</button>
+</mat-dialog-actions>

@@ -1,0 +1,66 @@
+:host {
+  --success-bg: #D1FAE5;
+  --success-text: #065F46;
+  --warning-bg: #FEF3C7;
+  --warning-text: #92400E;
+}
+
+.dialog-content {
+  padding-top: 20px;
+}
+
+.details-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding: 16px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.detail-item strong {
+  color: #333;
+  font-weight: 600;
+}
+
+.message-history {
+  margin-top: 16px;
+}
+
+.message-history h4 {
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+}
+
+.message-history p {
+  line-height: 1.6;
+  color: #555;
+}
+
+/* Estilos para el chip de estado (copiados de la página principal para consistencia) */
+.status-chip {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.status-resolved {
+  background-color: var(--success-bg);
+  color: var(--success-text);
+}
+
+.status-in-progress {
+  background-color: var(--warning-bg);
+  color: var(--warning-text);
+}

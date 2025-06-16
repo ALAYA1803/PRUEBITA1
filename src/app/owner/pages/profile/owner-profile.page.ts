@@ -1,22 +1,27 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { OwnerProfile } from '../../model/owner-profile.entity';
-import { User } from '../../model/user.entity';
+import { CurrentUser, CurrentUserService } from '../../../shared/services/current-user.service';
+import { AllReviewsDialogComponent } from '../../components/all-reviews-dialog/all-reviews-dialog.component';
+import { ChangePasswordDialogComponent } from '../../components/change-password-dialog/change-password-dialog.component';
 
 @Component({
   selector: 'app-owner-profile-page',
   standalone: true,
-  imports: [ CommonModule, ReactiveFormsModule, FormsModule, MatCardModule, MatIconModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatSlideToggleModule, MatSnackBarModule, MatChipsModule, TranslateModule ],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, MatCardModule, MatIconModule, MatButtonModule,
+    MatFormFieldModule, MatInputModule, MatSnackBarModule, MatChipsModule, MatTabsModule,
+    MatDialogModule, TranslateModule],
   templateUrl: './owner-profile.page.html',
   styleUrls: ['./owner-profile.page.css']
 })
@@ -24,27 +29,34 @@ export class OwnerProfilePage implements OnInit {
   private fb = inject(FormBuilder);
   private snackBar = inject(MatSnackBar);
   private translate = inject(TranslateService);
-  userData: User = new User();
-  ownerProfileData: OwnerProfile = new OwnerProfile();
+  private dialog = inject(MatDialog);
+  private http = inject(HttpClient);
+  private currentUserService = inject(CurrentUserService);
+
+  userData: CurrentUser | null = null;
+  ownerProfileData: any = {};
   personalInfoForm: FormGroup;
   payoutInfoForm: FormGroup;
   personalInfoEditMode = false;
   payoutInfoEditMode = false;
-  reviewsReceived = [
-    { renterName: 'Carlos Villa', rating: 5, comment: '¡La bicicleta estaba en perfecto estado! Ana fue muy amable.', date: 'Hace 2 días' },
-    { renterName: 'Lucía Fernández', rating: 4, comment: 'Buen servicio, la ubicación era fácil de encontrar.', date: 'La semana pasada' }
-  ];
+  currentPasswordVisible = false;
+  currentPasswordMock = 'supersecretpassword';
+
+  reviewsReceived: any[] = [];
+  averageRating = 0;
   stars = Array(5).fill(0);
 
   constructor() {
     this.personalInfoForm = this.fb.group({
       name: ['', Validators.required],
       phone: [''],
-      publicBio: ['', Validators.maxLength(200)]
+      publicBio: ['', Validators.maxLength(200)],
+      avatar: ['']
     });
-
     this.payoutInfoForm = this.fb.group({
-      payoutEmail: ['', [Validators.required, Validators.email]]
+      paypalEmail: ['', Validators.email],
+      bankAccountNumber: ['', Validators.pattern('^[0-9-]*$')],
+      yapePhoneNumber: ['', Validators.pattern('^9[0-9]{8}$')]
     });
   }
 
@@ -53,58 +65,91 @@ export class OwnerProfilePage implements OnInit {
   }
 
   private loadInitialData() {
-    this.userData = new User({ id: 1, name: 'Ana', email: 'ana.owner@example.com' });
-    this.ownerProfileData = new OwnerProfile({
-      userId: 1,
-      publicBio: 'Amante de las bicicletas y de explorar la ciudad sobre dos ruedas. ¡Espero que disfrutes de mis bicis!',
-      isVerified: true,
-      payoutEmail: 'ana.payouts@paypal.com'
-    });
+    const userId = localStorage.getItem('userId');
+    if (!userId) return;
 
-    this.patchForms();
+    this.currentUserService.loadUser(userId).subscribe(user => {
+      this.userData = user;
+      if (user.password) this.currentPasswordMock = user.password;
+      this.personalInfoForm.patchValue({ name: user.fullName, phone: user.phone, publicBio: user.publicBio, avatar: user.avatar });
+    });
+    this.http.get<any[]>(`https://6824eacb0f0188d7e72b5f57.mockapi.io/api/v1/ownerProfiles?userId=${userId}`)
+      .subscribe(profiles => {
+        this.ownerProfileData = profiles[0] || {};
+        this.payoutInfoForm.patchValue({ paypalEmail: this.ownerProfileData.paypalEmail, bankAccountNumber: this.ownerProfileData.bankAccountNumber, yapePhoneNumber: this.ownerProfileData.yapePhoneNumber });
+      });
+
+    // SOLUCIÓN: Añadimos más reseñas para que el botón "Ver más" aparezca
+    this.reviewsReceived = [
+      { renterName: 'Carlos Villa', rating: 5, comment: '¡La bicicleta estaba en perfecto estado! Ana fue muy amable.', date: 'Hace 2 días', renterImage: 'https://randomuser.me/api/portraits/men/32.jpg' },
+      { renterName: 'Lucía Fernández', rating: 4, comment: 'Buen servicio, la ubicación era fácil de encontrar.', date: 'La semana pasada', renterImage: 'https://randomuser.me/api/portraits/women/44.jpg' },
+      { renterName: 'Marco Polo', rating: 4.5, comment: 'Todo bien, pero la llanta estaba un poco baja de aire.', date: 'Hace 2 semanas', renterImage: 'https://randomuser.me/api/portraits/men/56.jpg' }
+    ];
+    if (this.reviewsReceived.length > 0) {
+      this.averageRating = this.reviewsReceived.reduce((sum, r) => sum + r.rating, 0) / this.reviewsReceived.length;
+    }
+
     this.personalInfoForm.disable();
     this.payoutInfoForm.disable();
   }
 
-  private patchForms() {
-    this.personalInfoForm.patchValue({
-      name: this.userData.name,
-      phone: '+51 999 888 777',
-      publicBio: this.ownerProfileData.publicBio
-    });
-    this.payoutInfoForm.patchValue({
-      payoutEmail: this.ownerProfileData.payoutEmail
-    });
+  // SOLUCIÓN: Funcionalidad para cambiar foto de perfil
+  onChangeProfilePicture(): void {
+    if (!this.personalInfoEditMode) return;
+    const promptMessage = this.translate.instant('Profile.ChangePicturePrompt');
+    const currentAvatarUrl = this.personalInfoForm.get('avatar')?.value || '';
+    const newImageUrl = prompt(promptMessage, currentAvatarUrl);
+
+    if (newImageUrl && newImageUrl.trim() !== '') {
+      this.personalInfoForm.patchValue({ avatar: newImageUrl });
+    }
   }
 
   toggleEdit(form: FormGroup, mode: 'personal' | 'payout') {
-    const editMode = mode === 'personal' ? this.personalInfoEditMode : this.payoutInfoEditMode;
-
-    if (editMode) {
-      if (form.valid) {
-        console.log(`Guardando ${mode}:`, form.value);
-        this.snackBar.open(this.translate.instant('Profile.Saved'), 'OK', { duration: 2000 });
-        form.disable();
-      } else {
-        this.snackBar.open(this.translate.instant('Profile.ErrorForm'), 'Cerrar', { duration: 3000 });
+    const editing = mode === 'personal' ? this.personalInfoEditMode : this.payoutInfoEditMode;
+    if (editing) {
+      if (!form.valid) {
+        this.snackBar.open(this.translate.instant('Profile.ErrorForm'), this.translate.instant('Profile.Close'), { duration: 3000 });
         return;
       }
+      if (mode === 'personal') {
+        if (!this.userData) return;
+        const updatedUser = { ...this.userData, ...form.value, fullName: form.value.name };
+        this.http.put(`https://6824eacb0f0188d7e72b5f57.mockapi.io/api/v1/users2/${this.userData.id}`, updatedUser)
+          .subscribe(() => {
+            this.currentUserService.updateCurrentUser({ fullName: updatedUser.fullName, avatar: updatedUser.avatar });
+            this.snackBar.open(this.translate.instant('Profile.Saved'), this.translate.instant('Profile.OK'), { duration: 2000 });
+            form.disable();
+            this.personalInfoEditMode = false;
+          });
+      } else { /* ... */ }
     } else {
       form.enable();
+      if (mode === 'personal') this.personalInfoEditMode = true; else this.payoutInfoEditMode = true;
     }
-
-    if (mode === 'personal') this.personalInfoEditMode = !this.personalInfoEditMode;
-    else if (mode === 'payout') this.payoutInfoEditMode = !this.payoutInfoEditMode;
   }
 
   cancelEdit(form: FormGroup, mode: 'personal' | 'payout') {
-    this.patchForms();
-    form.disable();
-    if (mode === 'personal') this.personalInfoEditMode = false;
-    else if (mode === 'payout') this.payoutInfoEditMode = false;
+    this.loadInitialData();
   }
 
-  getStarType(rating: number, index: number): string {
-    return rating >= index ? 'star' : 'star_border';
+  openChangePasswordDialog() {
+    const dialogRef = this.dialog.open(ChangePasswordDialogComponent, { width: '400px', disableClose: true });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result?.newPassword && this.userData) {
+        const updatedUser = { ...this.userData, password: result.newPassword };
+        this.http.put(`https://6824eacb0f0188d7e72b5f57.mockapi.io/api/v1/users2/${this.userData.id}`, updatedUser)
+          .subscribe(() => {
+            this.currentPasswordMock = result.newPassword;
+            this.snackBar.open(this.translate.instant('Password.Success'), this.translate.instant('Profile.OK'), { duration: 3000 });
+          });
+      }
+    });
   }
+
+  openReviewsDialog() {
+    this.dialog.open(AllReviewsDialogComponent, { width: '600px', data: { reviews: this.reviewsReceived, averageRating: this.averageRating } });
+  }
+
+  getStarType(r: number, i: number) { return r >= i ? 'star' : r >= i - 0.5 ? 'star_half' : 'star_border'; }
 }
