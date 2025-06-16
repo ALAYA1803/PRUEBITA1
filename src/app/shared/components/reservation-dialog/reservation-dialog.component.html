@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>{{ 'ReservationDialog.Title' | translate }}</h2>
+<mat-dialog-content>
+  <div class="bike-info">
+    <img [src]="data.imageUrl" [alt]="data.bikeName" class="bike-image">
+    <h3>{{ data.bikeName }}</h3>
+    <p>{{ 'ReservationDialog.PriceLabel' | translate }}: {{ data.pricePerMinute | currency:'S/ ' }} {{ 'ReservationDialog.PerMinute' | translate }}</p>
+  </div>
+
+  <div class="duration-selector">
+    <label for="duration-slider">{{ 'ReservationDialog.DurationLabel' | translate }}: <strong>{{ durationInMinutes }} {{ 'ReservationDialog.Minutes' | translate }}</strong></label>
+    <mat-slider min="10" max="180" step="10" discrete>
+      <input matSliderThumb [(ngModel)]="durationInMinutes">
+    </mat-slider>
+  </div>
+
+  <div class="total-cost">
+    <h3>{{ 'ReservationDialog.TotalCostLabel' | translate }}</h3>
+    <p class="cost-value">{{ totalCost | currency:'S/ ' }}</p>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">{{ 'ReservationDialog.CancelButton' | translate }}</button>
+  <button mat-flat-button color="primary" (click)="onConfirm()">{{ 'ReservationDialog.ConfirmButton' | translate }}</button>
+</mat-dialog-actions>

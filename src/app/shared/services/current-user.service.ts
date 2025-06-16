@@ -1,16 +1,15 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-
-// --- MEJORA: Interfaz más específica para evitar errores de tipo ---
 export interface CurrentUser {
   id: string;
   fullName: string;
   avatar: string;
   phone: string;
   publicBio: string;
-  password?: string; // La contraseña es opcional, puede que no siempre la necesitemos
-  // Ya no necesitamos la firma de índice [key: string]: any;
+  password?: string;
+  email?: string;
+  address?: string;
 }
 
 @Injectable({

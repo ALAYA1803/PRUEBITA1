@@ -1,26 +1,38 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule }      from '@angular/common';
-import { TranslateModule, TranslateService }   from '@ngx-translate/core';
-
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators';
+import { CurrentUserService } from '../../../shared/services/current-user.service';
+import { ReservationDialogComponent, ReservationDialogData } from '../../../shared/components/reservation-dialog/reservation-dialog.component';
+import { ReservationDetailsDialogComponent } from '../../../shared/components/reservation-details-dialog/reservation-details-dialog.component';
+import { CancelConfirmationDialogComponent } from '../../../shared/components/cancel-confirmation-dialog/cancel-confirmation-dialog.component';
+interface RenterStats {
+  distanceTraveled: number;
+  rentalsCount: number;
+  drivingTime: number;
+  rating: number;
+}
 interface UpcomingReservation {
-  bike: string;
+  id: string;
+  bikeName: string;
   date: string;
-  time: string;
   address: string;
-  imageUrl: string;
+  bikeImage: string;
+  ownerName: string;
 }
-
-interface Rental {
-  bike: string;
+interface RentalHistory {
+  bikeName: string;
   date: string;
-  startStation: string;
-  endStation: string;
   status: 'Finalizado' | 'Cancelada' | 'Activa';
+  location: string;
 }
-
 interface Recommendation {
-  bike: string;
-  pricePerHour: number;
+  id: string;
+  bikeName: string;
+  pricePerMinute: number;
   distance: string;
   imageUrl: string;
 }
@@ -28,59 +40,94 @@ interface Recommendation {
 @Component({
   selector: 'app-renter-home',
   standalone: true,
-  imports: [CommonModule, TranslateModule],
+  imports: [CommonModule, TranslateModule, MatDialogModule, MatSnackBarModule, CurrencyPipe, DatePipe],
   templateUrl: './renter-home.page.html',
   styleUrls: ['./renter-home.page.css']
 })
 export class RenterHomePage implements OnInit {
-  username = 'Rodrigo';
-
   private translate = inject(TranslateService);
-
-  distanceTraveled = 54;
-  rentalsCount     = 8;
-  drivingTime      = 17;
-  rating           = 4.8;
-
-  upcoming!: UpcomingReservation;
-  recentRentals: Rental[] = [];
+  private currentUserService = inject(CurrentUserService);
+  private dialog = inject(MatDialog);
+  private snackBar = inject(MatSnackBar);
+  username = '';
+  stats: RenterStats | null = null;
+  upcomingReservation: UpcomingReservation | null = null;
+  recentRentals: RentalHistory[] = [];
   recommendations: Recommendation[] = [];
 
+  private mockUpcomingReservations: UpcomingReservation[] = [
+    { id: 'res-001', bikeName: 'Bicicleta de Montaña Specialized', date: '2025-06-18T17:00:00.000Z', address: 'Parque Kennedy, Miraflores', bikeImage: 'https://www.monark.com.pe/static/monark-pe/uploads/products/images/bicicleta-monark-highlander-xt-aro-29-rojo-negro-01.jpg', ownerName: 'Ana' }
+  ];
+
   ngOnInit(): void {
-    this.upcoming = {
-      bike: 'Bike BMX',
-      date: '8 de junio',
-      time: '3:00 p.m.',
-      address: 'Av. Javier Prado 123',
-      imageUrl: 'https://cdn.skatepro.com/product/520/mankind-thunder-20-bmx-freestyle-bike-8h.webp'
+    this.currentUserService.currentUser$.subscribe(user => {
+      if (user) this.username = user.fullName.split(' ')[0];
+    });
+    this.loadDashboardData();
+  }
+
+  loadDashboardData(): void {
+    of({}).pipe(delay(200)).subscribe(() => {
+      this.stats = { distanceTraveled: 54, rentalsCount: 8, drivingTime: 17, rating: 4.8 };
+      this.upcomingReservation = this.mockUpcomingReservations.length > 0 ? this.mockUpcomingReservations[0] : null;
+
+      this.recentRentals = [
+        { bikeName: 'Vintage',  date: '15 junio', status: 'Finalizado', location: 'Plaza San Miguel' },
+        { bikeName: 'Mountain', date: '11 junio', status: 'Finalizado', location: 'El Malecón' },
+        { bikeName: 'BMX',      date: '05 junio', status: 'Cancelada',  location: 'Av. La Marina' },
+      ];
+      this.recommendations = [
+        { id: 'bike-001', bikeName: 'Vintage verde', pricePerMinute: 0.5, distance: '400 m', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdDydP4N9WKFYaT6cZoxxGCw5kL2BVGseLww&s' },
+        { id: 'bike-002', bikeName: 'Vintage rojo', pricePerMinute: 0.6, distance: '600 m', imageUrl: 'https://i.ebayimg.com/images/g/5O4AAOSw~-dlNVKg/s-l1600.jpg' },
+        { id: 'bike-003', bikeName: 'City Cruiser', pricePerMinute: 0.4, distance: '200 m', imageUrl: 'https://bicicletamontana.com/wp-content/uploads/2020/09/bicicleta-de-paseo.jpg' }
+      ];
+    });
+  }
+  viewDetails(reservation: UpcomingReservation): void {
+    this.dialog.open(ReservationDetailsDialogComponent, {
+      width: '500px',
+      data: reservation
+    });
+  }
+  cancelReservation(reservation: UpcomingReservation): void {
+    const dialogRef = this.dialog.open(CancelConfirmationDialogComponent, { width: '450px' });
+
+    dialogRef.afterClosed().subscribe(confirmed => {
+      if (confirmed) {
+        console.log('Cancelando reserva ID:', reservation.id);
+        this.mockUpcomingReservations = this.mockUpcomingReservations.filter(r => r.id !== reservation.id);
+        this.upcomingReservation = null;
+        this.snackBar.open('Reserva cancelada exitosamente', 'Cerrar', { duration: 3000 });
+      }
+    });
+  }
+  reserveBike(rec: Recommendation): void {
+    const dialogData: ReservationDialogData = {
+      bikeName: rec.bikeName,
+      pricePerMinute: rec.pricePerMinute,
+      imageUrl: rec.imageUrl
     };
-    this.recentRentals = [
-      { bike: 'Vintage',  date: '5 junio',  startStation: 'Plaza San Miguel', endStation: 'LarcoMar', status: 'Finalizado' },
-      { bike: 'Mountain', date: '31 mayo',  startStation: 'UPC - San Miguel',   endStation: 'Rambla',   status: 'Finalizado' },
-      { bike: 'BMX',      date: '25 mayo',  startStation: 'Metro - La Marina',   endStation: 'LarcoMar', status: 'Cancelada' },
-    ];
-    this.recommendations = [
-      { bike: 'Vintage verde', pricePerHour: 3.5, distance: '400 m',
-        imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdDydP4N9WKFYaT6cZoxxGCw5kL2BVGseLww&s' },
-      { bike: 'Vintage rojo', pricePerHour: 3.8, distance: '600 m',
-        imageUrl: 'https://placehold.co/100x75/F1F1F1/333?text=Bike' },
-      { bike: 'Mountain X', pricePerHour: 4.2, distance: '800 m',
-        imageUrl: 'https://placehold.co/100x75/F1F1F1/333?text=Bike' },
-      { bike: 'City Cruiser', pricePerHour: 2.9, distance: '200 m',
-        imageUrl: 'https://placehold.co/100x75/F1F1F1/333?text=Bike' }
-    ];
-  }
+    const dialogRef = this.dialog.open(ReservationDialogComponent, {
+      width: '450px',
+      data: dialogData,
+      disableClose: true
+    });
 
-  cancelReservation() {
-    console.log('Cancelar próxima reserva');
-  }
-
-  viewDetails() {
-    console.log('Ver detalles de la próxima reserva');
-  }
-
-  reserveAgain(rec: Recommendation) {
-    console.log('Reservar de nuevo', rec.bike);
+    dialogRef.afterClosed().subscribe(confirmed => {
+      if (confirmed) {
+        const newReservation: UpcomingReservation = {
+          id: `res-${Date.now()}`,
+          bikeName: rec.bikeName,
+          date: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(),
+          address: 'Ubicación de la bicicleta',
+          bikeImage: rec.imageUrl,
+          ownerName: 'Propietario de Bici'
+        };
+        this.mockUpcomingReservations.push(newReservation);
+        this.loadDashboardData();
+        this.snackBar.open(`¡Has reservado la ${rec.bikeName} exitosamente!`, 'OK', { duration: 3000 });
+      }
+    });
   }
 
   translateStatus(status: string): string {

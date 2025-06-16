@@ -31,20 +31,16 @@ export interface RecentActivity {
     MatIconModule,
     RouterLink,
     DatePipe
-    // Ya no necesitamos HttpClientModule aquí, porque lo maneja el servicio
   ],
   templateUrl: './owner-home.page.html',
   styleUrls: ['./owner-home.page.css']
 })
 export class OwnerHomePage implements OnInit {
-  // Propiedades del componente
   ownerName = '';
   stats!: DashboardStats;
   pendingReservations: Reservation[] = [];
   recentActivities: RecentActivity[] = [];
   topBikes: Bike[] = [];
-
-  // Inyección de dependencias
   private router = inject(Router);
   private notificationService = inject(NotificationService);
   private currentUserService = inject(CurrentUserService); // <-- MEJORA: Usamos el servicio de usuario
@@ -53,9 +49,6 @@ export class OwnerHomePage implements OnInit {
     this.fetchOwnerName();
     this.loadDashboardData();
   }
-
-  // --- MÉTODO MEJORADO ---
-  // Ahora usa el servicio central para obtener el nombre, asegurando que esté sincronizado
   private fetchOwnerName(): void {
     this.currentUserService.currentUser$.subscribe(user => {
       if (user) {
@@ -65,22 +58,17 @@ export class OwnerHomePage implements OnInit {
   }
 
   private loadDashboardData(): void {
-    // — Stats simuladas —
     this.stats = new DashboardStats({
       monthlyIncome: 750.50,
       pendingReservationsCount: 2,
       activeBikesCount: 8,
       ownerRating: 4.9
     });
-
-    // — Reservas pendientes de ejemplo —
     this.pendingReservations = [
       new Reservation({ id: 1, renterName: 'Carlos Villa', bikeName: 'BMX Pro', date: new Date('2025-06-17T14:00:00'), status: 'Pending' }),
       new Reservation({ id: 2, renterName: 'Lucía Fernández', bikeName: 'Vintage Verde', date: new Date('2025-06-18T10:00:00'), status: 'Pending' }),
       new Reservation({ id: 3, renterName: 'Javier Soto', bikeName: 'Mountain X', date: new Date('2025-06-19T09:00:00'), status: 'Pending' })
     ];
-
-    // — Últimas 7 actividades —
     const allActivities: RecentActivity[] = [
       { type: 'reservation',  person: 'Javier Soto',   bikeName: 'Mountain X',    timestamp: new Date() },
       { type: 'review',       person: 'Maria Rojas',   bikeName: 'BMX Pro',       timestamp: new Date(Date.now() -  3 * 3600_000) },
@@ -91,12 +79,7 @@ export class OwnerHomePage implements OnInit {
       { type: 'cancellation', person: 'Andrés Patiño', bikeName: 'Speedster',     timestamp: new Date(Date.now() - 120 * 3600_000) },
     ];
     this.recentActivities = allActivities.slice(0, 7);
-
-    // --- CORRECCIÓN DE ORDEN ---
-    // Ahora enviamos las notificaciones DESPUÉS de haber creado la lista de actividades.
     this.notificationService.setNotifications(this.recentActivities);
-
-    // — Top bicicletas de ejemplo —
     this.topBikes = [
       new Bike({ id: 101, model: 'BMX Pro',        type: 'BMX',       rentalsThisMonth: 15, imageUrl: 'https://cdn.skatepro.com/product/520/mankind-thunder-20-bmx-freestyle-bike-8h.webp' }),
       new Bike({ id: 102, model: 'Vintage Verde',  type: 'Urbana',    rentalsThisMonth: 12, imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdDydP4N9WKFYaT6cZoxxGCw5kL2BVGseLww&s' }),

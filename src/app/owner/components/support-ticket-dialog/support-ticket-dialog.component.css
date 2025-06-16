@@ -44,8 +44,6 @@
   line-height: 1.6;
   color: #555;
 }
-
-/* Estilos para el chip de estado (copiados de la página principal para consistencia) */
 .status-chip {
   display: inline-block;
   padding: 4px 12px;

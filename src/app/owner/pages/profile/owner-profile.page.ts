@@ -14,7 +14,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CurrentUser, CurrentUserService } from '../../../shared/services/current-user.service';
 import { AllReviewsDialogComponent } from '../../components/all-reviews-dialog/all-reviews-dialog.component';
-import { ChangePasswordDialogComponent } from '../../components/change-password-dialog/change-password-dialog.component';
+import { ChangePasswordDialogComponent } from '../../../shared/components/change-password-dialog/change-password-dialog.component';
+import { ReviewsDialogComponent } from '../../../shared/components/reviews-dialog/reviews-dialog.component';
 
 @Component({
   selector: 'app-owner-profile-page',
@@ -92,8 +93,6 @@ export class OwnerProfilePage implements OnInit {
     this.personalInfoForm.disable();
     this.payoutInfoForm.disable();
   }
-
-  // SOLUCIÓN: Funcionalidad para cambiar foto de perfil
   onChangeProfilePicture(): void {
     if (!this.personalInfoEditMode) return;
     const promptMessage = this.translate.instant('Profile.ChangePicturePrompt');
@@ -148,7 +147,19 @@ export class OwnerProfilePage implements OnInit {
   }
 
   openReviewsDialog() {
-    this.dialog.open(AllReviewsDialogComponent, { width: '600px', data: { reviews: this.reviewsReceived, averageRating: this.averageRating } });
+    const dialogData = {
+      title: 'OwnerProfile.AllReviews',
+      averageRating: this.averageRating,
+      reviews: this.reviewsReceived.map(review => ({
+        reviewerName: review.renterName,
+        reviewerImage: review.renterImage,
+        reviewSubject: review.date,
+        date: review.date,
+        comment: review.comment,
+        rating: review.rating
+      }))
+    };
+    this.dialog.open(ReviewsDialogComponent, { width: '600px', data: dialogData });
   }
 
   getStarType(r: number, i: number) { return r >= i ? 'star' : r >= i - 0.5 ? 'star_half' : 'star_border'; }

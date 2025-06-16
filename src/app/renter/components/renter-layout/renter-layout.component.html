@@ -2,23 +2,30 @@
   <mat-sidenav #sidenav mode="side" opened class="custom-sidenav">
     <app-sidebar [menuItems]="renterMenuItems"></app-sidebar>
   </mat-sidenav>
+
   <mat-sidenav-content>
     <mat-toolbar color="primary" class="toolbar-fixed">
       <button mat-icon-button (click)="sidenav.toggle()">
         <mat-icon>menu</mat-icon>
       </button>
       <span>{{ pageTitle }}</span>
+
       <span class="spacer"></span>
 
       <app-language-switcher></app-language-switcher>
 
-      <button mat-icon-button aria-label="Notificaciones">
-        <mat-icon>notifications</mat-icon>
-      </button>
-      <button mat-icon-button aria-label="Perfil de usuario">
-        <mat-icon>account_circle</mat-icon>
+      <button mat-icon-button [matMenuTriggerFor]="notificationsMenu" (menuClosed)="onNotificationsClosed()" aria-label="Notificaciones">
+        <mat-icon matBadgeColor="warn" [matBadge]="(unreadCount$ | async)!" [matBadgeHidden]="(unreadCount$ | async) === 0">notifications</mat-icon>
       </button>
 
+      <ng-container *ngIf="currentUser$ | async as user">
+        <button mat-button [matMenuTriggerFor]="userMenu">
+          <div class="user-menu-content">
+            <img [src]="user.avatar" class="toolbar-avatar" alt="Avatar de usuario">
+            <span>{{ user.fullName.split(' ')[0] }}</span>
+          </div>
+        </button>
+      </ng-container>
     </mat-toolbar>
 
     <main class="layout-main">
@@ -26,3 +33,36 @@
     </main>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+<mat-menu #userMenu="matMenu">
+  <button mat-menu-item routerLink="/renter/profile">
+    <mat-icon>account_circle</mat-icon>
+    <span>{{ 'Sidebar.Profile' | translate }}</span>
+  </button>
+  <button mat-menu-item routerLink="/renter/support">
+    <mat-icon>headset</mat-icon>
+    <span>{{ 'Sidebar.Support' | translate }}</span>
+  </button>
+  <mat-divider></mat-divider>
+  <a mat-menu-item (click)="onLogout()">
+    <mat-icon>logout</mat-icon>
+    <span>{{ 'Sidebar.Logout' | translate }}</span>
+  </a>
+</mat-menu>
+
+<mat-menu #notificationsMenu="matMenu" class="notifications-panel">
+  <div class="notifications-header">
+    <h3>{{ 'Toolbar.Notifications.Title' | translate }}</h3>
+  </div>
+  <ng-container *ngIf="(notifications$ | async) as notifications">
+    <div *ngIf="notifications.length > 0; else noNotifications">
+      <button mat-menu-item *ngFor="let activity of notifications">
+        <mat-icon class="activity-icon-menu">info</mat-icon>
+        <span class="notification-text">Notificación de ejemplo.</span>
+      </button>
+    </div>
+  </ng-container>
+  <ng-template #noNotifications>
+    <div class="no-notifications">{{ 'Toolbar.Notifications.NoNotifications' | translate }}</div>
+  </ng-template>
+</mat-menu>

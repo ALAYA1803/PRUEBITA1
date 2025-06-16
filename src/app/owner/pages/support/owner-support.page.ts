@@ -1,4 +1,3 @@
-// Remplaza el archivo completo
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -91,15 +90,13 @@ export class OwnerSupportPage implements OnInit {
   }
 
   viewDetails(ticketId: number): void {
-    // 1. Encuentra el ticket completo usando el ID
     const ticketData = this.supportTickets.find(ticket => ticket.id === ticketId);
 
     if (ticketData) {
-      // 2. Abre el diálogo y pásale los datos del ticket
       this.dialog.open(SupportTicketDialogComponent, {
         width: '550px',
-        data: ticketData, // Aquí se pasan los datos al diálogo
-        panelClass: 'custom-dialog-container' // Clase opcional para estilos globales
+        data: ticketData,
+        panelClass: 'custom-dialog-container'
       });
     } else {
       console.error('No se encontró el ticket con ID:', ticketId);

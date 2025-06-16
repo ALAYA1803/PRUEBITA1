@@ -7,8 +7,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
-
-// Validador personalizado para asegurar que las contraseñas coincidan
 export const passwordMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const password = control.get('newPassword');
   const confirmPassword = control.get('confirmPassword');
@@ -40,7 +38,6 @@ export class ChangePasswordDialogComponent {
   onSave(): void {
     if (this.passwordForm.valid) {
       console.log('Nueva contraseña (simulación):', this.passwordForm.value.newPassword);
-      // --- MEJORADO: Devuelve el valor de la nueva contraseña al cerrar ---
       this.dialogRef.close({ newPassword: this.passwordForm.value.newPassword });
     }
   }

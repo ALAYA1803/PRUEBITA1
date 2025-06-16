@@ -1,4 +1,4 @@
-<div class="page-container">
+<div class="page-container" *ngIf="stats">
   <div class="main-content">
 
     <header class="welcome-header">
@@ -9,42 +9,51 @@
     <section class="stats-grid">
       <div class="stat-card">
         <div class="stats-label">{{ 'RenterHome.HasTraveled' | translate }}</div>
-        <div class="stat-value">{{ distanceTraveled }} km</div>
+        <div class="stat-value">{{ stats.distanceTraveled }} km</div>
       </div>
       <div class="stat-card">
         <div class="stats-label">{{ 'RenterHome.RentalsCount' | translate }}</div>
-        <div class="stat-value">{{ rentalsCount }}</div>
+        <div class="stat-value">{{ stats.rentalsCount }}</div>
       </div>
       <div class="stat-card">
         <div class="stats-label">{{ 'RenterHome.DrivingTime' | translate }}</div>
-        <div class="stat-value">{{ drivingTime }} h</div>
+        <div class="stat-value">{{ stats.drivingTime }} h</div>
       </div>
       <div class="stat-card">
         <div class="stats-label">{{ 'RenterHome.Rating' | translate }}</div>
         <div class="stat-value rating-display">
           &#9733;&#9733;&#9733;&#9733;&#9733;
-          <span class="rating-number">{{ rating }}</span>
+          <span class="rating-number">{{ stats.rating.toFixed(1) }}</span>
         </div>
       </div>
     </section>
 
-    <section class="next-reservation">
+    <section class="next-reservation" *ngIf="upcomingReservation; else noReservation">
       <h2>{{ 'RenterHome.NextReservation' | translate }}</h2>
       <div class="card reservation-card">
         <div class="reservation-info">
-          <p class="bike-name">{{ upcoming.bike }}</p>
-          <p>{{ upcoming.date }} – {{ upcoming.time }}</p>
-          <p>{{ upcoming.address }}</p>
+          <p class="bike-name">{{ upcomingReservation.bikeName }}</p>
+          <p>{{ upcomingReservation.date | date:'dd MMM, yyyy' }} – {{ upcomingReservation.date | date:'h:mm a' }}</p>
+          <p>{{ upcomingReservation.address }}</p>
         </div>
         <div class="reservation-image">
-          <img [src]="upcoming.imageUrl" alt="{{ upcoming.bike }}">
+          <img [src]="upcomingReservation.bikeImage" alt="{{ upcomingReservation.bikeName }}">
         </div>
         <div class="reservation-actions">
-          <button class="btn btn-details" (click)="viewDetails()">{{ 'RenterHome.ViewDetails' | translate }}</button>
-          <button class="btn btn-cancel"  (click)="cancelReservation()">{{ 'RenterHome.Cancel' | translate }}</button>
+          <button class="btn btn-details" (click)="viewDetails(upcomingReservation)">{{ 'RenterHome.ViewDetails' | translate }}</button>
+          <button class="btn btn-cancel"  (click)="cancelReservation(upcomingReservation)">{{ 'RenterHome.Cancel' | translate }}</button>
         </div>
       </div>
     </section>
+
+    <ng-template #noReservation>
+      <section class="next-reservation">
+        <h2>{{ 'RenterHome.NextReservation' | translate }}</h2>
+        <div class="card reservation-card empty">
+          <p>{{ 'RenterHome.NoUpcomingReservation' | translate }}</p>
+        </div>
+      </section>
+    </ng-template>
 
     <section class="recent-rentals">
       <h2>{{ 'RenterHome.RecentRentals' | translate }}</h2>
@@ -52,21 +61,15 @@
         <div class="rentals-header">
           <span>{{ 'RenterHome.Bike' | translate }}</span>
           <span>{{ 'RenterHome.Date' | translate }}</span>
-          <span>{{ 'RenterHome.StartStation' | translate }}</span>
-          <span>{{ 'RenterHome.EndStation' | translate }}</span>
+          <span>{{ 'RenterHome.RecentRentalsLocation' | translate }}</span>
           <span>{{ 'RenterHome.Status' | translate }}</span>
         </div>
         <div class="rental-item" *ngFor="let r of recentRentals">
-          <span>{{ r.bike }}</span>
+          <span>{{ r.bikeName }}</span>
           <span>{{ r.date }}</span>
-          <span>{{ r.startStation }}</span>
-          <span>{{ r.endStation }}</span>
+          <span>{{ r.location }}</span>
           <span>
-            <span class="status-badge"
-                  [ngClass]="{
-                    'status-finalizado': r.status==='Finalizado',
-                    'status-cancelada': r.status==='Cancelada'
-                  }">
+            <span class="status-badge" [ngClass]="{ 'status-finalizado': r.status==='Finalizado', 'status-cancelada': r.status==='Cancelada' }">
               {{ translateStatus(r.status) }}
             </span>
           </span>
@@ -80,12 +83,12 @@
     <h2>{{ 'RenterHome.Recommendations' | translate }}</h2>
     <div class="card recommendations-card">
       <div class="recommendation-item" *ngFor="let rec of recommendations">
-        <img class="rec-image" [src]="rec.imageUrl" alt="{{ rec.bike }}">
+        <img class="rec-image" [src]="rec.imageUrl" alt="{{ rec.bikeName }}">
         <div class="rec-info">
-          <span class="rec-name">{{ rec.bike }}</span><br>
-          <span class="rec-details">S/ {{ rec.pricePerHour.toFixed(2) }}/h – {{ rec.distance }}</span>
+          <span class="rec-name">{{ rec.bikeName }}</span><br>
+          <span class="rec-details">{{ rec.pricePerMinute | currency:'S/ ' }}/min – {{ rec.distance }}</span>
         </div>
-        <button class="btn btn-reserve" (click)="reserveAgain(rec)">{{ 'RenterHome.Reserve' | translate }}</button>
+        <button class="btn btn-reserve" (click)="reserveBike(rec)">{{ 'RenterHome.Reserve' | translate }}</button>
       </div>
     </div>
   </aside>
