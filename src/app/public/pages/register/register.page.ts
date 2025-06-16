@@ -18,7 +18,10 @@ export class RegisterPage {
   password: string = '';
   isOwner: boolean = false;
 
-  constructor(private http: HttpClient, private router: Router, private translate: TranslateService) {}
+  constructor(private http: HttpClient, private router: Router, public translate: TranslateService) {}
+  switchLanguage(language: string) {
+    this.translate.use(language);
+  }
 
   onSubmit() {
     const newUser = {

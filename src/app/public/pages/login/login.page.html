@@ -1,12 +1,15 @@
 <div class="login-wrapper">
   <div class="login-left">
-    <img src="assets/img/logo5.png" alt="BikeShare Logo" />
+    <img src="../../../../assets/img/principal-logo.png" alt="BikeShare Logo" />
     <h2>{{ 'Login.WelcomeTitle' | translate }} <span>BikeShare</span></h2>
     <p>{{ 'Login.Tagline' | translate }}</p>
   </div>
 
-
   <div class="login-right">
+    <div class="language-switcher">
+      <button (click)="switchLanguage('es')" [class.active]="translate.currentLang === 'es'">ES</button>
+      <button (click)="switchLanguage('en')" [class.active]="translate.currentLang === 'en'">EN</button>
+    </div>
 
     <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
       <h3>{{ 'Login.SignIn' | translate }}</h3>
@@ -17,27 +20,15 @@
       <input type="password" id="password" name="password" [placeholder]="'Login.PasswordPlaceholder' | translate" [(ngModel)]="password" required />
 
       <div class="forgot-password">
-        <a href="#">{{ 'Login.ForgotPassword' | translate }}</a>
+        <a (click)="onForgotPassword()" class="link-button">{{ 'Login.ForgotPassword' | translate }}</a>
       </div>
 
       <button type="submit" class="btn-signin">{{ 'Login.SignInBtn' | translate }}</button>
-
-      <div class="or-divider">{{ 'Login.OrVia' | translate }}</div>
-
-      <div class="social-buttons">
-        <button type="button" class="google"></button>
-        <button type="button" class="apple"></button>
-        <button type="button" class="facebook"></button>
-      </div>
 
       <div class="signup-text">
         {{ 'Login.NoAccount' | translate }}
         <button type="button" routerLink="/register" class="link-button">{{ 'Login.SignUp' | translate }}</button>
       </div>
-
-      <button type="button" class="repair-btn">
-        {{ 'Login.RepairBtn' | translate }}
-      </button>
     </form>
   </div>
 </div>

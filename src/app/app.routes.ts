@@ -12,7 +12,8 @@ const RenterHomePage = () => import('./renter/pages/home/renter-home.page').then
 const RenterMapPage = () => import('./renter/pages/map/map.page').then(m => m.MapPage);
 const RenterProfilePage = () => import('./renter/pages/profile/profile.page').then(m => m.ProfilePage);
 const RenterSupportPage = () => import('./renter/pages/support/support.page').then(m => m.SupportPage);
-
+import { ForgotPasswordPage } from './public/pages/forgot-password/forgot-password.page';
+import { ResetPasswordPage } from './public/pages/reset-password/reset-password.page';
 
 export const routes: Routes = [
   {
@@ -26,6 +27,14 @@ export const routes: Routes = [
       { path: 'support',      loadComponent: OwnerSupportPage },
       { path: '',             redirectTo: 'home', pathMatch: 'full' }
     ]
+  },
+  {
+    path: 'forgot-password',
+    loadComponent: () => import('./public/pages/forgot-password/forgot-password.page').then(m => m.ForgotPasswordPage)
+  },
+  {
+    path: 'reset-password/:id',
+    loadComponent: () => import('./public/pages/reset-password/reset-password.page').then(m => m.ResetPasswordPage)
   },
   {
     path: 'renter',

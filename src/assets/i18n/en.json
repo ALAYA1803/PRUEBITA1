@@ -251,5 +251,29 @@
   "Support.Category.Technical": "Report a Technical Problem",
   "Support.Category.Suggestions": "Suggestions",
   "Support.Category.Other": "Other",
-  "Notifications.ReservationAccepted": "Good news! Your reservation for the '{{bikeName}}' bike has been accepted by the owner."
+  "Notifications.ReservationAccepted": "Good news! Your reservation for the '{{bikeName}}' bike has been accepted by the owner.",
+  "ForgotPassword": {
+    "Title": "Forgot Your Password?",
+    "Instruction": "Don't worry. Enter your email address and we'll help you reset your password.",
+    "EmailLabel": "Your Email",
+    "EmailPlaceholder": "Enter your registered email",
+    "ContinueBtn": "Continue",
+    "BackToLogin": "Back to Login",
+    "EmailRequired": "Email address is required.",
+    "UserNotFound": "No account found with that email address. Please use a registered email.",
+    "Error": "An unexpected error occurred. Please try again later."
+  },
+  "ResetPassword": {
+    "Title": "Set a New Password",
+    "Instruction": "Your new password must be different from previously used passwords.",
+    "NewPasswordLabel": "New Password",
+    "NewPasswordPlaceholder": "Enter your new password",
+    "ConfirmPasswordLabel": "Confirm New Password",
+    "ConfirmPasswordPlaceholder": "Confirm your new password",
+    "UpdateBtn": "Update Password",
+    "FieldsRequired": "All fields are required.",
+    "PasswordsDoNotMatch": "The passwords do not match. Please try again.",
+    "Success": "Your password has been updated successfully! You can now log in.",
+    "Error": "An error occurred while updating your password. Please try again."
+  }
 }
