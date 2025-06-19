@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DashboardStats } from '../model/dashboard-stats.entity';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,6 @@ export class DashboardService {
 
   constructor() { }
   getDashboardStats(): Observable<DashboardStats> {
-    throw new Error('Method not implemented.');
+    return this.http.get<DashboardStats>(`${environment.serverBaseUrl}/owner/dashboard`);
   }
 }
