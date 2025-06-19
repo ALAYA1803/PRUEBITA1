@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -16,7 +17,7 @@ export class LoginPage {
   email = '';
   password = '';
 
-  constructor(private http: HttpClient, private router: Router, public translate: TranslateService) {}
+  constructor(private authService: AuthService, private router: Router, public translate: TranslateService) {}
   switchLanguage(language: string) {
     this.translate.use(language);
   }
@@ -31,21 +32,16 @@ export class LoginPage {
       alert(this.translate.instant('Login.ErrorEmptyFields'));
       return;
     }
-    const url = `https://6824eacb0f0188d7e72b5f57.mockapi.io/api/v1/users2?email=${this.email}`;
-    this.http.get<any[]>(url).subscribe({
-      next: users => {
-        if (users.length === 0) {
-          alert(this.translate.instant('Login.UserNotFound'));
-          return;
+    this.authService.login({ email: this.email, password: this.password }).subscribe({
+      next: (res) => {
+        const role = localStorage.getItem('userRole');
+        if (role === 'owner') {
+          this.router.navigate(['/owner/home']);
+        } else if (role === 'renter') {
+          this.router.navigate(['/renter/home']);
+        } else {
+          this.router.navigate(['/']);
         }
-        const user = users[0];
-        if (user.password !== this.password) {
-          alert(this.translate.instant('Login.WrongPassword'));
-          return;
-        }
-        localStorage.setItem('userId',    user.id);
-        localStorage.setItem('userRole', user.isOwner ? 'owner' : 'renter');
-        this.router.navigate([ user.isOwner ? '/owner/home' : '/renter/home' ]);
       },
       error: err => {
         console.error(err);

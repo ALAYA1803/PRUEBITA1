@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -18,7 +19,7 @@ export class RegisterPage {
   password: string = '';
   isOwner: boolean = false;
 
-  constructor(private http: HttpClient, private router: Router, public translate: TranslateService) {}
+  constructor(private authService: AuthService, private router: Router, public translate: TranslateService) {}
   switchLanguage(language: string) {
     this.translate.use(language);
   }
@@ -31,19 +32,17 @@ export class RegisterPage {
       isOwner: this.isOwner
     };
 
-    this.http
-      .post('https://6824eacb0f0188d7e72b5f57.mockapi.io/api/v1/users2', newUser)
-      .subscribe({
-        next: (response) => {
-          alert(this.translate.instant('Register.UserRegistered'));
-          this.resetForm();
-          this.router.navigate(['/login']);
-        },
-        error: (error) => {
-          console.error('Error registering user:', error);
-          alert(this.translate.instant('Register.ErrorRegistering'));
-        }
-      });
+    this.authService.register(newUser).subscribe({
+      next: () => {
+        alert(this.translate.instant('Register.UserRegistered'));
+        this.resetForm();
+        this.router.navigate(['/login']);
+      },
+      error: (error) => {
+        console.error('Error registering user:', error);
+        alert(this.translate.instant('Register.ErrorRegistering'));
+      }
+    });
   }
 
   private resetForm() {
