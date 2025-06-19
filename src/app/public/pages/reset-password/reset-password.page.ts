@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from '../../../shared/services/auth.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -49,7 +49,7 @@ export class ResetPasswordPage implements OnInit {
         alert(this.translate.instant('ResetPassword.Success'));
         this.router.navigate(['/login']);
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error updating password:', err);
         alert(this.translate.instant('ResetPassword.Error'));
       }
