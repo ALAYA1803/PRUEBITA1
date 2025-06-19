@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from '../../../shared/services/auth.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -28,7 +28,7 @@ export class ForgotPasswordPage {
     }
 
     this.authService.forgotPassword(this.email).subscribe({
-      next: (res) => {
+      next: (res: any) => {
         const id = res?.userId;
         if (id) {
           this.router.navigate(['/reset-password', id]);
@@ -36,7 +36,7 @@ export class ForgotPasswordPage {
           this.router.navigate(['/reset-password']);
         }
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error verifying email:', err);
         alert(this.translate.instant('ForgotPassword.Error'));
       }

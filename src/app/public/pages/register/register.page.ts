@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from '../../../shared/services/auth.service';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -38,7 +38,7 @@ export class RegisterPage {
         this.resetForm();
         this.router.navigate(['/login']);
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error registering user:', error);
         alert(this.translate.instant('Register.ErrorRegistering'));
       }

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from '../../../shared/services/auth.service';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -33,7 +33,7 @@ export class LoginPage {
       return;
     }
     this.authService.login({ email: this.email, password: this.password }).subscribe({
-      next: (res) => {
+      next: (res: any) => {
         const role = localStorage.getItem('userRole');
         if (role === 'owner') {
           this.router.navigate(['/owner/home']);
@@ -43,7 +43,7 @@ export class LoginPage {
           this.router.navigate(['/']);
         }
       },
-      error: err => {
+      error: (err: any) => {
         console.error(err);
         alert(this.translate.instant('Login.Error'));
       }
