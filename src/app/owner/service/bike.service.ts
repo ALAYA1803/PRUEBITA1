@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Bike } from '../model/bike.entity';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,6 @@ export class BikeService {
   constructor() { }
 
   getTopBikes(): Observable<Bike[]> {
-    throw new Error('Method not implemented.');
+    return this.http.get<Bike[]>(`${environment.serverBaseUrl}/owner/bikes/top`);
   }
 }

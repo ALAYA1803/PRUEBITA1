@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Reservation } from '../model/reservation.entity';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,14 +13,14 @@ export class ReservationService {
 
   constructor() { }
   getPendingReservations(): Observable<Reservation[]> {
-    throw new Error('Method not implemented.');
+    return this.http.get<Reservation[]>(`${environment.serverBaseUrl}/owner/reservations`);
   }
 
   accept(id: number): Observable<any> {
-    throw new Error('Method not implemented.');
+    return this.http.patch(`${environment.serverBaseUrl}/owner/reservations/${id}`, { status: 'Accepted' });
   }
 
   decline(id: number): Observable<any> {
-    throw new Error('Method not implemented.');
+    return this.http.patch(`${environment.serverBaseUrl}/owner/reservations/${id}`, { status: 'Declined' });
   }
 }
