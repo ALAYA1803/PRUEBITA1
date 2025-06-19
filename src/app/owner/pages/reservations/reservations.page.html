@@ -1,4 +1,6 @@
-<div class="page-container">
+<p *ngIf="loading">{{ 'Common.Loading' | translate }}</p>
+<p *ngIf="error">{{ 'Common.Error' | translate }}</p>
+<div class="page-container" *ngIf="!loading && !error">
   <header class="page-header">
     <h1>{{ 'Reservations.Title' | translate }}</h1>
     <p>{{ 'Reservations.Subtitle' | translate }}</p>

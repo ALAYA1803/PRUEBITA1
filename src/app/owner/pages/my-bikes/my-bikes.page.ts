@@ -7,6 +7,7 @@ import * as L from 'leaflet';
 
 import { BikeFormComponent } from '../../components/bike-form/bike-form.component';
 import { Bike } from '../../model/bike.entity';
+import { BikeService } from '../../service/bike.service';
 
 @Component({
   selector: 'app-my-bikes-page',
@@ -38,7 +39,9 @@ export class MyBikesPage implements OnInit, OnDestroy {
     popupAnchor: [0, -40]
   });
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  loading = false;
+  error = false;
+  constructor(private cdr: ChangeDetectorRef, private bikeService: BikeService) {}
 
   ngOnInit(): void {
     this.loadOwnerBikes();
@@ -48,11 +51,20 @@ export class MyBikesPage implements OnInit, OnDestroy {
   }
 
   loadOwnerBikes(): void {
-    this.myBikes = [
-      new Bike({ id: 101, model: 'BMX Pro', type: 'BMX', costPerMinute: 0.5, imageUrl: 'https://cdn.skatepro.com/product/520/mankind-thunder-20-bmx-freestyle-bike-8h.webp', lat: -12.085, lng: -77.050 }),
-      new Bike({ id: 102, model: 'Vintage Verde', type: 'Urbana', costPerMinute: 0.3, imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdDydP4N9WKFYaT6cZoxxGCw5kL2BVGseLww&s', lat: -12.095, lng: -77.045 }),
-      new Bike({ id: 103, model: 'Mountain X', type: 'Montañera', costPerMinute: 0.6, imageUrl: 'https://images.squarespace-cdn.com/content/v1/5c38c1a931d4dfa4282305a3/1547225184651-S2PO613H621C4G57EX7D/specialized-pitch-sport-womens-hardtail-mountain-bike-2019-gloss-storm-grey-acid-lava.jpg', lat: -12.090, lng: -77.060 }),
-    ];
+    this.loading = true;
+    this.error = false;
+    this.bikeService.getOwnerBikes().subscribe({
+      next: bikes => {
+        this.myBikes = bikes;
+        this.updateMarkers();
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.error = true;
+        this.loading = false;
+      }
+    });
   }
   initMap(): void {
     this.map?.remove();
