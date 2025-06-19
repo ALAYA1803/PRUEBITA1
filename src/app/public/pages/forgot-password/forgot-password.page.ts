@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -14,10 +15,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 })
 export class ForgotPasswordPage {
   email: string = '';
-  private apiUrl = 'https://6824eacb0f0188d7e72b5f57.mockapi.io/api/v1/users2';
-
   constructor(
-    private http: HttpClient,
+    private authService: AuthService,
     private router: Router,
     private translate: TranslateService
   ) {}
@@ -28,13 +27,13 @@ export class ForgotPasswordPage {
       return;
     }
 
-    this.http.get<any[]>(`${this.apiUrl}?email=${this.email}`).subscribe({
-      next: (users) => {
-        if (users && users.length > 0) {
-          const userId = users[0].id;
-          this.router.navigate(['/reset-password', userId]);
+    this.authService.forgotPassword(this.email).subscribe({
+      next: (res) => {
+        const id = res?.userId;
+        if (id) {
+          this.router.navigate(['/reset-password', id]);
         } else {
-          alert(this.translate.instant('ForgotPassword.UserNotFound'));
+          this.router.navigate(['/reset-password']);
         }
       },
       error: (err) => {

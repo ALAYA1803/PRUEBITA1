@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -16,12 +17,11 @@ export class ResetPasswordPage implements OnInit {
   password = '';
   confirmPassword = '';
   private userId: string | null = null;
-  private apiUrl = 'https://6824eacb0f0188d7e72b5f57.mockapi.io/api/v1/users2';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private http: HttpClient,
+    private authService: AuthService,
     private translate: TranslateService
   ) {}
 
@@ -43,8 +43,8 @@ export class ResetPasswordPage implements OnInit {
       return;
     }
 
-    const updatedData = { password: this.password };
-    this.http.put(`${this.apiUrl}/${this.userId}`, updatedData).subscribe({
+    const id = this.userId ?? '';
+    this.authService.resetPassword(id, this.password).subscribe({
       next: () => {
         alert(this.translate.instant('ResetPassword.Success'));
         this.router.navigate(['/login']);
