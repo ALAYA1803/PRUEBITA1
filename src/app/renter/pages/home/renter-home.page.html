@@ -1,4 +1,6 @@
-<div class="page-container" *ngIf="stats">
+<p *ngIf="loading">{{ 'Common.Loading' | translate }}</p>
+<p *ngIf="error">{{ 'Common.Error' | translate }}</p>
+<div class="page-container" *ngIf="stats && !loading && !error">
   <div class="main-content">
 
     <header class="welcome-header">

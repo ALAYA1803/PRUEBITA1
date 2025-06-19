@@ -10,6 +10,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SupportTicketDialogComponent } from '../../../shared/components/support-ticket-dialog/support-ticket-dialog.component';
+import { SupportService, SupportTicket } from '../../service/support.service';
 
 
 @Component({
@@ -35,12 +36,11 @@ export class OwnerSupportPage implements OnInit {
   private snackBar = inject(MatSnackBar);
   private translate = inject(TranslateService);
   private dialog = inject(MatDialog);
+  private supportService = inject(SupportService);
 
-  supportTickets: any[] = [
-    { id: 1, asunto: 'Problema con pago de un alquiler', fecha: '12/06/2025', estado: 'Resuelto' },
-    { id: 2, asunto: 'Arrendatario reportó daño en bicicleta', fecha: '10/06/2025', estado: 'En Proceso' },
-    { id: 3, asunto: 'Consulta sobre mis ganancias', fecha: '05/06/2025', estado: 'Resuelto' }
-  ];
+  supportTickets: SupportTicket[] = [];
+  loading = false;
+  error = false;
 
   newRequestForm: FormGroup;
   categories: string[] = [
@@ -61,7 +61,20 @@ export class OwnerSupportPage implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loading = true;
+    this.error = false;
+    this.supportService.getTickets().subscribe({
+      next: tickets => {
+        this.supportTickets = tickets;
+        this.loading = false;
+      },
+      error: () => {
+        this.error = true;
+        this.loading = false;
+      }
+    });
+  }
 
   onSubmit() {
     if (this.newRequestForm.valid) {

@@ -16,4 +16,8 @@ export class BikeService {
   getTopBikes(): Observable<Bike[]> {
     return this.http.get<Bike[]>(`${environment.serverBaseUrl}/owner/bikes/top`);
   }
+
+  getOwnerBikes(): Observable<Bike[]> {
+    return this.http.get<Bike[]>(`${environment.serverBaseUrl}/owner/bikes`);
+  }
 }

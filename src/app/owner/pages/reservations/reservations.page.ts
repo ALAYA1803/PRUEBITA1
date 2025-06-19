@@ -16,6 +16,8 @@ import { ReservationService } from '../../service/reservation.service';
 })
 export class ReservationsPage implements OnInit {
   allReservations: Reservation[] = [];
+  loading = false;
+  error = false;
 
   private reservationService = inject(ReservationService);
   private translate = inject(TranslateService);
@@ -33,18 +35,22 @@ export class ReservationsPage implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadMockReservations();
+    this.loadReservations();
   }
 
-  loadMockReservations(): void {
-    const now = new Date();
-    this.allReservations = [
-      new Reservation({ id: 1, renterName: 'Carlos Villa', bikeName: 'BMX Pro', date: new Date(now.getTime() + 2 * 24 * 3600 * 1000), status: 'Pending', totalPrice: 25.00, renterImage: 'https://randomuser.me/api/portraits/men/32.jpg' }),
-      new Reservation({ id: 2, renterName: 'Lucía Fernández', bikeName: 'Vintage Verde', date: new Date(now.getTime() + 5 * 24 * 3600 * 1000), status: 'Accepted', totalPrice: 40.00, renterImage: 'https://randomuser.me/api/portraits/women/44.jpg' }),
-      new Reservation({ id: 3, renterName: 'Javier Soto', bikeName: 'Mountain X', date: new Date(now.getTime() - 7 * 24 * 3600 * 1000), endDate: new Date(now.getTime() - 6 * 24 * 3600 * 1000), status: 'Completed', totalPrice: 75.00, renterImage: 'https://randomuser.me/api/portraits/men/56.jpg' }),
-      new Reservation({ id: 4, renterName: 'Ana Gómez', bikeName: 'BMX Pro', date: new Date(now.getTime() - 10 * 24 * 3600 * 1000), status: 'Cancelled', totalPrice: 15.00, renterImage: 'https://randomuser.me/api/portraits/women/68.jpg' }),
-      new Reservation({ id: 5, renterName: 'Pedro Pascal', bikeName: 'Vintage Verde', date: new Date(now.getTime() - 15 * 24 * 3600 * 1000), status: 'Declined', totalPrice: 30.00, renterImage: 'https://randomuser.me/api/portraits/men/72.jpg' }),
-    ];
+  loadReservations(): void {
+    this.loading = true;
+    this.error = false;
+    this.reservationService.getPendingReservations().subscribe({
+      next: res => {
+        this.allReservations = res;
+        this.loading = false;
+      },
+      error: () => {
+        this.error = true;
+        this.loading = false;
+      }
+    });
   }
 
   accept(id: number) { console.log(`Aceptando reserva ${id}`); }

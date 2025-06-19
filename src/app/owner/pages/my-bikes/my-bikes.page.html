@@ -1,4 +1,6 @@
 <div class="page-container">
+  <p *ngIf="loading">{{ 'Common.Loading' | translate }}</p>
+  <p *ngIf="error">{{ 'Common.Error' | translate }}</p>
 
   <ng-container *ngIf="!isEditing; else formView">
     <div class="page-layout">

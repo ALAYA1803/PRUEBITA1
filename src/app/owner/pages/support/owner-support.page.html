@@ -1,4 +1,6 @@
-<div class="support-page-container">
+<p *ngIf="loading">{{ 'Common.Loading' | translate }}</p>
+<p *ngIf="error">{{ 'Common.Error' | translate }}</p>
+<div class="support-page-container" *ngIf="!loading && !error">
 
   <div class="support-card">
     <h2>{{ 'Support.LastRequests' | translate }}</h2>

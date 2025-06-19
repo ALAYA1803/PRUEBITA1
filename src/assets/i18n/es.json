@@ -10,6 +10,8 @@
   "add_to_favorites": "Agregar a favoritos",
   "not_found": "No se encontraron estaciones para esta dirección.",
   "bike_plural": "bicicletas",
+  "Common.Loading": "Cargando...",
+  "Common.Error": "Error al cargar datos.",
   "Sidebar.Home": "Inicio",
   "Sidebar.Map": "Mi mapa",
   "Sidebar.Profile": "Perfil",
